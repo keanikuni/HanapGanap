@@ -77,7 +77,7 @@ npx prisma init --datasource-provider postgresql
 
 If the repository already includes `prisma/schema.prisma`, a Prisma configuration file, or migration files, do not initialize Prisma again.
 
-### 5. Configure the Prisma schema
+### 5. Configure the Prisma schema (skip if there is already a schema)
 
 Define your database models in `prisma/schema.prisma` and ensure your Prisma configuration points to the correct schema and migrations directory.
 
