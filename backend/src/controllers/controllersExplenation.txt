@@ -1,0 +1,5 @@
+Controllers contain the code that processes requests and sends responses. 
+
+For example, a createTodo controller could read the task from req.body, call Prisma, 
+
+and return the created todo with res.json().

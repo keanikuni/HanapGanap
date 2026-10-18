@@ -1,0 +1,7 @@
+JWT authentication middleware belongs here.
+
+It verifies the token, extracts the user's ID, and attaches it to 
+ 
+req.userId before calling next(). Invalid tokens should receive an appropriate 
+ 
+error response.
