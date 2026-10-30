@@ -1,6 +1,9 @@
 import express from 'express';
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url';
+
+import eventRoutes from './routes/eventRoutes.js'
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -20,6 +23,13 @@ app.use(express.static(path.join(__dirname, '../../frontend')));
 app.get('/', (req, res) => {
     res.send("welcome to hanap ganap (wala pa laman in development)");
 }); 
+
+// routes for the login and sign up
+app.use('/auth', authRoutes);
+
+// routes for the EVENT
+app.use('/events', eventRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`Server has started on http://localhost:${PORT}`);
