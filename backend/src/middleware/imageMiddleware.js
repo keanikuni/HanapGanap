@@ -11,8 +11,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // the upload folder also the limit of the image size is 5mb
 
 // Backend/src/middleware -> up two levels -> Backend/uploads
-export const UPLOAD_DIR = path.join(__dirname, '../../uploads');
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+export const IMAGE_DIR = path.join(__dirname, '../../uploads');
+// idk what this means but it will synchronize or up to date
+fs.mkdirSync(IMAGE_DIR, { recursive: true });
 
 // Only allow these types; the extension comes from our map, not the client's filename
 const ALLOWED = { 'image/jpeg': '.jpg', 
@@ -25,10 +26,10 @@ const ALLOWED = { 'image/jpeg': '.jpg',
 // through HTML forms
 
 export const upload = multer({
-    
+
     storage: multer.diskStorage({
         
-        destination: UPLOAD_DIR,
+        destination: IMAGE_DIR,
 
         // Random name avoids collisions and unsafe user-supplied filenames
         filename: (req, file, cb) => cb(null, crypto.randomUUID() + ALLOWED[file.mimetype]),

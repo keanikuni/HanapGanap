@@ -19,10 +19,7 @@ router.post('/register', async (req, res) => {
         const user = await prisma.user.create({
             data: {
                 username: username,
-                password: hashedPassword,
-                todos: {
-                    create: { task: 'Hello! add your first todo' }
-                }
+                password: hashedPassword
             }
         });
 
