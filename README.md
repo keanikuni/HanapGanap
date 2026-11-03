@@ -131,4 +131,3 @@ Use Postman or another API client to test the available endpoints. Refer to the 
 - **Missing Prisma Client:** Run `npx prisma generate`.
 - **Missing database tables:** Confirm that the appropriate migrations have been applied.
 
-AS FOR THE DOCKER uh di ko pa gets as of this push

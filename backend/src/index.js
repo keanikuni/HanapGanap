@@ -1,8 +1,9 @@
 import express from 'express';
-import path, { dirname } from 'path'
+import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import eventRoutes from './routes/eventRoutes.js'
+import eventRoutes from './routes/eventRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 8000;
