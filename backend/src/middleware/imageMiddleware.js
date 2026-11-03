@@ -16,20 +16,27 @@ fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 // Only allow these types; the extension comes from our map, not the client's filename
 const ALLOWED = { 'image/jpeg': '.jpg', 
-                  'image/png':  '.png'
+                  'image/png':  '.png',
+                  'image/webp': '.webp'
                 };
 
-// note: Multer is a popular open-source Node.js middleware primarily used for 
+//  Note; Multer is a popular open-source Node.js middleware primarily used for 
 // handling multipart/form-data, which is the encoding type required for uploading files
 // through HTML forms
 
 export const upload = multer({
+    
     storage: multer.diskStorage({
+        
         destination: UPLOAD_DIR,
+
         // Random name avoids collisions and unsafe user-supplied filenames
         filename: (req, file, cb) => cb(null, crypto.randomUUID() + ALLOWED[file.mimetype]),
     }),
     
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB this shi is too complicated
+    // 5 MB this shi is too complicated
+    limits: { fileSize: 5 * 1024 * 1024 }, 
+    
+    //checks if the file extension is good or nah
     fileFilter: (req, file, cb) => cb(null, file.mimetype in ALLOWED),
 });
