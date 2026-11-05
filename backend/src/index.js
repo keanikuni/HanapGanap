@@ -2,7 +2,6 @@ import express from 'express';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-
 import eventRoutes from './routes/eventRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 
@@ -41,15 +40,11 @@ app.get('/', (req, res) => {
         /auth/login
     
     /events
-
-    
 */
 
 // http://localhost:${PORT}/uploads
 
-
 // http://localhost:${PORT}/auth
-
 
 // http://localhost:${PORT}/events
 
@@ -65,7 +60,7 @@ app.use('/events', eventRoutes);
 
 // Handles multer errors such as "file too large"
 app.use((err, req, res, next) => {
-
+    
     if (err instanceof multer.MulterError) { 
         return res.status(400).json({ error: err.message })
     };

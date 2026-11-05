@@ -42,6 +42,8 @@ npm install bcryptjs
 npm install jsonwebtoken
 npm install -D prisma@7.10.0
 npm install @prisma/client@7.10.0 @prisma/adapter-pg pg
+npm install multer
+npm install crypto
 ```
 After downloadeding all the dependencies
 Then verify the installed version:
@@ -51,6 +53,8 @@ npm jsonwebtoken --version
 npm express --version
 npm bcryptjs --version
 npx prisma --version
+npm multer --version
+npm crypto --version
 ```
 ### 3. Configure environment variables
 

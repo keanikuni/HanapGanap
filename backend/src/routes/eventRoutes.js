@@ -1,9 +1,8 @@
 import express from 'express';
 import prisma from '../config/prismaClient.js';
+import bcrypt from 'bcryptjs';
 
 const router = express.Router();
-
-
 
 // GET all events
 // http://localhost:8000/events/ 
@@ -14,8 +13,9 @@ router.get('/', async (req, res) => {
 
 // create an event
 // http://localhost:8000/events/ 
+
 router.post('/', async (req, res) => {
-   
+  
 });
 
 // update a event 
