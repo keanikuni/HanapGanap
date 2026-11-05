@@ -5,6 +5,8 @@ import prisma from '../config/prismaClient.js';
 
 const router = express.Router();
 
+// http://localhost:8000/register
+
 router.post('/register', async (req, res) => {
     console.log('A Client Tried To Register!');
     const { username, password } = req.body;
@@ -34,6 +36,8 @@ router.post('/register', async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+// http://localhost:8000/login
 
 router.post('/login', async (req, res) => {
     console.log('A Client Tried To Login!');

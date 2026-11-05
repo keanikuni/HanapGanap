@@ -13,3 +13,239 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ─────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────
+
+enum Role {
+  guest
+  student
+  organizer
+  admin
+}
+
+enum EventStatus {
+  upcoming
+  ongoing
+  completed
+  cancelled
+}
+
+// ─────────────────────────────────────────────
+// University
+// ─────────────────────────────────────────────
+
+model University {
+  id          Int     @id @default(autoincrement()) @map("university_id")
+  name        String  @unique
+  emailDomain String  @map("email_domain") // e.g. "school.edu.ph"
+  address     String
+  isActive    Boolean @default(true) @map("is_active")
+
+  students   Student[]
+  organizers Organizer[]
+  admins     Admin[]
+  events     Event[]
+
+  @@map("university")
+}
+
+// ─────────────────────────────────────────────
+// Users and roles (supertype / subtype)
+// ─────────────────────────────────────────────
+
+model User {
+  id            Int      @id @default(autoincrement()) @map("user_id")
+  fullName      String   @map("full_name")
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  role          Role
+  emailVerified Boolean  @default(false) @map("email_verified")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // At most one profile, depending on role
+  guest     Guest?
+  student   Student?
+  organizer Organizer?
+  admin     Admin?
+
+  registrations Registration[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Guest {
+  id                  Int     @id @default(autoincrement()) @map("guest_id")
+  userId              Int     @unique @map("user_id")
+  contactNumber       String  @map("contact_number")
+  schoolOrAffiliation String? @map("school_or_affiliation")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("guests")
+}
+
+model Student {
+  id            Int    @id @default(autoincrement()) @map("student_id")
+  userId        Int    @unique @map("user_id")
+  universityId  Int    @map("university_id")
+  studentNumber String @map("student_number")
+  courseProgram String @map("course_program")
+  yearLevel     String @map("year_level")
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  university University @relation(fields: [universityId], references: [id], onDelete: Restrict)
+
+  // A student number should be unique within a university
+  @@unique([universityId, studentNumber])
+  @@index([universityId])
+  @@map("students")
+}
+
+model Organizer {
+  id           Int    @id @default(autoincrement()) @map("organizer_id")
+  userId       Int    @unique @map("user_id")
+  universityId Int    @map("university_id")
+  orgName      String @map("org_name")
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  university University @relation(fields: [universityId], references: [id], onDelete: Restrict)
+  events     Event[]
+
+  @@index([universityId])
+  @@map("organizers")
+}
+
+model Admin {
+  id           Int @id @default(autoincrement()) @map("admin_id")
+  userId       Int @unique @map("user_id")
+  universityId Int @map("university_id")
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  university University @relation(fields: [universityId], references: [id], onDelete: Restrict)
+
+  @@index([universityId])
+  @@map("admins")
+}
+
+// ─────────────────────────────────────────────
+// Events
+// ─────────────────────────────────────────────
+
+model EventCategory {
+  id   Int    @id @default(autoincrement()) @map("category_id")
+  name String @unique
+
+  events Event[]
+
+  @@map("event_category")
+}
+
+model Event {
+  id                   Int         @id @default(autoincrement()) @map("event_id")
+  universityId         Int         @map("university_id")
+  categoryId           Int         @map("category_id")
+  organizerId          Int         @map("organizer_id")
+  title                String
+  description          String      @db.Text
+  venue                String
+  startDatetime        DateTime    @map("start_datetime")
+  endDatetime          DateTime    @map("end_datetime")
+  participantLimit     Int         @map("participant_limit")
+  registrationDeadline DateTime    @map("registration_deadline")
+  status               EventStatus @default(upcoming)
+  createdAt            DateTime    @default(now()) @map("created_at")
+  updatedAt            DateTime    @updatedAt @map("updated_at")
+
+  university University    @relation(fields: [universityId], references: [id], onDelete: Restrict)
+  category   EventCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  organizer  Organizer     @relation(fields: [organizerId], references: [id], onDelete: Restrict)
+
+  images        Image[]
+  registrations Registration[]
+  notifications Notification[]
+
+  @@index([universityId])
+  @@index([categoryId])
+  @@index([organizerId])
+  @@index([status, startDatetime])
+  @@map("events")
+}
+
+model Image {
+  id         Int      @id @default(autoincrement()) @map("image_id")
+  eventId    Int      @map("event_id")
+  fileName   String   @map("file_name")
+  filePath   String   @map("file_path") // path/URL only, not the image itself
+  uploadedAt DateTime @default(now()) @map("uploaded_at")
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@map("image")
+}
+
+// ─────────────────────────────────────────────
+// Registration flow
+// ─────────────────────────────────────────────
+
+model Registration {
+  id           Int      @id @default(autoincrement()) @map("registration_id")
+  userId       Int      @map("user_id")
+  eventId      Int      @map("event_id")
+  isConfirmed  Boolean  @default(false) @map("is_confirmed")
+  registeredAt DateTime @default(now()) @map("registered_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Restrict)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Restrict)
+
+  attendance  Attendance?
+  certificate Certificate?
+
+  // No duplicate registrations for the same event
+  @@unique([userId, eventId])
+  @@index([eventId])
+  @@map("registration")
+}
+
+model Attendance {
+  id             Int       @id @default(autoincrement()) @map("attendance_id")
+  registrationId Int       @unique @map("registration_id")
+  inTime         DateTime? @map("in_time")
+  outTime        DateTime? @map("out_time")
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@map("attendance")
+}
+
+model Certificate {
+  id             Int      @id @default(autoincrement()) @map("certificate_id")
+  registrationId Int      @unique @map("registration_id")
+  certificatePdf String   @map("certificate_pdf") // file path/URL
+  issuedAt       DateTime @default(now()) @map("issued_at")
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@map("certificate")
+}
+
+model Notification {
+  id        Int       @id @default(autoincrement()) @map("notification_id")
+  eventId   Int       @map("event_id") // make Int? if you log non-event emails (see open item)
+  userId    Int       @map("user_id")
+  title     String
+  message   String    @db.Text
+  type      String // e.g. reminder, schedule_change, cancellation
+  createdAt DateTime  @default(now()) @map("created_at")
+  sentAt    DateTime? @map("sent_at")
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([eventId])
+  @@map("notification")
+}

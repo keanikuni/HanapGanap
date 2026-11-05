@@ -29,6 +29,30 @@ app.get('/', (req, res) => {
     res.send("welcome to hanap ganap (wala pa laman in development)");
 }); 
 
+
+// http://localhost:${PORT}/ <- is the main server
+/*
+    ROUTES or Sub Server - Servers That handle a speficific URI
+
+    /uploads
+
+    /auth
+        /auth/register
+        /auth/login
+    
+    /events
+
+    
+*/
+
+// http://localhost:${PORT}/uploads
+
+
+// http://localhost:${PORT}/auth
+
+
+// http://localhost:${PORT}/events
+
 // Serve uploaded images. Uses the SAME folder Multer saves into
 app.use('/uploads', express.static(IMAGE_DIR));
 
@@ -37,6 +61,7 @@ app.use('/auth', authRoutes);
 
 // routes for the EVENT
 app.use('/events', eventRoutes);
+
 
 // Handles multer errors such as "file too large"
 app.use((err, req, res, next) => {
