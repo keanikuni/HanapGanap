@@ -6,7 +6,7 @@ import eventRoutes from './routes/eventRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 
 import { IMAGE_DIR } from './middleware/imageMiddleware.js';
-import authMiddleware from './middleware/authMiddleware.js';
+
 
 const app = express();
 const PORT = process.env.PORT || 8000;

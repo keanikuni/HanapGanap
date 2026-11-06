@@ -13,9 +13,7 @@ router.get('/', async (req, res) => {
 
 // create an event
 // http://localhost:8000/events/ 
-
 router.post('/', async (req, res) => {
-  
 });
 
 // update a event 

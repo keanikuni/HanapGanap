@@ -44,6 +44,7 @@ npm install -D prisma@7.10.0
 npm install @prisma/client@7.10.0 @prisma/adapter-pg pg
 npm install multer
 npm install crypto
+npm install PDFkit
 ```
 After downloadeding all the dependencies
 Then verify the installed version:
