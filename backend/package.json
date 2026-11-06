@@ -1,27 +1,16 @@
 {
-  "name": "HanapGanap",
+  "name": "pdf-tool",
   "version": "1.0.0",
-  "description": "HanapGanap Project uses prisma, postgres and expressJS",
-  "main": "index.js",
-  "scripts": {
-    "dev": "node --watch --env-file=.env --experimental-strip-types ./src/index.js --trace-warnings",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "module",
-  "dependencies": {
-    "@prisma/adapter-pg": "^7.10.0",
-    "@prisma/client": "^7.10.0",
-    "bcryptjs": "^3.0.3",
-    "crypto": "^1.0.1",
-    "express": "^5.3.0",
-    "jsonwebtoken": "^9.0.3",
-    "multer": "^2.5.0",
-    "pg": "^8.23.1"
+  "scripts": {
+    "start": "node src/pdfServer.js"
   },
-  "devDependencies": {
-    "prisma": "^7.10.0"
+  "dependencies": {
+    "express": "^5.3.0",
+    "multer": "^2.5.0",
+    "pdf-lib": "^1.17.1",
+    "pdf-parse": "^1.1.1",
+    "pdfkit": "^0.20.2",
+    "qrcode": "^1.5.4"
   }
 }

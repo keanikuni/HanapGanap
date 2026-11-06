@@ -1,9 +1,13 @@
 import express from 'express';
+import multer from 'multer';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 import eventRoutes from './routes/eventRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import certificateRoutes from './routes/certificateRoutes.js';
+import pdfRoutes from './routes/pdfRoutes.js';
+import extractRoutes from './routes/extractRoutes.js';
 
 import { IMAGE_DIR } from './middleware/imageMiddleware.js';
 
@@ -56,6 +60,15 @@ app.use('/auth', authRoutes);
 
 // routes for the EVENT
 app.use('/events', eventRoutes);
+
+// routes for certificates (issue / verify PDFs)
+app.use('/certificates', certificateRoutes);
+
+// no-login PDF maker / editor (see routes/pdfRoutes.js)
+app.use('/pdf', pdfRoutes);
+
+// route that extracts text from any uploaded PDF
+app.use('/extract', extractRoutes);
 
 
 // Handles multer errors such as "file too large"
