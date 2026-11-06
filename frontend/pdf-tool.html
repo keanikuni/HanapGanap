@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HanapGanap – PDF Maker &amp; Editor</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 560px; margin: 2rem auto; padding: 0 1rem; }
+    section { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    input, button { padding: .5rem; margin: .25rem 0; width: 100%; box-sizing: border-box; }
+    button { cursor: pointer; }
+    .row { display: flex; gap: .5rem; } .row input { margin: .25rem 0; }
+    #msg { padding: .6rem; border-radius: 6px; display: none; white-space: pre-wrap; background: #eef3ff; }
+    small { color: #666; }
+  </style>
+</head>
+<body>
+  <h1>PDF Maker &amp; Editor</h1>
+  <div id="msg"></div>
+
+  <section>
+    <h3>1. Make an attendance PDF</h3>
+    <input id="name" placeholder="Name" />
+    <input id="event" placeholder="Event (optional)" />
+    <input id="date" placeholder="Date (optional, defaults to today)" />
+    <button id="genBtn">Generate &amp; download</button>
+  </section>
+
+  <section>
+    <h3>2. Open a PDF</h3>
+    <input id="file" type="file" accept="application/pdf" />
+    <button id="extractBtn">Read fields</button>
+    <small>Fills the boxes in section 1 from one of our PDFs. Edit them, then press Generate to get a corrected, properly signed copy.</small>
+  </section>
+
+  <section>
+    <h3>3. Find &amp; replace text in the opened PDF</h3>
+    <div class="row"><input id="find" placeholder="Find" /><input id="replace" placeholder="Replace with" /></div>
+    <button id="editBtn">Replace &amp; download</button>
+    <small>Changing a certificate this way does not re-sign it, so its code will no longer match. Use section 1 for that.</small>
+  </section>
+
+  <section>
+    <label>API key (only if PDF_API_KEY is set on the server)<input id="key" type="password" /></label>
+  </section>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const headers = () => ($('key').value ? { 'x-api-key': $('key').value } : {});
+    const say = (t) => { $('msg').style.display = 'block'; $('msg').textContent = t; };
+
+    // Every button goes through this so a failure is always shown on the page.
+    const guard = (fn) => async () => {
+      try { await fn(); }
+      catch (e) { say('Something went wrong: ' + e.message + '\n\nIs the server running (npm start) and did you open this page from http://localhost:8000/pdf-tool.html ?'); }
+    };
+    // Reads an error message out of a failed response, even if it is not JSON.
+    const errorOf = async (res) => {
+      try { return (await res.json()).error || ('HTTP ' + res.status); } catch { return `HTTP ${res.status} ${res.statusText} (wrong server? this page is at ${location.origin})`; }
+    };
+    const save = async (res, filename) => {
+      const url = URL.createObjectURL(await res.blob());
+      const a = Object.assign(document.createElement('a'), { href: url, download: filename });
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    };
+    const upload = () => {
+      const file = $('file').files[0];
+      if (!file) { say('Choose a PDF first (section 2).'); return null; }
+      const form = new FormData(); form.append('file', file); return form;
+    };
+
+    $('genBtn').onclick = guard(async () => {
+      if (!$('name').value.trim()) return say('Type a name first.');
+      say('Generating…');
+      const res = await fetch('/pdf/generate', {
+        method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: $('name').value, event: $('event').value, date: $('date').value }),
+      });
+      if (!res.ok) return say(await errorOf(res));
+      await save(res, 'attendance.pdf');
+      say('Done – check your Downloads folder. Verification code ' + res.headers.get('X-Verification-Code'));
+    });
+
+    $('extractBtn').onclick = guard(async () => {
+      const form = upload(); if (!form) return;
+      const res = await fetch('/pdf/extract', { method: 'POST', headers: headers(), body: form });
+      if (!res.ok) return say(await errorOf(res));
+      const data = await res.json();
+      if (!data.fields.name) return say('No attendance fields found – you can still use find & replace below.');
+      $('name').value = data.fields.name; $('event').value = data.fields.event; $('date').value = data.fields.date;
+      say(data.signatureValid ? 'Genuine certificate ✅ (code matches)' : 'Fields read, but the code does NOT match – this file was changed or not issued here.');
+    });
+
+    $('editBtn').onclick = guard(async () => {
+      const form = upload(); if (!form) return;
+      if (!$('find').value) return say('Type the text to find.');
+      form.append('replacements', JSON.stringify([{ find: $('find').value, replace: $('replace').value }]));
+      const res = await fetch('/pdf/edit', { method: 'POST', headers: headers(), body: form });
+      if (!res.ok) return say(await errorOf(res));
+      const notFound = JSON.parse(decodeURIComponent(res.headers.get('X-Not-Found')));
+      if (notFound.length) return say('Text not found in the PDF: ' + notFound.join(', '));
+      await save(res, 'edited.pdf');
+      say(`Replaced ${res.headers.get('X-Replaced')} place(s). Check your Downloads folder.` +
+        (res.headers.get('X-Old-Text-Removed') === 'false' ? '\nNote: the old text is only covered up and can still be copied from the PDF.' : ''));
+    });
+
+    // On load: check we are really talking to the PDF server.
+    fetch('/pdf/health').then((r) => r.json()).then(() => say('Connected to the PDF server ✅'))
+      .catch(() => say('❌ Cannot reach the PDF server from this page (' + location.href + ').\nStart it with "npm start" in the backend folder, then open http://localhost:8000/pdf-tool.html — do not open the file directly or through Live Server.'));
+  </script>
+</body>
+</html>
