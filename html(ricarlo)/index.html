@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign Up / Log In</title>
+</head>
+<body>
+
+  <h1>Welcome</h1>
+  <p id="status"></p>
+
+  <!-- SIGN UP -->
+  <section id="signupSection">
+    <h2>Sign Up</h2>
+    <form id="signupForm" novalidate>
+      <div>
+        <label for="signupName">Full name</label><br>
+        <input type="text" id="signupName" name="name" autocomplete="name">
+        <div class="error" id="signupNameError"></div>
+      </div>
+
+      <div>
+        <label for="signupEmail">School email (must end with .edu.ph)</label><br>
+        <input type="email" id="signupEmail" name="email" autocomplete="email">
+        <div class="error" id="signupEmailError"></div>
+      </div>
+
+      <div>
+        <label for="signupPassword">Password</label><br>
+        <input type="password" id="signupPassword" name="password" autocomplete="new-password">
+        <div class="error" id="signupPasswordError"></div>
+      </div>
+
+      <div>
+        <label for="signupConfirm">Confirm password</label><br>
+        <input type="password" id="signupConfirm" name="confirm" autocomplete="new-password">
+        <div class="error" id="signupConfirmError"></div>
+      </div>
+
+      <button type="submit">Create account</button>
+    </form>
+    <p>Already have an account? <a href="#" id="showLogin">Log in</a></p>
+  </section>
+
+  <!-- LOG IN -->
+  <section id="loginSection" hidden>
+    <h2>Log In</h2>
+    <form id="loginForm" novalidate>
+      <div>
+        <label for="loginEmail">Email</label><br>
+        <input type="email" id="loginEmail" name="email" autocomplete="email">
+        <div class="error" id="loginEmailError"></div>
+      </div>
+
+      <div>
+        <label for="loginPassword">Password</label><br>
+        <input type="password" id="loginPassword" name="password" autocomplete="current-password">
+        <div class="error" id="loginPasswordError"></div>
+      </div>
+
+      <button type="submit">Log in</button>
+    </form>
+    <p>No account yet? <a href="#" id="showSignup">Sign up</a></p>
+  </section>
+
+  <!-- LOGGED IN VIEW -->
+  <section id="welcomeSection" hidden>
+    <h2>You are logged in</h2>
+    <p id="welcomeText"></p>
+    <button type="button" id="logoutBtn">Log out</button>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
