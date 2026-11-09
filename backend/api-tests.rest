@@ -1,0 +1,407 @@
+# HanapGanap API tests (VS Code "REST Client" extension)
+# Run the requests from top to bottom. Click "Send Request" above each one.
+# Later requests reuse ids and tokens from earlier ones automatically.
+# The //http://... line above each request shows its complete URI.
+#
+# Before the first run: npm run seed (creates the admin, categories, university)
+# To run the whole flow again, change the two emails below (they must be unique).
+
+@baseUrl = http://localhost:8000/api
+
+@adminEmail = admin@sample.edu.ph
+@adminPassword = ChangeMe123!
+
+@organizerEmail = organizer1@sample.edu.ph
+@studentEmail = student1@sample.edu.ph
+@password = secret123
+
+# Id of the university from GET /api/universities (the seed's is usually 1)
+@universityId = 1
+
+###############################################################
+# 1. AUTH
+###############################################################
+
+### Login as admin (seeded account)
+//http://localhost:8000/api/auth/login
+# @name loginAdmin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+###
+@adminToken = {{loginAdmin.response.body.token}}
+
+### Register an organizer
+//http://localhost:8000/api/auth/register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Maria Santos",
+  "email": "{{organizerEmail}}",
+  "password": "{{password}}",
+  "role": "organizer",
+  "universityId": {{universityId}},
+  "orgName": "Computer Society"
+}
+
+### Register a student (email must end with the university's email domain)
+//http://localhost:8000/api/auth/register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Juan Dela Cruz",
+  "email": "{{studentEmail}}",
+  "password": "{{password}}",
+  "role": "student",
+  "universityId": {{universityId}},
+  "studentNumber": "2023-00123",
+  "courseProgram": "BSIT",
+  "yearLevel": "3rd"
+}
+
+### Login as organizer
+//http://localhost:8000/api/auth/login
+# @name loginOrganizer
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{organizerEmail}}",
+  "password": "{{password}}"
+}
+
+###
+@organizerToken = {{loginOrganizer.response.body.token}}
+
+### Login as student
+//http://localhost:8000/api/auth/login
+# @name loginStudent
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{studentEmail}}",
+  "password": "{{password}}"
+}
+
+###
+@studentToken = {{loginStudent.response.body.token}}
+
+### Who am I? (student)
+//http://localhost:8000/api/auth/me
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{studentToken}}
+
+###############################################################
+# 2. UNIVERSITIES AND CATEGORIES
+###############################################################
+
+### List universities (public)
+//http://localhost:8000/api/universities
+GET {{baseUrl}}/universities
+
+### List all universities including inactive (admin)
+//http://localhost:8000/api/universities/all
+GET {{baseUrl}}/universities/all
+Authorization: Bearer {{adminToken}}
+
+### List categories (public)
+//http://localhost:8000/api/categories
+GET {{baseUrl}}/categories
+
+### Add a university (admin)
+//http://localhost:8000/api/universities
+POST {{baseUrl}}/universities
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Test University",
+  "emailDomain": "test.edu.ph",
+  "address": "Angeles City, Pampanga"
+}
+
+### Deactivate a university (admin)
+//http://localhost:8000/api/universities/{{universityId}}
+PATCH {{baseUrl}}/universities/{{universityId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{ "isActive": false }
+
+### Add a category (admin)
+//http://localhost:8000/api/categories
+POST {{baseUrl}}/categories
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{ "name": "Festival" }
+
+###############################################################
+# 3. EVENTS
+###############################################################
+
+### Create an event (organizer)
+//http://localhost:8000/api/events
+# @name createEvent
+POST {{baseUrl}}/events
+Authorization: Bearer {{organizerToken}}
+Content-Type: application/json
+
+{
+  "categoryId": 1,
+  "title": "Tech Summit 2026",
+  "description": "A day of talks and workshops.",
+  "venue": "Main Auditorium",
+  "startDatetime": "2026-12-10T09:00:00+08:00",
+  "endDatetime": "2026-12-10T17:00:00+08:00",
+  "registrationDeadline": "2026-12-08T23:59:00+08:00",
+  "participantLimit": 200
+}
+
+###
+@eventId = {{createEvent.response.body.id}}
+
+### Browse events (public)
+//http://localhost:8000/api/events
+GET {{baseUrl}}/events
+
+### Browse with filters
+//http://localhost:8000/api/events?status=upcoming&categoryId=1&search=summit
+GET {{baseUrl}}/events?status=upcoming&categoryId=1&search=summit
+
+### Get one event
+//http://localhost:8000/api/events/{{eventId}}
+GET {{baseUrl}}/events/{{eventId}}
+
+### Update the event (organizer)
+//http://localhost:8000/api/events/{{eventId}}
+PATCH {{baseUrl}}/events/{{eventId}}
+Authorization: Bearer {{organizerToken}}
+Content-Type: application/json
+
+{
+  "venue": "Room 204, Engineering Building",
+  "participantLimit": 250
+}
+
+### Upload an image (organizer)
+# Put a real .jpg at test-assets/poster.jpg next to this file first.
+//http://localhost:8000/api/events/{{eventId}}/images
+# @name uploadImage
+POST {{baseUrl}}/events/{{eventId}}/images
+Authorization: Bearer {{organizerToken}}
+Content-Type: multipart/form-data; boundary=----HanapBoundary
+
+------HanapBoundary
+Content-Disposition: form-data; name="images"; filename="poster.jpg"
+Content-Type: image/jpeg
+
+< ./test-assets/poster.jpg
+------HanapBoundary--
+
+###
+@imageId = {{uploadImage.response.body.0.id}}
+
+### Delete that image (organizer)
+//http://localhost:8000/api/events/{{eventId}}/images/{{imageId}}
+DELETE {{baseUrl}}/events/{{eventId}}/images/{{imageId}}
+Authorization: Bearer {{organizerToken}}
+
+###############################################################
+# 4. REGISTRATION
+###############################################################
+
+### Register the student for the event
+//http://localhost:8000/api/events/{{eventId}}/register
+# @name registerForEvent
+POST {{baseUrl}}/events/{{eventId}}/register
+Authorization: Bearer {{studentToken}}
+
+###
+@registrationId = {{registerForEvent.response.body.id}}
+
+### Register again -> expect 409 "already registered"
+//http://localhost:8000/api/events/{{eventId}}/register
+POST {{baseUrl}}/events/{{eventId}}/register
+Authorization: Bearer {{studentToken}}
+
+### My registrations (student)
+//http://localhost:8000/api/registrations/mine
+GET {{baseUrl}}/registrations/mine
+Authorization: Bearer {{studentToken}}
+
+### Participant list (organizer)
+//http://localhost:8000/api/events/{{eventId}}/participants
+GET {{baseUrl}}/events/{{eventId}}/participants
+Authorization: Bearer {{organizerToken}}
+
+###############################################################
+# 5. ATTENDANCE
+###############################################################
+
+### Check in (organizer)
+//http://localhost:8000/api/attendance/check-in
+POST {{baseUrl}}/attendance/check-in
+Authorization: Bearer {{organizerToken}}
+Content-Type: application/json
+
+{ "registrationId": {{registrationId}} }
+
+### Check out (organizer)
+//http://localhost:8000/api/attendance/check-out
+POST {{baseUrl}}/attendance/check-out
+Authorization: Bearer {{organizerToken}}
+Content-Type: application/json
+
+{ "registrationId": {{registrationId}} }
+
+###############################################################
+# 6. NOTIFICATIONS
+###############################################################
+
+### Notify registrants (organizer)
+//http://localhost:8000/api/events/{{eventId}}/notify
+POST {{baseUrl}}/events/{{eventId}}/notify
+Authorization: Bearer {{organizerToken}}
+Content-Type: application/json
+
+{
+  "title": "Venue changed",
+  "message": "The summit is now at Room 204, Engineering Building.",
+  "type": "schedule_change"
+}
+
+### My notifications (student)
+//http://localhost:8000/api/notifications
+GET {{baseUrl}}/notifications
+Authorization: Bearer {{studentToken}}
+
+###############################################################
+# 7. CERTIFICATES
+###############################################################
+
+### Mark the event completed (organizer). Certificates need a finished event.
+//http://localhost:8000/api/events/{{eventId}}
+PATCH {{baseUrl}}/events/{{eventId}}
+Authorization: Bearer {{organizerToken}}
+Content-Type: application/json
+
+{ "status": "completed" }
+
+### Generate certificates (organizer)
+//http://localhost:8000/api/events/{{eventId}}/certificates
+POST {{baseUrl}}/events/{{eventId}}/certificates
+Authorization: Bearer {{organizerToken}}
+
+### My certificates (student)
+//http://localhost:8000/api/certificates/mine
+# @name myCertificates
+GET {{baseUrl}}/certificates/mine
+Authorization: Bearer {{studentToken}}
+
+###
+@certId = {{myCertificates.response.body.0.id}}
+
+### Download the certificate PDF (student)
+//http://localhost:8000/api/certificates/{{certId}}/download
+GET {{baseUrl}}/certificates/{{certId}}/download
+Authorization: Bearer {{studentToken}}
+
+###############################################################
+# 8. ADMIN
+###############################################################
+
+### Dashboard stats
+//http://localhost:8000/api/admin/stats
+GET {{baseUrl}}/admin/stats
+Authorization: Bearer {{adminToken}}
+
+### List users
+//http://localhost:8000/api/admin/users?role=student&page=1&limit=20
+GET {{baseUrl}}/admin/users?role=student&page=1&limit=20
+Authorization: Bearer {{adminToken}}
+
+### Verify a user's email (admin)
+//http://localhost:8000/api/admin/users/{{registrationId}}
+PATCH {{baseUrl}}/admin/users/{{registrationId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{ "emailVerified": true }
+
+### All events for review
+//http://localhost:8000/api/admin/events?status=completed
+GET {{baseUrl}}/admin/events?status=completed
+Authorization: Bearer {{adminToken}}
+
+###############################################################
+# 9. THINGS THAT SHOULD FAIL (check the status codes)
+###############################################################
+
+### No token -> expect 401
+//http://localhost:8000/api/auth/me
+GET {{baseUrl}}/auth/me
+
+### Student creates an event -> expect 403
+//http://localhost:8000/api/events
+POST {{baseUrl}}/events
+Authorization: Bearer {{studentToken}}
+Content-Type: application/json
+
+{ "title": "Nope" }
+
+### Student opens the admin stats -> expect 403
+//http://localhost:8000/api/admin/stats
+GET {{baseUrl}}/admin/stats
+Authorization: Bearer {{studentToken}}
+
+### Registering as admin -> expect 400
+//http://localhost:8000/api/auth/register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Sneaky",
+  "email": "sneaky@gmail.com",
+  "password": "secret123",
+  "role": "admin"
+}
+
+### Wrong password -> expect 401
+//http://localhost:8000/api/auth/login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "{{studentEmail}}", "password": "wrong" }
+
+### Bad event id -> expect 400
+//http://localhost:8000/api/events/abc
+GET {{baseUrl}}/events/abc
+
+### Unknown event -> expect 404
+//http://localhost:8000/api/events/999999
+GET {{baseUrl}}/events/999999
+
+### Student email from the wrong domain -> expect 400
+//http://localhost:8000/api/auth/register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Wrong Domain",
+  "email": "someone@gmail.com",
+  "password": "secret123",
+  "role": "student",
+  "universityId": {{universityId}},
+  "studentNumber": "2023-99999",
+  "courseProgram": "BSIT",
+  "yearLevel": "1st"
+}
