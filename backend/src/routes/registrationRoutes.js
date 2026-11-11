@@ -1,16 +1,9 @@
 import express from 'express';
 import prisma from '../config/prismaClient.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
+import { HttpError } from '../utils/httpError.js';
 
 const router = express.Router();
-
-// Lets us throw from inside a transaction and turn it into a clean response
-class HttpError extends Error {
-    constructor(status, message) {
-        super(message);
-        this.status = status;
-    }
-}
 
 function handleError(err, res) {
     if (err instanceof HttpError) return res.status(err.status).json({ message: err.message });
@@ -80,6 +73,7 @@ router.delete('/events/:id/register', requireAuth, async (req, res) => {
             return res.status(409).json({ message: "Can't cancel after check-in" });
         }
 
+        // The attendance row (if any) is removed with it
         await prisma.registration.delete({ where: { id: registration.id } });
         res.json({ message: "Registration cancelled" });
     } catch (err) {
@@ -101,11 +95,22 @@ router.get('/registrations/mine', requireAuth, async (req, res) => {
                     },
                 },
                 attendance: true,
-                certificate: true,
             },
             orderBy: { registeredAt: 'desc' },
         });
-        res.json(registrations);
+
+        // Certificates are generated on demand, so the frontend only needs to know
+        // whether to show a "Download certificate" button for each registration.
+        const now = new Date();
+        res.json(
+            registrations.map((r) => ({
+                ...r,
+                certificateAvailable:
+                    r.event.status !== 'cancelled' &&
+                    (r.event.status === 'completed' || r.event.endDatetime < now) &&
+                    !!r.attendance?.inTime,
+            }))
+        );
     } catch (err) {
         handleError(err, res);
     }

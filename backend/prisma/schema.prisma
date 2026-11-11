@@ -201,8 +201,7 @@ model Registration {
   user  User  @relation(fields: [userId], references: [id], onDelete: Restrict)
   event Event @relation(fields: [eventId], references: [id], onDelete: Restrict)
 
-  attendance  Attendance?
-  certificate Certificate?
+  attendance Attendance?
 
   // No duplicate registrations for the same event
   @@unique([userId, eventId])
@@ -221,16 +220,8 @@ model Attendance {
   @@map("attendance")
 }
 
-model Certificate {
-  id             Int      @id @default(autoincrement()) @map("certificate_id")
-  registrationId Int      @unique @map("registration_id")
-  certificatePdf String   @map("certificate_pdf") // file path/URL
-  issuedAt       DateTime @default(now()) @map("issued_at")
-
-  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
-
-  @@map("certificate")
-}
+// Certificates are not stored. They are generated on demand from the registration,
+// the attendance record and the event (see routes/certificateRoutes.js).
 
 model Notification {
   id        Int       @id @default(autoincrement()) @map("notification_id")

@@ -90,7 +90,7 @@ const EVENTS = [
 async function main() {
     // 1. Wipe everything and restart ids from 1
     await prisma.$executeRawUnsafe(
-        'TRUNCATE TABLE notification, certificate, attendance, registration, image, events, ' +
+        'TRUNCATE TABLE notification, attendance, registration, image, events, ' +
         'students, guests, organizers, admins, users, event_category, university RESTART IDENTITY CASCADE'
     );
     console.log('Old data cleared.');

@@ -135,13 +135,12 @@ router.get('/events', async (req, res) => {
 // ─── Dashboard stats ──────────────────────────────────────
 router.get('/stats', async (req, res) => {
     try {
-        const [usersByRole, eventsByStatus, registrations, attended, certificates, universities, unverifiedUsers] =
+        const [usersByRole, eventsByStatus, registrations, attended, universities, unverifiedUsers] =
             await Promise.all([
                 prisma.user.groupBy({ by: ['role'], _count: { _all: true } }),
                 prisma.event.groupBy({ by: ['status'], _count: { _all: true } }),
                 prisma.registration.count(),
                 prisma.attendance.count({ where: { inTime: { not: null } } }),
-                prisma.certificate.count(),
                 prisma.university.count({ where: { isActive: true } }),
                 prisma.user.count({ where: { emailVerified: false } }),
             ]);
@@ -159,7 +158,6 @@ router.get('/stats', async (req, res) => {
             events: { total: Object.values(events).reduce((a, b) => a + b, 0), byStatus: events },
             registrations,
             attended,
-            certificates,
             activeUniversities: universities,
         });
     } catch (err) {
