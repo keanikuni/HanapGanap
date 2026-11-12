@@ -1,0 +1,17 @@
+meta {
+  name: Bad event id (expect 400)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/events/abc
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 400", function () {
+    expect(res.getStatus()).to.equal(400);
+  });
+}

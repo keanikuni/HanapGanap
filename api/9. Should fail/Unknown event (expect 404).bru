@@ -1,0 +1,17 @@
+meta {
+  name: Unknown event (expect 404)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/events/999999
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 404", function () {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

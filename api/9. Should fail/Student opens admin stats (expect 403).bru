@@ -1,0 +1,21 @@
+meta {
+  name: Student opens admin stats (expect 403)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/admin/stats
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{studentToken}}
+}
+
+tests {
+  test("Status is 403", function () {
+    expect(res.getStatus()).to.equal(403);
+  });
+}

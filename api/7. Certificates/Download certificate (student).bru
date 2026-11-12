@@ -1,0 +1,24 @@
+meta {
+  name: Download certificate (student)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/events/{{eventId}}/certificate
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{studentToken}}
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("Response is a PDF", function () {
+    expect(res.getHeader("content-type")).to.contain("application/pdf");
+  });
+}

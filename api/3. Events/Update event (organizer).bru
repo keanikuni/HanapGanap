@@ -1,0 +1,28 @@
+meta {
+  name: Update event (organizer)
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/events/{{eventId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{organizerToken}}
+}
+
+body:json {
+  {
+    "venue": "Room 204, Engineering Building",
+    "participantLimit": 250
+  }
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

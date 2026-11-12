@@ -1,0 +1,27 @@
+meta {
+  name: List users
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/admin/users?role=student&page=1&limit=20
+  body: none
+  auth: bearer
+}
+
+params:query {
+  role: student
+  page: 1
+  limit: 20
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

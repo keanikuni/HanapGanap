@@ -136,3 +136,13 @@ Use Postman or another API client to test the available endpoints. Refer to the 
 - **Missing Prisma Client:** Run `npx prisma generate`.
 - **Missing database tables:** Confirm that the appropriate migrations have been applied.
 
+
+FOR THE API 
+
+Use POSTMAN OR BRUNO
+
+The server should be Open when testing the api 
+
+Run npm run seed:mock
+
+to add some placeholder in the database

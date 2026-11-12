@@ -1,0 +1,21 @@
+meta {
+  name: Participant list (organizer)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/events/{{eventId}}/participants
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{organizerToken}}
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

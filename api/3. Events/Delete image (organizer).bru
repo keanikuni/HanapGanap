@@ -1,0 +1,21 @@
+meta {
+  name: Delete image (organizer)
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/events/{{eventId}}/images/{{imageId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{organizerToken}}
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

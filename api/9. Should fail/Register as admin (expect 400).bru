@@ -1,0 +1,26 @@
+meta {
+  name: Register as admin (expect 400)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fullName": "Sneaky",
+    "email": "sneaky@gmail.com",
+    "password": "secret123",
+    "role": "admin"
+  }
+}
+
+tests {
+  test("Status is 400", function () {
+    expect(res.getStatus()).to.equal(400);
+  });
+}

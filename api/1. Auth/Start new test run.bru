@@ -1,0 +1,46 @@
+meta {
+  name: Start new test run
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/universities
+  body: none
+  auth: none
+}
+
+script:post-response {
+  // Reads the real university list and picks the one in the environment (universityId)
+  const list = Array.isArray(res.body) ? res.body : [];
+  const wanted = String(bru.getEnvVar("universityId"));
+  const uni = list.find((u) => String(u.id) === wanted) || list[0];
+  if (uni) {
+    bru.setVar("universityId", uni.id);
+    bru.setVar("emailDomain", uni.emailDomain);
+  }
+
+  // generateData = true  -> fresh emails and student number on every run
+  // generateData = false -> use organizerEmail, studentEmail and studentNumber from the environment
+  const auto = String(bru.getEnvVar("generateData")) !== "false";
+  if (uni && auto) {
+    const id = Date.now().toString().slice(-7);
+    bru.setVar("organizerEmail", "organizer" + id + "@" + uni.emailDomain);
+    bru.setVar("studentEmail", "student" + id + "@" + uni.emailDomain);
+    bru.setVar("studentNumber", "2026-" + id);
+  } else if (!auto) {
+    // remove values from earlier runs so the environment values are used
+    bru.deleteVar("organizerEmail");
+    bru.deleteVar("studentEmail");
+    bru.deleteVar("studentNumber");
+  }
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("A university exists (run npm run seed if not)", function () {
+    expect(res.body.length).to.be.greaterThan(0);
+  });
+}

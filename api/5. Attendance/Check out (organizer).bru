@@ -1,0 +1,27 @@
+meta {
+  name: Check out (organizer)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/attendance/check-out
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{organizerToken}}
+}
+
+body:json {
+  {
+    "registrationId": {{registrationId}}
+  }
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}
