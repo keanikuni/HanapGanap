@@ -1,11 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Footer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #829bd3;
+      --red: #a53636;
+      --cream: #fff6e5;
+      --text: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--cream);
+      font-family: "Stack Sans Headline", system-ui, sans-serif;
+    }
+
+    .footer {
+      background: var(--blue);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .footer__nav {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      padding: 56px 24px 64px;
+    }
+
+    .footer__group h2 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-weight: 400;
+      font-size: 1.75rem;
+      line-height: 1;
+      color: var(--red);
+      margin-bottom: 18px;
+    }
+
+    .footer__group ul { list-style: none; }
+
+    .footer__group a {
+      display: inline-block;
+      color: var(--text);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      line-height: 1.25;
+      text-decoration: none;
+    }
+
+    .footer__group a:hover,
+    .footer__group a:focus-visible {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+
+    .footer__wordmark {
+      display: flex;
+      justify-content: center;
+      background: var(--blue);
+      color: var(--cream);
+      font-weight: 700;
+      font-size: 32vw;            
+      line-height: 0.75;
+      letter-spacing: -0.075em;
+      white-space: nowrap;
+      overflow: hidden;
+      padding-bottom: 6px;
+      user-select: none;
+    }
+
+    .footer__base {
+      height: 24px;
+      background: var(--cream);
+    }
+
+    /* tablet*/
+    @media (min-width: 768px) {
+      .footer__nav {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 72px;
+        padding: 72px 48px 80px;
+      }
+
+      .footer__group h2 { font-size: 2rem; }
+      .footer__group a  { font-size: 1rem; }
+    }
+
+    /* desktop */
+    @media (min-width: 1200px) {
+      .footer__nav {
+        max-width: 1100px;
+        margin: 0 auto;
+        gap: 120px;
+        padding: 96px 48px 104px;
+      }
+
+      .footer__group h2 { font-size: 2.25rem; }
+    }
+  </style>
 </head>
 <body>
-    
+
+  <footer class="footer">
+    <nav class="footer__nav" aria-label="Footer">
+      <div class="footer__group">
+        <h2>explore</h2>
+        <ul>
+          <li><a href="#">events</a></li>
+          <li><a href="#">the team</a></li>
+          <li><a href="#">features</a></li>
+          <li><a href="#">log in/sign up</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__group">
+        <h2>about</h2>
+        <ul>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__group">
+        <h2>say hi!</h2>
+        <ul>
+          <li><a href="#">facebook</a></li>
+          <li><a href="#">instagram</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="footer__wordmark" aria-hidden="true">hnpgnp</div>
+  </footer>
+  <div class="footer__base"></div>
+
 </body>
 </html>
