@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hnpgnp admin dashboard</title>
+<link rel="stylesheet" href="admin-dashboard.css">
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="logo">hnp<b>gnp</b></div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">&#9776;</button>
+    <nav id="nav" role="tablist">
+      <button role="tab" data-tab="users" aria-selected="true">Users</button>
+      <button role="tab" data-tab="organizers" aria-selected="false">Organizers</button>
+      <button role="tab" data-tab="events" aria-selected="false">Events</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <h1>hnpgnp admin dashboard</h1>
+  <p id="status" class="status" role="status" hidden></p>
+
+  <section class="glance" aria-label="At a glance">
+    <div class="stat"><span>Users</span><strong id="s-users">0</strong></div>
+    <div class="stat"><span>Organizers</span><strong id="s-orgs">0</strong></div>
+    <div class="stat"><span>Events</span><strong id="s-events">0</strong></div>
+  </section>
+
+  <section class="panel">
+    <h2 id="title"></h2>
+    <p id="sub"></p>
+    <div class="wrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
+  </section>
+</main>
+
+<script src="admin-dashboard.js" defer></script>
+</body>
+</html>

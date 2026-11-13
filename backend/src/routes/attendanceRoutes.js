@@ -1,6 +1,7 @@
 import express from 'express';
 import prisma from '../config/prismaClient.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
+import { toId } from '../utils/validate.js';
 
 const router = express.Router();
 
@@ -8,8 +9,8 @@ const router = express.Router();
 // the logged-in organizer owns the event. Sends the error response itself
 // and returns null if anything is wrong.
 async function loadOwnedRegistration(req, res) {
-    const registrationId = Number(req.body.registrationId);
-    if (!Number.isInteger(registrationId)) {
+    const registrationId = toId(req.body?.registrationId);
+    if (registrationId === null) {
         res.status(400).json({ message: "registrationId is required" });
         return null;
     }
