@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HanapGanap | Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="frontend/css/home.css">
 </head>
 
@@ -12,36 +15,39 @@
 
 
     <section id="hero"> <!--hero--> 
-        <div id="logo"><svg id="logoSVG" src="frontend/vectors/logoRed.svg" width="100" height="100"></svg></div>
-        <div class="h2"><h2 class="h2TEXT">walang <i>ganap?</i></h2></div>
-        <div class="h2"><h2 class="h2TEXT">mag<i>hanap!</i></h2></div>
+        <div id="logotagline">
+            <div id="logo"><img id="logoSVG" src="frontend/vectors/logoRed.svg" width="auto" height="auto"></img></div>
+            <div id="tagline">
+                <div class="h2"><h2 class="h2TEXT">walang <i>ganap?</i></h2></div>
+                <div class="h2"><h2 class="h2TEXT">mag<i>hanap!</i></h2></div>
+            </div>
+        </div>
         <div class="button"><button class="buttonBTN">join the club</button></div>
         <div class="button"><button class="buttonBTN">learn more</button></div>
 
-        <div class="carousel">
-            <div class="group">
-                <div class="text">1</div>
-                <div class="text">2</div>
-                <div class="text">3</div>
-                <div class="text">4</div>
-                <div class="text">5</div>
-                <div class="text">6</div>
-            </div>
-        </div>
-        
     </section> 
 
 
     <section id="value"> <!--value-->
+        <div class="carouselBottomLine">
+            <div class="group">
+                <div class="text">the bottom line</div>
+                <div class="text">the bottom line</div>
+                <div class="text">the bottom line</div>
+                <div class="text">the bottom line</div>
+                <div class="text">the bottom line</div>
+                <div class="text">the bottom line</div>
+            </div>
+        </div>
         <hr>
-        <div class="h2"><h2 class="h2TEXT">the <i>bottom line</i></h2></div>
+        <div class="h2"><h2 class="h2TEXT" id="h2VALUE">the <i>bottom line</i></h2></div>
         <div class="para"><p class="paraTEXT">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam sit sequi dolorum ab repellat dicta dolor maxime eligendi id quam, doloremque similique tempore voluptatem. Cumque, modi nihil? Saepe, molestiae enim?</p></div>
         <hr>
     </section> 
 
 
     <section id="features"><!--features-->
-        <div class="h2"><h2 class="h2TEXT"><i>what</i> to expect</h2></div>
+        <div class="h2"><h2 class="h2TEXT" id="h2FEATURES"><i>what</i> to expect</h2></div>
         <div class="carousel">
             <div class="group">
                 <div class="items">feature1</div>
@@ -56,7 +62,7 @@
 
 
     <section id="about"> <!--about-->
-        <div class="h2"><h2 class="h2TEXT"><i>our</i> team</h2></div>
+        <div class="h2"><h2 class="h2TEXT" id="h2"><i>our</i> team</h2></div>
         <div class="para"><p class="paraTEXT">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id maxime similique numquam ea totam! Nemo minus sed aut sunt? Quisquam eum quibusdam similique nemo asperiores iure impedit aperiam tempore quidem!</p></div>
     </section> 
 

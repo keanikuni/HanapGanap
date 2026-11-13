@@ -1,0 +1,55 @@
+body{
+    background-color: #FFF8E7;
+}
+
+.buttonBTN{
+    background-color: #829BD3;
+    font-family: "Stack Sans Headline";
+}
+
+h2{
+    font-family: "Instrument Serif";
+    margin: 0;
+}
+
+p{
+    font-family: "Stack Sans Headline";
+}
+
+#hero{
+    background-color: #A53636;
+}
+
+
+#logoSVG{
+    position: relative;
+    margin-bottom: 10%;
+    margin-top: 30%;
+}
+
+#logotagline{
+    display: flex;
+    flex-direction: column;
+    background-color: #FFF8E7;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+
+
+
+#features{
+    background-color: #F2AEB7;
+}
+
+#CTA{
+    background-color: #A53636;
+}
+
+
+
+.carouselBottomLine{
+    background-color: #829BD3;
+}
+
