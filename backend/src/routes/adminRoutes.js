@@ -1,6 +1,7 @@
 import express from 'express';
 import prisma from '../config/prismaClient.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
+import { toId, idParam } from '../utils/validate.js';
 
 const router = express.Router();
 
@@ -10,16 +11,12 @@ router.use(requireAuth, requireRole('admin'));
 const VALID_ROLES = ['guest', 'student', 'organizer', 'admin'];
 const VALID_STATUSES = ['upcoming', 'ongoing', 'completed', 'cancelled'];
 
-router.param('id', (req, res, next, id) => {
-    if (!Number.isInteger(+id)) return res.status(400).json({ message: "Invalid id" });
-    req.targetId = +id;
-    next();
-});
+router.param('id', idParam('targetId', "Invalid id"));
 
 // Reads ?page= and ?limit= safely
 function getPaging(query) {
-    const limit = Math.min(Math.max(+query.limit || 20, 1), 100);
-    const page = Math.max(+query.page || 1, 1);
+    const limit = Math.min(Math.max(Math.floor(+query.limit) || 20, 1), 100);
+    const page = Math.min(Math.max(Math.floor(+query.page) || 1, 1), 100000);
     return { limit, page, skip: (page - 1) * limit };
 }
 
@@ -32,6 +29,9 @@ router.get('/users', async (req, res) => {
 
         if (role && !VALID_ROLES.includes(role)) {
             return res.status(400).json({ message: "Invalid role" });
+        }
+        if (search && typeof search !== 'string') {
+            return res.status(400).json({ message: "Invalid search" });
         }
 
         const where = {
@@ -100,10 +100,16 @@ router.get('/events', async (req, res) => {
         if (status && !VALID_STATUSES.includes(status)) {
             return res.status(400).json({ message: "Invalid status" });
         }
+        if (universityId && toId(universityId) === null) {
+            return res.status(400).json({ message: "Invalid universityId" });
+        }
+        if (search && typeof search !== 'string') {
+            return res.status(400).json({ message: "Invalid search" });
+        }
 
         const where = {
             ...(status && { status }),
-            ...(universityId && { universityId: +universityId }),
+            ...(universityId && { universityId: toId(universityId) }),
             ...(search && { title: { contains: search, mode: 'insensitive' } }),
         };
 

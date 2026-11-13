@@ -2,6 +2,7 @@ import express from 'express';
 import prisma from '../config/prismaClient.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
 import { HttpError } from '../utils/httpError.js';
+import { idParam } from '../utils/validate.js';
 
 const router = express.Router();
 
@@ -13,11 +14,7 @@ function handleError(err, res) {
 }
 
 // Validates :id for the routes below that use it
-router.param('id', (req, res, next, id) => {
-    if (!Number.isInteger(+id)) return res.status(400).json({ message: "Invalid event id" });
-    req.eventId = +id;
-    next();
-});
+router.param('id', idParam('eventId', "Invalid event id"));
 
 // ─── Register for an event ────────────────────────────────
 router.post('/events/:id/register', requireAuth, requireRole('guest', 'student', 'organizer'), async (req, res) => {

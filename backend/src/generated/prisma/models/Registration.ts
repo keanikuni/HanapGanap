@@ -227,7 +227,6 @@ export type RegistrationWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   attendance?: Prisma.XOR<Prisma.AttendanceNullableScalarRelationFilter, Prisma.AttendanceWhereInput> | null
-  certificate?: Prisma.XOR<Prisma.CertificateNullableScalarRelationFilter, Prisma.CertificateWhereInput> | null
 }
 
 export type RegistrationOrderByWithRelationInput = {
@@ -239,7 +238,6 @@ export type RegistrationOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   event?: Prisma.EventOrderByWithRelationInput
   attendance?: Prisma.AttendanceOrderByWithRelationInput
-  certificate?: Prisma.CertificateOrderByWithRelationInput
 }
 
 export type RegistrationWhereUniqueInput = Prisma.AtLeast<{
@@ -255,7 +253,6 @@ export type RegistrationWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   attendance?: Prisma.XOR<Prisma.AttendanceNullableScalarRelationFilter, Prisma.AttendanceWhereInput> | null
-  certificate?: Prisma.XOR<Prisma.CertificateNullableScalarRelationFilter, Prisma.CertificateWhereInput> | null
 }, "id" | "userId_eventId">
 
 export type RegistrationOrderByWithAggregationInput = {
@@ -288,7 +285,6 @@ export type RegistrationCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutRegistrationsInput
   event: Prisma.EventCreateNestedOneWithoutRegistrationsInput
   attendance?: Prisma.AttendanceCreateNestedOneWithoutRegistrationInput
-  certificate?: Prisma.CertificateCreateNestedOneWithoutRegistrationInput
 }
 
 export type RegistrationUncheckedCreateInput = {
@@ -298,7 +294,6 @@ export type RegistrationUncheckedCreateInput = {
   isConfirmed?: boolean
   registeredAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedOneWithoutRegistrationInput
-  certificate?: Prisma.CertificateUncheckedCreateNestedOneWithoutRegistrationInput
 }
 
 export type RegistrationUpdateInput = {
@@ -307,7 +302,6 @@ export type RegistrationUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutRegistrationsNestedInput
   event?: Prisma.EventUpdateOneRequiredWithoutRegistrationsNestedInput
   attendance?: Prisma.AttendanceUpdateOneWithoutRegistrationNestedInput
-  certificate?: Prisma.CertificateUpdateOneWithoutRegistrationNestedInput
 }
 
 export type RegistrationUncheckedUpdateInput = {
@@ -317,7 +311,6 @@ export type RegistrationUncheckedUpdateInput = {
   isConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateOneWithoutRegistrationNestedInput
-  certificate?: Prisma.CertificateUncheckedUpdateOneWithoutRegistrationNestedInput
 }
 
 export type RegistrationCreateManyInput = {
@@ -495,26 +488,11 @@ export type RegistrationUpdateOneRequiredWithoutAttendanceNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RegistrationUpdateToOneWithWhereWithoutAttendanceInput, Prisma.RegistrationUpdateWithoutAttendanceInput>, Prisma.RegistrationUncheckedUpdateWithoutAttendanceInput>
 }
 
-export type RegistrationCreateNestedOneWithoutCertificateInput = {
-  create?: Prisma.XOR<Prisma.RegistrationCreateWithoutCertificateInput, Prisma.RegistrationUncheckedCreateWithoutCertificateInput>
-  connectOrCreate?: Prisma.RegistrationCreateOrConnectWithoutCertificateInput
-  connect?: Prisma.RegistrationWhereUniqueInput
-}
-
-export type RegistrationUpdateOneRequiredWithoutCertificateNestedInput = {
-  create?: Prisma.XOR<Prisma.RegistrationCreateWithoutCertificateInput, Prisma.RegistrationUncheckedCreateWithoutCertificateInput>
-  connectOrCreate?: Prisma.RegistrationCreateOrConnectWithoutCertificateInput
-  upsert?: Prisma.RegistrationUpsertWithoutCertificateInput
-  connect?: Prisma.RegistrationWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.RegistrationUpdateToOneWithWhereWithoutCertificateInput, Prisma.RegistrationUpdateWithoutCertificateInput>, Prisma.RegistrationUncheckedUpdateWithoutCertificateInput>
-}
-
 export type RegistrationCreateWithoutUserInput = {
   isConfirmed?: boolean
   registeredAt?: Date | string
   event: Prisma.EventCreateNestedOneWithoutRegistrationsInput
   attendance?: Prisma.AttendanceCreateNestedOneWithoutRegistrationInput
-  certificate?: Prisma.CertificateCreateNestedOneWithoutRegistrationInput
 }
 
 export type RegistrationUncheckedCreateWithoutUserInput = {
@@ -523,7 +501,6 @@ export type RegistrationUncheckedCreateWithoutUserInput = {
   isConfirmed?: boolean
   registeredAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedOneWithoutRegistrationInput
-  certificate?: Prisma.CertificateUncheckedCreateNestedOneWithoutRegistrationInput
 }
 
 export type RegistrationCreateOrConnectWithoutUserInput = {
@@ -568,7 +545,6 @@ export type RegistrationCreateWithoutEventInput = {
   registeredAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRegistrationsInput
   attendance?: Prisma.AttendanceCreateNestedOneWithoutRegistrationInput
-  certificate?: Prisma.CertificateCreateNestedOneWithoutRegistrationInput
 }
 
 export type RegistrationUncheckedCreateWithoutEventInput = {
@@ -577,7 +553,6 @@ export type RegistrationUncheckedCreateWithoutEventInput = {
   isConfirmed?: boolean
   registeredAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedOneWithoutRegistrationInput
-  certificate?: Prisma.CertificateUncheckedCreateNestedOneWithoutRegistrationInput
 }
 
 export type RegistrationCreateOrConnectWithoutEventInput = {
@@ -611,7 +586,6 @@ export type RegistrationCreateWithoutAttendanceInput = {
   registeredAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRegistrationsInput
   event: Prisma.EventCreateNestedOneWithoutRegistrationsInput
-  certificate?: Prisma.CertificateCreateNestedOneWithoutRegistrationInput
 }
 
 export type RegistrationUncheckedCreateWithoutAttendanceInput = {
@@ -620,7 +594,6 @@ export type RegistrationUncheckedCreateWithoutAttendanceInput = {
   eventId: number
   isConfirmed?: boolean
   registeredAt?: Date | string
-  certificate?: Prisma.CertificateUncheckedCreateNestedOneWithoutRegistrationInput
 }
 
 export type RegistrationCreateOrConnectWithoutAttendanceInput = {
@@ -644,7 +617,6 @@ export type RegistrationUpdateWithoutAttendanceInput = {
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRegistrationsNestedInput
   event?: Prisma.EventUpdateOneRequiredWithoutRegistrationsNestedInput
-  certificate?: Prisma.CertificateUpdateOneWithoutRegistrationNestedInput
 }
 
 export type RegistrationUncheckedUpdateWithoutAttendanceInput = {
@@ -653,57 +625,6 @@ export type RegistrationUncheckedUpdateWithoutAttendanceInput = {
   eventId?: Prisma.IntFieldUpdateOperationsInput | number
   isConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  certificate?: Prisma.CertificateUncheckedUpdateOneWithoutRegistrationNestedInput
-}
-
-export type RegistrationCreateWithoutCertificateInput = {
-  isConfirmed?: boolean
-  registeredAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutRegistrationsInput
-  event: Prisma.EventCreateNestedOneWithoutRegistrationsInput
-  attendance?: Prisma.AttendanceCreateNestedOneWithoutRegistrationInput
-}
-
-export type RegistrationUncheckedCreateWithoutCertificateInput = {
-  id?: number
-  userId: number
-  eventId: number
-  isConfirmed?: boolean
-  registeredAt?: Date | string
-  attendance?: Prisma.AttendanceUncheckedCreateNestedOneWithoutRegistrationInput
-}
-
-export type RegistrationCreateOrConnectWithoutCertificateInput = {
-  where: Prisma.RegistrationWhereUniqueInput
-  create: Prisma.XOR<Prisma.RegistrationCreateWithoutCertificateInput, Prisma.RegistrationUncheckedCreateWithoutCertificateInput>
-}
-
-export type RegistrationUpsertWithoutCertificateInput = {
-  update: Prisma.XOR<Prisma.RegistrationUpdateWithoutCertificateInput, Prisma.RegistrationUncheckedUpdateWithoutCertificateInput>
-  create: Prisma.XOR<Prisma.RegistrationCreateWithoutCertificateInput, Prisma.RegistrationUncheckedCreateWithoutCertificateInput>
-  where?: Prisma.RegistrationWhereInput
-}
-
-export type RegistrationUpdateToOneWithWhereWithoutCertificateInput = {
-  where?: Prisma.RegistrationWhereInput
-  data: Prisma.XOR<Prisma.RegistrationUpdateWithoutCertificateInput, Prisma.RegistrationUncheckedUpdateWithoutCertificateInput>
-}
-
-export type RegistrationUpdateWithoutCertificateInput = {
-  isConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutRegistrationsNestedInput
-  event?: Prisma.EventUpdateOneRequiredWithoutRegistrationsNestedInput
-  attendance?: Prisma.AttendanceUpdateOneWithoutRegistrationNestedInput
-}
-
-export type RegistrationUncheckedUpdateWithoutCertificateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  userId?: Prisma.IntFieldUpdateOperationsInput | number
-  eventId?: Prisma.IntFieldUpdateOperationsInput | number
-  isConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attendance?: Prisma.AttendanceUncheckedUpdateOneWithoutRegistrationNestedInput
 }
 
 export type RegistrationCreateManyUserInput = {
@@ -718,7 +639,6 @@ export type RegistrationUpdateWithoutUserInput = {
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   event?: Prisma.EventUpdateOneRequiredWithoutRegistrationsNestedInput
   attendance?: Prisma.AttendanceUpdateOneWithoutRegistrationNestedInput
-  certificate?: Prisma.CertificateUpdateOneWithoutRegistrationNestedInput
 }
 
 export type RegistrationUncheckedUpdateWithoutUserInput = {
@@ -727,7 +647,6 @@ export type RegistrationUncheckedUpdateWithoutUserInput = {
   isConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateOneWithoutRegistrationNestedInput
-  certificate?: Prisma.CertificateUncheckedUpdateOneWithoutRegistrationNestedInput
 }
 
 export type RegistrationUncheckedUpdateManyWithoutUserInput = {
@@ -749,7 +668,6 @@ export type RegistrationUpdateWithoutEventInput = {
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRegistrationsNestedInput
   attendance?: Prisma.AttendanceUpdateOneWithoutRegistrationNestedInput
-  certificate?: Prisma.CertificateUpdateOneWithoutRegistrationNestedInput
 }
 
 export type RegistrationUncheckedUpdateWithoutEventInput = {
@@ -758,7 +676,6 @@ export type RegistrationUncheckedUpdateWithoutEventInput = {
   isConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registeredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateOneWithoutRegistrationNestedInput
-  certificate?: Prisma.CertificateUncheckedUpdateOneWithoutRegistrationNestedInput
 }
 
 export type RegistrationUncheckedUpdateManyWithoutEventInput = {
@@ -779,7 +696,6 @@ export type RegistrationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   attendance?: boolean | Prisma.Registration$attendanceArgs<ExtArgs>
-  certificate?: boolean | Prisma.Registration$certificateArgs<ExtArgs>
 }, ExtArgs["result"]["registration"]>
 
 export type RegistrationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -815,7 +731,6 @@ export type RegistrationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   attendance?: boolean | Prisma.Registration$attendanceArgs<ExtArgs>
-  certificate?: boolean | Prisma.Registration$certificateArgs<ExtArgs>
 }
 export type RegistrationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -832,7 +747,6 @@ export type $RegistrationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     user: Prisma.$UserPayload<ExtArgs>
     event: Prisma.$EventPayload<ExtArgs>
     attendance: Prisma.$AttendancePayload<ExtArgs> | null
-    certificate: Prisma.$CertificatePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1237,7 +1151,6 @@ export interface Prisma__RegistrationClient<T, Null = never, ExtArgs extends run
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   event<T extends Prisma.EventDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventDefaultArgs<ExtArgs>>): Prisma.Prisma__EventClient<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   attendance<T extends Prisma.Registration$attendanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Registration$attendanceArgs<ExtArgs>>): Prisma.Prisma__AttendanceClient<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  certificate<T extends Prisma.Registration$certificateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Registration$certificateArgs<ExtArgs>>): Prisma.Prisma__CertificateClient<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1689,25 +1602,6 @@ export type Registration$attendanceArgs<ExtArgs extends runtime.Types.Extensions
    */
   include?: Prisma.AttendanceInclude<ExtArgs> | null
   where?: Prisma.AttendanceWhereInput
-}
-
-/**
- * Registration.certificate
- */
-export type Registration$certificateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Certificate
-   */
-  select?: Prisma.CertificateSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Certificate
-   */
-  omit?: Prisma.CertificateOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CertificateInclude<ExtArgs> | null
-  where?: Prisma.CertificateWhereInput
 }
 
 /**

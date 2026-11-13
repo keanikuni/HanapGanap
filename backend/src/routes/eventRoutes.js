@@ -2,6 +2,7 @@ import express from 'express';
 import prisma from '../config/prismaClient.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
 import { upload, removeFiles, removeStoredImage, MAX_FILES } from '../middleware/uploadMiddleware.js';
+import { toId, isNonEmptyString, idParam } from '../utils/validate.js';
 
 const router = express.Router();
 
@@ -9,18 +10,10 @@ const VALID_STATUSES = ['upcoming', 'ongoing', 'completed', 'cancelled'];
 const MAX_IMAGES_PER_EVENT = 10;
 
 // Validates :id once for every route that uses it
-router.param('id', (req, res, next, id) => {
-    if (!Number.isInteger(+id)) return res.status(400).json({ message: "Invalid event id" });
-    req.eventId = +id;
-    next();
-});
+router.param('id', idParam('eventId', "Invalid event id"));
 
 // Validates :imageId for the image delete route
-router.param('imageId', (req, res, next, id) => {
-    if (!Number.isInteger(+id)) return res.status(400).json({ message: "Invalid image id" });
-    req.imageId = +id;
-    next();
-});
+router.param('imageId', idParam('imageId', "Invalid image id"));
 
 // Loads the event and checks the logged-in organizer owns it.
 // Sends the error response itself and returns null if something is wrong.
@@ -45,7 +38,9 @@ function validateEventFields({ startDatetime, endDatetime, registrationDeadline,
     }
     if (endDatetime <= startDatetime) return "End must be after start";
     if (registrationDeadline > startDatetime) return "Registration deadline must be on or before the event start";
-    if (!Number.isInteger(participantLimit) || participantLimit < 1) return "participantLimit must be a positive whole number";
+    if (!Number.isInteger(participantLimit) || participantLimit < 1 || participantLimit > 100000) {
+        return "participantLimit must be a whole number from 1 to 100000";
+    }
     return null;
 }
 
@@ -60,11 +55,20 @@ router.get('/', async (req, res) => {
         if (status && !VALID_STATUSES.includes(status)) {
             return res.status(400).json({ message: "Invalid status" });
         }
+        if (universityId && toId(universityId) === null) {
+            return res.status(400).json({ message: "Invalid universityId" });
+        }
+        if (categoryId && toId(categoryId) === null) {
+            return res.status(400).json({ message: "Invalid categoryId" });
+        }
+        if (search && typeof search !== 'string') {
+            return res.status(400).json({ message: "Invalid search" });
+        }
 
         const events = await prisma.event.findMany({
             where: {
-                ...(universityId && { universityId: +universityId }),
-                ...(categoryId && { categoryId: +categoryId }),
+                ...(universityId && { universityId: toId(universityId) }),
+                ...(categoryId && { categoryId: toId(categoryId) }),
                 ...(status && { status }),
                 ...(search && { title: { contains: search, mode: 'insensitive' } }),
             },
@@ -107,11 +111,17 @@ router.get('/:id', async (req, res) => {
 
 // ─── Create event (organizer) ─────────────────────────────
 router.post('/', requireAuth, requireRole('organizer'), async (req, res) => {
-    const { categoryId, title, description, venue, participantLimit } = req.body;
+    const { categoryId, title, description, venue, participantLimit } = req.body ?? {};
 
     if (!categoryId || !title || !description || !venue || !participantLimit
         || !req.body.startDatetime || !req.body.endDatetime || !req.body.registrationDeadline) {
         return res.status(400).json({ message: "Missing required event fields" });
+    }
+    if (toId(categoryId) === null) {
+        return res.status(400).json({ message: "Invalid category" });
+    }
+    if (!isNonEmptyString(title, 200) || !isNonEmptyString(venue, 200) || !isNonEmptyString(description, 10000)) {
+        return res.status(400).json({ message: "title and venue (up to 200 characters) and description (up to 10000) must be text" });
     }
 
     const startDatetime = new Date(req.body.startDatetime);
@@ -130,7 +140,7 @@ router.post('/', requireAuth, requireRole('organizer'), async (req, res) => {
                 title,
                 description,
                 venue,
-                categoryId: +categoryId,
+                categoryId: toId(categoryId),
                 participantLimit: +participantLimit,
                 startDatetime,
                 endDatetime,
@@ -158,7 +168,7 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
         }
 
         // Whitelist: only these fields can be changed
-        const { title, description, venue, categoryId, status } = req.body;
+        const { title, description, venue, categoryId, status } = req.body ?? {};
         const startDatetime = req.body.startDatetime ? new Date(req.body.startDatetime) : event.startDatetime;
         const endDatetime = req.body.endDatetime ? new Date(req.body.endDatetime) : event.endDatetime;
         const registrationDeadline = req.body.registrationDeadline ? new Date(req.body.registrationDeadline) : event.registrationDeadline;
@@ -166,6 +176,14 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
 
         if (status && !VALID_STATUSES.includes(status)) {
             return res.status(400).json({ message: "Invalid status" });
+        }
+        if (categoryId && toId(categoryId) === null) {
+            return res.status(400).json({ message: "Invalid category" });
+        }
+        if ((title && !isNonEmptyString(title, 200))
+            || (venue && !isNonEmptyString(venue, 200))
+            || (description && !isNonEmptyString(description, 10000))) {
+            return res.status(400).json({ message: "title and venue (up to 200 characters) and description (up to 10000) must be text" });
         }
 
         const problem = validateEventFields({ startDatetime, endDatetime, registrationDeadline, participantLimit });
@@ -183,7 +201,7 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
                 ...(title && { title }),
                 ...(description && { description }),
                 ...(venue && { venue }),
-                ...(categoryId && { categoryId: +categoryId }),
+                ...(categoryId && { categoryId: toId(categoryId) }),
                 ...(status && { status }),
                 startDatetime,
                 endDatetime,
