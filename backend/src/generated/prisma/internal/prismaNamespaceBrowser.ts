@@ -62,7 +62,6 @@ export const ModelName = {
   Image: 'Image',
   Registration: 'Registration',
   Attendance: 'Attendance',
-  Certificate: 'Certificate',
   Notification: 'Notification'
 } as const
 
@@ -205,18 +204,6 @@ export const AttendanceScalarFieldEnum = {
 } as const
 
 export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
-
-
-export const CertificateScalarFieldEnum = {
-  id: 'id',
-  registrationId: 'registrationId',
-  certificatePdf: 'certificatePdf',
-  code: 'code',
-  fileHash: 'fileHash',
-  issuedAt: 'issuedAt'
-} as const
-
-export type CertificateScalarFieldEnum = (typeof CertificateScalarFieldEnum)[keyof typeof CertificateScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {

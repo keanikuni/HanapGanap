@@ -2,14 +2,11 @@ import express from 'express';
 import PDFDocument from 'pdfkit';
 import prisma from '../config/prismaClient.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
+import { idParam } from '../utils/validate.js';
 
 const router = express.Router();
 
-router.param('id', (req, res, next, id) => {
-    if (!Number.isInteger(+id)) return res.status(400).json({ message: "Invalid event id" });
-    req.eventId = +id;
-    next();
-});
+router.param('id', idParam('eventId', "Invalid event id"));
 
 const formatDate = (d) =>
     d.toLocaleDateString('en-PH', { dateStyle: 'long', timeZone: 'Asia/Manila' });

@@ -73,11 +73,6 @@ export type Registration = Prisma.RegistrationModel
  */
 export type Attendance = Prisma.AttendanceModel
 /**
- * Model Certificate
- * 
- */
-export type Certificate = Prisma.CertificateModel
-/**
  * Model Notification
  * 
  */

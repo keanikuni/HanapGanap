@@ -1,22 +1,19 @@
 import express from 'express';
 import prisma from '../config/prismaClient.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
+import { idParam, isNonEmptyString } from '../utils/validate.js';
 
 const router = express.Router();
 
 const NOTIFICATION_TYPES = ['reminder', 'schedule_change', 'cancellation', 'announcement'];
 
-router.param('eventId', (req, res, next, id) => {
-    if (!Number.isInteger(+id)) return res.status(400).json({ message: "Invalid event id" });
-    req.eventId = +id;
-    next();
-});
+router.param('eventId', idParam('eventId', "Invalid event id"));
 
 // ─── My notifications ─────────────────────────────────────
 router.get('/notifications', requireAuth, async (req, res) => {
     try {
-        const limit = Math.min(Math.max(+req.query.limit || 20, 1), 100);
-        const page = Math.max(+req.query.page || 1, 1);
+        const limit = Math.min(Math.max(Math.floor(+req.query.limit) || 20, 1), 100);
+        const page = Math.min(Math.max(Math.floor(+req.query.page) || 1, 1), 100000);
 
         const where = { userId: req.user.id };
 
@@ -47,10 +44,13 @@ router.get('/notifications', requireAuth, async (req, res) => {
 
 // ─── Notify an event's registrants (owner) ────────────────
 router.post('/events/:eventId/notify', requireAuth, requireRole('organizer'), async (req, res) => {
-    const { title, message, type = 'announcement' } = req.body;
+    const { title, message, type = 'announcement' } = req.body ?? {};
 
     if (!title || !message) {
         return res.status(400).json({ message: "title and message are required" });
+    }
+    if (!isNonEmptyString(title, 200) || !isNonEmptyString(message, 5000)) {
+        return res.status(400).json({ message: "title (up to 200 characters) and message (up to 5000) must be text" });
     }
     if (!NOTIFICATION_TYPES.includes(type)) {
         return res.status(400).json({ message: `type must be one of: ${NOTIFICATION_TYPES.join(', ')}` });
