@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.10.0
- * Query Engine version: 0edf323efd1d98336f3f0a68684b56f689b900d3
+ * Prisma Client JS version: 7.10.1
+ * Query Engine version: d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.10.0",
-  engine: "0edf323efd1d98336f3f0a68684b56f689b900d3"
+  client: "7.10.1",
+  engine: "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8"
 }
 
 /**
@@ -408,7 +408,6 @@ export const ModelName = {
   Image: 'Image',
   Registration: 'Registration',
   Attendance: 'Attendance',
-  Certificate: 'Certificate',
   Notification: 'Notification'
 } as const
 
@@ -425,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "university" | "user" | "guest" | "student" | "organizer" | "admin" | "eventCategory" | "event" | "image" | "registration" | "attendance" | "certificate" | "notification"
+    modelProps: "university" | "user" | "guest" | "student" | "organizer" | "admin" | "eventCategory" | "event" | "image" | "registration" | "attendance" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1243,80 +1242,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Certificate: {
-      payload: Prisma.$CertificatePayload<ExtArgs>
-      fields: Prisma.CertificateFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.CertificateFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.CertificateFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>
-        }
-        findFirst: {
-          args: Prisma.CertificateFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.CertificateFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>
-        }
-        findMany: {
-          args: Prisma.CertificateFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>[]
-        }
-        create: {
-          args: Prisma.CertificateCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>
-        }
-        createMany: {
-          args: Prisma.CertificateCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.CertificateCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>[]
-        }
-        delete: {
-          args: Prisma.CertificateDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>
-        }
-        update: {
-          args: Prisma.CertificateUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>
-        }
-        deleteMany: {
-          args: Prisma.CertificateDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.CertificateUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.CertificateUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>[]
-        }
-        upsert: {
-          args: Prisma.CertificateUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CertificatePayload>
-        }
-        aggregate: {
-          args: Prisma.CertificateAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCertificate>
-        }
-        groupBy: {
-          args: Prisma.CertificateGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CertificateGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.CertificateCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CertificateCountAggregateOutputType> | number
-        }
-      }
-    }
     Notification: {
       payload: Prisma.$NotificationPayload<ExtArgs>
       fields: Prisma.NotificationFieldRefs
@@ -1553,18 +1478,6 @@ export const AttendanceScalarFieldEnum = {
 } as const
 
 export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
-
-
-export const CertificateScalarFieldEnum = {
-  id: 'id',
-  registrationId: 'registrationId',
-  certificatePdf: 'certificatePdf',
-  code: 'code',
-  fileHash: 'fileHash',
-  issuedAt: 'issuedAt'
-} as const
-
-export type CertificateScalarFieldEnum = (typeof CertificateScalarFieldEnum)[keyof typeof CertificateScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -1863,7 +1776,6 @@ export type GlobalOmitConfig = {
   image?: Prisma.ImageOmit
   registration?: Prisma.RegistrationOmit
   attendance?: Prisma.AttendanceOmit
-  certificate?: Prisma.CertificateOmit
   notification?: Prisma.NotificationOmit
 }
 
