@@ -130,16 +130,6 @@ CREATE TABLE "attendance" (
 );
 
 -- CreateTable
-CREATE TABLE "certificate" (
-    "certificate_id" SERIAL NOT NULL,
-    "registration_id" INTEGER NOT NULL,
-    "certificate_pdf" TEXT NOT NULL,
-    "issued_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "certificate_pkey" PRIMARY KEY ("certificate_id")
-);
-
--- CreateTable
 CREATE TABLE "notification" (
     "notification_id" SERIAL NOT NULL,
     "event_id" INTEGER NOT NULL,
@@ -211,9 +201,6 @@ CREATE UNIQUE INDEX "registration_user_id_event_id_key" ON "registration"("user_
 CREATE UNIQUE INDEX "attendance_registration_id_key" ON "attendance"("registration_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "certificate_registration_id_key" ON "certificate"("registration_id");
-
--- CreateIndex
 CREATE INDEX "notification_user_id_idx" ON "notification"("user_id");
 
 -- CreateIndex
@@ -260,9 +247,6 @@ ALTER TABLE "registration" ADD CONSTRAINT "registration_event_id_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "attendance" ADD CONSTRAINT "attendance_registration_id_fkey" FOREIGN KEY ("registration_id") REFERENCES "registration"("registration_id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "certificate" ADD CONSTRAINT "certificate_registration_id_fkey" FOREIGN KEY ("registration_id") REFERENCES "registration"("registration_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "notification" ADD CONSTRAINT "notification_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "events"("event_id") ON DELETE CASCADE ON UPDATE CASCADE;

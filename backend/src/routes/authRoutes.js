@@ -150,7 +150,7 @@ router.post('/register', registerLimiter, async (req, res) => {
         res.status(201).json({ token: signToken(user), user });
     } catch (error) {
         if (error.code === 'P2002') {
-            return res.status(409).json({ message: "Email or student number already registered" });
+            return res.status(409).json({ message: "This account already registered" });
         }
         if (error.code === 'P2003') {
             return res.status(400).json({ message: "Invalid university" });
