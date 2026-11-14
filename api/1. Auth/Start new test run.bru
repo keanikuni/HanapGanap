@@ -20,6 +20,9 @@ script:post-response {
     bru.setVar("emailDomain", uni.emailDomain);
   }
 
+  // A unique tag for this run, used to keep test names (like new categories) unique
+  bru.setVar("runId", Date.now().toString().slice(-7));
+
   // generateData = true  -> fresh emails and student number on every run
   // generateData = false -> use organizerEmail, studentEmail and studentNumber from the environment
   const auto = String(bru.getEnvVar("generateData")) !== "false";

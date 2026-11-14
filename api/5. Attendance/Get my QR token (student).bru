@@ -1,0 +1,28 @@
+meta {
+  name: Get my QR token (student)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{studentToken}}
+}
+
+script:post-response {
+  if (res.body && res.body.student) bru.setVar("qrToken", res.body.student.qrToken);
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("Student has a QR token", function () {
+    expect(res.body.student.qrToken).to.be.a("string");
+  });
+}
