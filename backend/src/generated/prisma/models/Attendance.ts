@@ -40,21 +40,21 @@ export type AttendanceMinAggregateOutputType = {
   id: number | null
   registrationId: number | null
   inTime: Date | null
-  outTime: Date | null
+  isConfirm: boolean | null
 }
 
 export type AttendanceMaxAggregateOutputType = {
   id: number | null
   registrationId: number | null
   inTime: Date | null
-  outTime: Date | null
+  isConfirm: boolean | null
 }
 
 export type AttendanceCountAggregateOutputType = {
   id: number
   registrationId: number
   inTime: number
-  outTime: number
+  isConfirm: number
   _all: number
 }
 
@@ -73,21 +73,21 @@ export type AttendanceMinAggregateInputType = {
   id?: true
   registrationId?: true
   inTime?: true
-  outTime?: true
+  isConfirm?: true
 }
 
 export type AttendanceMaxAggregateInputType = {
   id?: true
   registrationId?: true
   inTime?: true
-  outTime?: true
+  isConfirm?: true
 }
 
 export type AttendanceCountAggregateInputType = {
   id?: true
   registrationId?: true
   inTime?: true
-  outTime?: true
+  isConfirm?: true
   _all?: true
 }
 
@@ -181,7 +181,7 @@ export type AttendanceGroupByOutputType = {
   id: number
   registrationId: number
   inTime: Date | null
-  outTime: Date | null
+  isConfirm: boolean
   _count: AttendanceCountAggregateOutputType | null
   _avg: AttendanceAvgAggregateOutputType | null
   _sum: AttendanceSumAggregateOutputType | null
@@ -211,7 +211,7 @@ export type AttendanceWhereInput = {
   id?: Prisma.IntFilter<"Attendance"> | number
   registrationId?: Prisma.IntFilter<"Attendance"> | number
   inTime?: Prisma.DateTimeNullableFilter<"Attendance"> | Date | string | null
-  outTime?: Prisma.DateTimeNullableFilter<"Attendance"> | Date | string | null
+  isConfirm?: Prisma.BoolFilter<"Attendance"> | boolean
   registration?: Prisma.XOR<Prisma.RegistrationScalarRelationFilter, Prisma.RegistrationWhereInput>
 }
 
@@ -219,7 +219,7 @@ export type AttendanceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   registrationId?: Prisma.SortOrder
   inTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  outTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  isConfirm?: Prisma.SortOrder
   registration?: Prisma.RegistrationOrderByWithRelationInput
 }
 
@@ -230,7 +230,7 @@ export type AttendanceWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AttendanceWhereInput[]
   NOT?: Prisma.AttendanceWhereInput | Prisma.AttendanceWhereInput[]
   inTime?: Prisma.DateTimeNullableFilter<"Attendance"> | Date | string | null
-  outTime?: Prisma.DateTimeNullableFilter<"Attendance"> | Date | string | null
+  isConfirm?: Prisma.BoolFilter<"Attendance"> | boolean
   registration?: Prisma.XOR<Prisma.RegistrationScalarRelationFilter, Prisma.RegistrationWhereInput>
 }, "id" | "registrationId">
 
@@ -238,7 +238,7 @@ export type AttendanceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   registrationId?: Prisma.SortOrder
   inTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  outTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  isConfirm?: Prisma.SortOrder
   _count?: Prisma.AttendanceCountOrderByAggregateInput
   _avg?: Prisma.AttendanceAvgOrderByAggregateInput
   _max?: Prisma.AttendanceMaxOrderByAggregateInput
@@ -253,12 +253,12 @@ export type AttendanceScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Attendance"> | number
   registrationId?: Prisma.IntWithAggregatesFilter<"Attendance"> | number
   inTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
-  outTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
+  isConfirm?: Prisma.BoolWithAggregatesFilter<"Attendance"> | boolean
 }
 
 export type AttendanceCreateInput = {
   inTime?: Date | string | null
-  outTime?: Date | string | null
+  isConfirm?: boolean
   registration: Prisma.RegistrationCreateNestedOneWithoutAttendanceInput
 }
 
@@ -266,12 +266,12 @@ export type AttendanceUncheckedCreateInput = {
   id?: number
   registrationId: number
   inTime?: Date | string | null
-  outTime?: Date | string | null
+  isConfirm?: boolean
 }
 
 export type AttendanceUpdateInput = {
   inTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  outTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   registration?: Prisma.RegistrationUpdateOneRequiredWithoutAttendanceNestedInput
 }
 
@@ -279,26 +279,26 @@ export type AttendanceUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   registrationId?: Prisma.IntFieldUpdateOperationsInput | number
   inTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  outTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type AttendanceCreateManyInput = {
   id?: number
   registrationId: number
   inTime?: Date | string | null
-  outTime?: Date | string | null
+  isConfirm?: boolean
 }
 
 export type AttendanceUpdateManyMutationInput = {
   inTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  outTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type AttendanceUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   registrationId?: Prisma.IntFieldUpdateOperationsInput | number
   inTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  outTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type AttendanceNullableScalarRelationFilter = {
@@ -310,7 +310,7 @@ export type AttendanceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   registrationId?: Prisma.SortOrder
   inTime?: Prisma.SortOrder
-  outTime?: Prisma.SortOrder
+  isConfirm?: Prisma.SortOrder
 }
 
 export type AttendanceAvgOrderByAggregateInput = {
@@ -322,14 +322,14 @@ export type AttendanceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   registrationId?: Prisma.SortOrder
   inTime?: Prisma.SortOrder
-  outTime?: Prisma.SortOrder
+  isConfirm?: Prisma.SortOrder
 }
 
 export type AttendanceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   registrationId?: Prisma.SortOrder
   inTime?: Prisma.SortOrder
-  outTime?: Prisma.SortOrder
+  isConfirm?: Prisma.SortOrder
 }
 
 export type AttendanceSumOrderByAggregateInput = {
@@ -375,13 +375,13 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 
 export type AttendanceCreateWithoutRegistrationInput = {
   inTime?: Date | string | null
-  outTime?: Date | string | null
+  isConfirm?: boolean
 }
 
 export type AttendanceUncheckedCreateWithoutRegistrationInput = {
   id?: number
   inTime?: Date | string | null
-  outTime?: Date | string | null
+  isConfirm?: boolean
 }
 
 export type AttendanceCreateOrConnectWithoutRegistrationInput = {
@@ -402,13 +402,13 @@ export type AttendanceUpdateToOneWithWhereWithoutRegistrationInput = {
 
 export type AttendanceUpdateWithoutRegistrationInput = {
   inTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  outTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type AttendanceUncheckedUpdateWithoutRegistrationInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   inTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  outTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -417,7 +417,7 @@ export type AttendanceSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   registrationId?: boolean
   inTime?: boolean
-  outTime?: boolean
+  isConfirm?: boolean
   registration?: boolean | Prisma.RegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attendance"]>
 
@@ -425,7 +425,7 @@ export type AttendanceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   registrationId?: boolean
   inTime?: boolean
-  outTime?: boolean
+  isConfirm?: boolean
   registration?: boolean | Prisma.RegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attendance"]>
 
@@ -433,7 +433,7 @@ export type AttendanceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   registrationId?: boolean
   inTime?: boolean
-  outTime?: boolean
+  isConfirm?: boolean
   registration?: boolean | Prisma.RegistrationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attendance"]>
 
@@ -441,10 +441,10 @@ export type AttendanceSelectScalar = {
   id?: boolean
   registrationId?: boolean
   inTime?: boolean
-  outTime?: boolean
+  isConfirm?: boolean
 }
 
-export type AttendanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "registrationId" | "inTime" | "outTime", ExtArgs["result"]["attendance"]>
+export type AttendanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "registrationId" | "inTime" | "isConfirm", ExtArgs["result"]["attendance"]>
 export type AttendanceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   registration?: boolean | Prisma.RegistrationDefaultArgs<ExtArgs>
 }
@@ -464,7 +464,7 @@ export type $AttendancePayload<ExtArgs extends runtime.Types.Extensions.Internal
     id: number
     registrationId: number
     inTime: Date | null
-    outTime: Date | null
+    isConfirm: boolean
   }, ExtArgs["result"]["attendance"]>
   composites: {}
 }
@@ -892,7 +892,7 @@ export interface AttendanceFieldRefs {
   readonly id: Prisma.FieldRef<"Attendance", 'Int'>
   readonly registrationId: Prisma.FieldRef<"Attendance", 'Int'>
   readonly inTime: Prisma.FieldRef<"Attendance", 'DateTime'>
-  readonly outTime: Prisma.FieldRef<"Attendance", 'DateTime'>
+  readonly isConfirm: Prisma.FieldRef<"Attendance", 'Boolean'>
 }
     
 
