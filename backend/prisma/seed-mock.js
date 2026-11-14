@@ -225,8 +225,8 @@ async function main() {
                 await prisma.attendance.create({
                     data: {
                         registrationId: registration.id,
+                        isConfirm: true,
                         inTime: addMinutes(start, Math.floor(random() * 30)),
-                        outTime: e.status === 'completed' ? addMinutes(end, -Math.floor(random() * 30)) : null,
                     },
                 });
                 attendedTotal++;
