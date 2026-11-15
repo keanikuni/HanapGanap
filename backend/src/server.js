@@ -5,7 +5,7 @@ import cors from 'cors';
 import multer from 'multer';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-
+import { startEventStatusJob } from './utils/eventStatusJob.js';
 import routes from './routes/index.js';
 import { IMAGE_DIR } from './middleware/uploadMiddleware.js';
 import { notFoundHandler, errorHandler } from './middleware/errorMiddleware.js';
@@ -222,4 +222,5 @@ app.use(errorHandler);    // handles multer errors, bad JSON, Prisma errors, eve
 app.listen(PORT, () => {
     console.log(`Server has started on http://localhost:${PORT}`);
     console.log(`PDF tool: http://localhost:${PORT}/pdf-tool.html${pdfTools ? '' : ' (disabled until npm install)'}`);
+    startEventStatusJob();
 });

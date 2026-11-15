@@ -1,0 +1,36 @@
+meta {
+  name: Move event start to the past (organizer)
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/events/{{eventId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{organizerToken}}
+}
+
+body:json {
+  {
+    "startDatetime": "{{pastStart}}",
+    "endDatetime": "{{futureEnd}}",
+    "registrationDeadline": "{{pastDeadline}}"
+  }
+}
+
+script:pre-request {
+  // Test-only shortcut: makes the event look like it already started
+  bru.setVar("pastStart", new Date(Date.now() - 2 * 3600 * 1000).toISOString());
+  bru.setVar("pastDeadline", new Date(Date.now() - 3 * 3600 * 1000).toISOString());
+  bru.setVar("futureEnd", new Date(Date.now() + 2 * 3600 * 1000).toISOString());
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}
