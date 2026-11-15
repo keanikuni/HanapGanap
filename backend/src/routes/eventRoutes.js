@@ -217,6 +217,37 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
     }
 });
 
+// ─── End an event (owner) ─────────────────────────────────
+router.post('/:id/end', requireAuth, requireRole('organizer'), async (req, res) => {
+    try {
+        const event = await loadOwnedEvent(req, res);
+        if (!event) return;
+
+        if (event.status === 'completed' || event.status === 'cancelled') {
+            return res.status(409).json({ message: `Event is already ${event.status}` });
+        }
+        if (new Date() < event.startDatetime) {
+            return res.status(409).json({ message: "The event hasn't started yet. Cancel it instead." });
+        }
+
+        const now = new Date();
+        const [registered, attended, ended] = await Promise.all([
+            prisma.registration.count({ where: { eventId: event.id } }),
+            prisma.attendance.count({ where: { isConfirm: true, registration: { eventId: event.id } } }),
+            prisma.event.update({
+                where: { id: event.id },
+                // If it ends early, record the real end time
+                data: { status: 'completed', ...(now < event.endDatetime && { endDatetime: now }) },
+            }),
+        ]);
+
+        res.json({ event: ended, summary: { registered, attended } });
+    } catch (err) {
+        console.log(err.message);
+        res.sendStatus(500);
+    }
+});
+
 // ─── Delete / cancel event (owner or admin) ───────────────
 router.delete('/:id', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
     try {
