@@ -2,7 +2,6 @@ import express from 'express';
 import prisma from '../config/prismaClient.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
 import { upload, removeFiles, removeStoredImage, MAX_FILES } from '../middleware/uploadMiddleware.js';
-import { toId, isNonEmptyString, idParam } from '../utils/validate.js';
 
 const router = express.Router();
 
@@ -10,10 +9,18 @@ const VALID_STATUSES = ['upcoming', 'ongoing', 'completed', 'cancelled'];
 const MAX_IMAGES_PER_EVENT = 10;
 
 // Validates :id once for every route that uses it
-router.param('id', idParam('eventId', "Invalid event id"));
+router.param('id', (req, res, next, id) => {
+    if (!Number.isInteger(+id)) return res.status(400).json({ message: "Invalid event id" });
+    req.eventId = +id;
+    next();
+});
 
 // Validates :imageId for the image delete route
-router.param('imageId', idParam('imageId', "Invalid image id"));
+router.param('imageId', (req, res, next, id) => {
+    if (!Number.isInteger(+id)) return res.status(400).json({ message: "Invalid image id" });
+    req.imageId = +id;
+    next();
+});
 
 // Loads the event and checks the logged-in organizer owns it.
 // Sends the error response itself and returns null if something is wrong.
@@ -38,9 +45,7 @@ function validateEventFields({ startDatetime, endDatetime, registrationDeadline,
     }
     if (endDatetime <= startDatetime) return "End must be after start";
     if (registrationDeadline > startDatetime) return "Registration deadline must be on or before the event start";
-    if (!Number.isInteger(participantLimit) || participantLimit < 1 || participantLimit > 100000) {
-        return "participantLimit must be a whole number from 1 to 100000";
-    }
+    if (!Number.isInteger(participantLimit) || participantLimit < 1) return "participantLimit must be a positive whole number";
     return null;
 }
 
@@ -55,20 +60,11 @@ router.get('/', async (req, res) => {
         if (status && !VALID_STATUSES.includes(status)) {
             return res.status(400).json({ message: "Invalid status" });
         }
-        if (universityId && toId(universityId) === null) {
-            return res.status(400).json({ message: "Invalid universityId" });
-        }
-        if (categoryId && toId(categoryId) === null) {
-            return res.status(400).json({ message: "Invalid categoryId" });
-        }
-        if (search && typeof search !== 'string') {
-            return res.status(400).json({ message: "Invalid search" });
-        }
 
         const events = await prisma.event.findMany({
             where: {
-                ...(universityId && { universityId: toId(universityId) }),
-                ...(categoryId && { categoryId: toId(categoryId) }),
+                ...(universityId && { universityId: +universityId }),
+                ...(categoryId && { categoryId: +categoryId }),
                 ...(status && { status }),
                 ...(search && { title: { contains: search, mode: 'insensitive' } }),
             },
@@ -111,17 +107,11 @@ router.get('/:id', async (req, res) => {
 
 // ─── Create event (organizer) ─────────────────────────────
 router.post('/', requireAuth, requireRole('organizer'), async (req, res) => {
-    const { categoryId, title, description, venue, participantLimit } = req.body ?? {};
+    const { categoryId, title, description, venue, participantLimit } = req.body;
 
     if (!categoryId || !title || !description || !venue || !participantLimit
         || !req.body.startDatetime || !req.body.endDatetime || !req.body.registrationDeadline) {
         return res.status(400).json({ message: "Missing required event fields" });
-    }
-    if (toId(categoryId) === null) {
-        return res.status(400).json({ message: "Invalid category" });
-    }
-    if (!isNonEmptyString(title, 200) || !isNonEmptyString(venue, 200) || !isNonEmptyString(description, 10000)) {
-        return res.status(400).json({ message: "title and venue (up to 200 characters) and description (up to 10000) must be text" });
     }
 
     const startDatetime = new Date(req.body.startDatetime);
@@ -140,7 +130,7 @@ router.post('/', requireAuth, requireRole('organizer'), async (req, res) => {
                 title,
                 description,
                 venue,
-                categoryId: toId(categoryId),
+                categoryId: +categoryId,
                 participantLimit: +participantLimit,
                 startDatetime,
                 endDatetime,
@@ -168,7 +158,7 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
         }
 
         // Whitelist: only these fields can be changed
-        const { title, description, venue, categoryId, status } = req.body ?? {};
+        const { title, description, venue, categoryId, status } = req.body;
         const startDatetime = req.body.startDatetime ? new Date(req.body.startDatetime) : event.startDatetime;
         const endDatetime = req.body.endDatetime ? new Date(req.body.endDatetime) : event.endDatetime;
         const registrationDeadline = req.body.registrationDeadline ? new Date(req.body.registrationDeadline) : event.registrationDeadline;
@@ -177,17 +167,17 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
         if (status && !VALID_STATUSES.includes(status)) {
             return res.status(400).json({ message: "Invalid status" });
         }
-        if (categoryId && toId(categoryId) === null) {
-            return res.status(400).json({ message: "Invalid category" });
-        }
-        if ((title && !isNonEmptyString(title, 200))
-            || (venue && !isNonEmptyString(venue, 200))
-            || (description && !isNonEmptyString(description, 10000))) {
-            return res.status(400).json({ message: "title and venue (up to 200 characters) and description (up to 10000) must be text" });
-        }
 
         const problem = validateEventFields({ startDatetime, endDatetime, registrationDeadline, participantLimit });
         if (problem) return res.status(400).json({ message: problem });
+
+        // Starting and ending an event have their own routes, which check the timing
+        if (status === 'ongoing') {
+            return res.status(400).json({ message: "Use POST /events/:id/start to begin an event" });
+        }
+        if (status === 'completed') {
+            return res.status(400).json({ message: "Use POST /events/:id/end to finish an event" });
+        }
 
         // Can't shrink the limit below the people already registered
         const registered = await prisma.registration.count({ where: { eventId: event.id } });
@@ -201,7 +191,7 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
                 ...(title && { title }),
                 ...(description && { description }),
                 ...(venue && { venue }),
-                ...(categoryId && { categoryId: toId(categoryId) }),
+                ...(categoryId && { categoryId: +categoryId }),
                 ...(status && { status }),
                 startDatetime,
                 endDatetime,
@@ -212,6 +202,74 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
         res.json(updated);
     } catch (err) {
         if (err.code === 'P2003') return res.status(400).json({ message: "Invalid category" });
+        console.log(err.message);
+        res.sendStatus(500);
+    }
+});
+
+// ─── Start an event (owner) ───────────────────────────────
+// Marks an upcoming event as ongoing, at any time before its scheduled end. The scheduled
+// job does this by itself at the start time. Registration closes once the event is ongoing,
+// because only upcoming events accept registrations. The scheduled times are not changed.
+
+router.post('/:id/start', requireAuth, requireRole('organizer'), async (req, res) => {
+    try {
+        const event = await loadOwnedEvent(req, res);
+        if (!event) return;
+
+        if (event.status !== 'upcoming') {
+            return res.status(409).json({ message: `Event is already ${event.status}` });
+        }
+
+        if (new Date() >= event.endDatetime) {
+            return res.status(409).json({ message: "The scheduled end time has already passed" });
+        }
+
+        const [registered, started] = await Promise.all([
+            prisma.registration.count({ where: { eventId: event.id } }),
+            prisma.event.update({ where: { id: event.id }, data: { status: 'ongoing' } }),
+        ]);
+
+        res.json({ event: started, registered });
+    } catch (err) {
+        console.log(err.message);
+        res.sendStatus(500);
+    }
+});
+
+// ─── End an event (owner) ─────────────────────────────────
+// Closes check-in and unlocks certificates for confirmed attendees.
+router.post('/:id/end', requireAuth, requireRole('organizer'), async (req, res) => {
+    try {
+        const event = await loadOwnedEvent(req, res);
+        if (!event) return;
+
+        if (event.status === 'completed' || event.status === 'cancelled') {
+            return res.status(409).json({ message: `Event is already ${event.status}` });
+        }
+        // An upcoming event that hasn't reached its start time must be started or cancelled,
+        // not ended. An ongoing event (started early, or by the job) can always be ended.
+        const now = new Date();
+        if (event.status === 'upcoming' && now < event.startDatetime) {
+            return res.status(409).json({ message: "The event hasn't started yet. Start it first, or cancel it instead." });
+        }
+
+        const [registered, attended, ended] = await Promise.all([
+            prisma.registration.count({ where: { eventId: event.id } }),
+            prisma.attendance.count({ where: { isConfirm: true, registration: { eventId: event.id } } }),
+            prisma.event.update({
+                where: { id: event.id },
+                // If it ends before its planned end time, record the real end time
+                // (only when the scheduled start has passed, so the end never lands before the start)
+                data: {
+                    status: 'completed',
+                    ...(event.startDatetime <= now && now < event.endDatetime && { endDatetime: now }),
+                },
+            }),
+        ]);
+
+        res.json({ event: ended, summary: { registered, attended } });
+    } catch (err) {
         console.log(err.message);
         res.sendStatus(500);
     }

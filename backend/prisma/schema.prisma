@@ -94,11 +94,11 @@ model Student {
   studentNumber String @map("student_number")
   courseProgram String @map("course_program")
   yearLevel     String @map("year_level")
+  qrToken       String @unique @default(dbgenerated("gen_random_uuid()::text")) @map("qr_token")
 
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   university University @relation(fields: [universityId], references: [id], onDelete: Restrict)
 
-  // A student number should be unique within a university
   @@unique([universityId, studentNumber])
   @@index([universityId])
   @@map("students")
@@ -213,7 +213,7 @@ model Attendance {
   id             Int       @id @default(autoincrement()) @map("attendance_id")
   registrationId Int       @unique @map("registration_id")
   inTime         DateTime? @map("in_time")
-  outTime        DateTime? @map("out_time")
+  isConfirm      Boolean   @default(false) @map("is_confirm")
 
   registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 

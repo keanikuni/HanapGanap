@@ -46,6 +46,7 @@ CREATE TABLE "students" (
     "student_number" TEXT NOT NULL,
     "course_program" TEXT NOT NULL,
     "year_level" TEXT NOT NULL,
+    "qr_token" TEXT NOT NULL DEFAULT gen_random_uuid()::text,
 
     CONSTRAINT "students_pkey" PRIMARY KEY ("student_id")
 );
@@ -124,7 +125,7 @@ CREATE TABLE "attendance" (
     "attendance_id" SERIAL NOT NULL,
     "registration_id" INTEGER NOT NULL,
     "in_time" TIMESTAMP(3),
-    "out_time" TIMESTAMP(3),
+    "is_confirm" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "attendance_pkey" PRIMARY KEY ("attendance_id")
 );
@@ -154,6 +155,9 @@ CREATE UNIQUE INDEX "guests_user_id_key" ON "guests"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "students_user_id_key" ON "students"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "students_qr_token_key" ON "students"("qr_token");
 
 -- CreateIndex
 CREATE INDEX "students_university_id_idx" ON "students"("university_id");

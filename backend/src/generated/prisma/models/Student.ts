@@ -45,6 +45,7 @@ export type StudentMinAggregateOutputType = {
   studentNumber: string | null
   courseProgram: string | null
   yearLevel: string | null
+  qrToken: string | null
 }
 
 export type StudentMaxAggregateOutputType = {
@@ -54,6 +55,7 @@ export type StudentMaxAggregateOutputType = {
   studentNumber: string | null
   courseProgram: string | null
   yearLevel: string | null
+  qrToken: string | null
 }
 
 export type StudentCountAggregateOutputType = {
@@ -63,6 +65,7 @@ export type StudentCountAggregateOutputType = {
   studentNumber: number
   courseProgram: number
   yearLevel: number
+  qrToken: number
   _all: number
 }
 
@@ -86,6 +89,7 @@ export type StudentMinAggregateInputType = {
   studentNumber?: true
   courseProgram?: true
   yearLevel?: true
+  qrToken?: true
 }
 
 export type StudentMaxAggregateInputType = {
@@ -95,6 +99,7 @@ export type StudentMaxAggregateInputType = {
   studentNumber?: true
   courseProgram?: true
   yearLevel?: true
+  qrToken?: true
 }
 
 export type StudentCountAggregateInputType = {
@@ -104,6 +109,7 @@ export type StudentCountAggregateInputType = {
   studentNumber?: true
   courseProgram?: true
   yearLevel?: true
+  qrToken?: true
   _all?: true
 }
 
@@ -200,6 +206,7 @@ export type StudentGroupByOutputType = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken: string
   _count: StudentCountAggregateOutputType | null
   _avg: StudentAvgAggregateOutputType | null
   _sum: StudentSumAggregateOutputType | null
@@ -232,6 +239,7 @@ export type StudentWhereInput = {
   studentNumber?: Prisma.StringFilter<"Student"> | string
   courseProgram?: Prisma.StringFilter<"Student"> | string
   yearLevel?: Prisma.StringFilter<"Student"> | string
+  qrToken?: Prisma.StringFilter<"Student"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   university?: Prisma.XOR<Prisma.UniversityScalarRelationFilter, Prisma.UniversityWhereInput>
 }
@@ -243,6 +251,7 @@ export type StudentOrderByWithRelationInput = {
   studentNumber?: Prisma.SortOrder
   courseProgram?: Prisma.SortOrder
   yearLevel?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   university?: Prisma.UniversityOrderByWithRelationInput
 }
@@ -250,6 +259,7 @@ export type StudentOrderByWithRelationInput = {
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   userId?: number
+  qrToken?: string
   universityId_studentNumber?: Prisma.StudentUniversityIdStudentNumberCompoundUniqueInput
   AND?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   OR?: Prisma.StudentWhereInput[]
@@ -260,7 +270,7 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   yearLevel?: Prisma.StringFilter<"Student"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   university?: Prisma.XOR<Prisma.UniversityScalarRelationFilter, Prisma.UniversityWhereInput>
-}, "id" | "userId" | "universityId_studentNumber">
+}, "id" | "userId" | "qrToken" | "universityId_studentNumber">
 
 export type StudentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -269,6 +279,7 @@ export type StudentOrderByWithAggregationInput = {
   studentNumber?: Prisma.SortOrder
   courseProgram?: Prisma.SortOrder
   yearLevel?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
   _count?: Prisma.StudentCountOrderByAggregateInput
   _avg?: Prisma.StudentAvgOrderByAggregateInput
   _max?: Prisma.StudentMaxOrderByAggregateInput
@@ -286,12 +297,14 @@ export type StudentScalarWhereWithAggregatesInput = {
   studentNumber?: Prisma.StringWithAggregatesFilter<"Student"> | string
   courseProgram?: Prisma.StringWithAggregatesFilter<"Student"> | string
   yearLevel?: Prisma.StringWithAggregatesFilter<"Student"> | string
+  qrToken?: Prisma.StringWithAggregatesFilter<"Student"> | string
 }
 
 export type StudentCreateInput = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken?: string
   user: Prisma.UserCreateNestedOneWithoutStudentInput
   university: Prisma.UniversityCreateNestedOneWithoutStudentsInput
 }
@@ -303,12 +316,14 @@ export type StudentUncheckedCreateInput = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken?: string
 }
 
 export type StudentUpdateInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
   university?: Prisma.UniversityUpdateOneRequiredWithoutStudentsNestedInput
 }
@@ -320,6 +335,7 @@ export type StudentUncheckedUpdateInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type StudentCreateManyInput = {
@@ -329,12 +345,14 @@ export type StudentCreateManyInput = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken?: string
 }
 
 export type StudentUpdateManyMutationInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type StudentUncheckedUpdateManyInput = {
@@ -344,6 +362,7 @@ export type StudentUncheckedUpdateManyInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type StudentListRelationFilter = {
@@ -373,6 +392,7 @@ export type StudentCountOrderByAggregateInput = {
   studentNumber?: Prisma.SortOrder
   courseProgram?: Prisma.SortOrder
   yearLevel?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
 }
 
 export type StudentAvgOrderByAggregateInput = {
@@ -388,6 +408,7 @@ export type StudentMaxOrderByAggregateInput = {
   studentNumber?: Prisma.SortOrder
   courseProgram?: Prisma.SortOrder
   yearLevel?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
 }
 
 export type StudentMinOrderByAggregateInput = {
@@ -397,6 +418,7 @@ export type StudentMinOrderByAggregateInput = {
   studentNumber?: Prisma.SortOrder
   courseProgram?: Prisma.SortOrder
   yearLevel?: Prisma.SortOrder
+  qrToken?: Prisma.SortOrder
 }
 
 export type StudentSumOrderByAggregateInput = {
@@ -483,6 +505,7 @@ export type StudentCreateWithoutUniversityInput = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken?: string
   user: Prisma.UserCreateNestedOneWithoutStudentInput
 }
 
@@ -492,6 +515,7 @@ export type StudentUncheckedCreateWithoutUniversityInput = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken?: string
 }
 
 export type StudentCreateOrConnectWithoutUniversityInput = {
@@ -530,12 +554,14 @@ export type StudentScalarWhereInput = {
   studentNumber?: Prisma.StringFilter<"Student"> | string
   courseProgram?: Prisma.StringFilter<"Student"> | string
   yearLevel?: Prisma.StringFilter<"Student"> | string
+  qrToken?: Prisma.StringFilter<"Student"> | string
 }
 
 export type StudentCreateWithoutUserInput = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken?: string
   university: Prisma.UniversityCreateNestedOneWithoutStudentsInput
 }
 
@@ -545,6 +571,7 @@ export type StudentUncheckedCreateWithoutUserInput = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken?: string
 }
 
 export type StudentCreateOrConnectWithoutUserInput = {
@@ -567,6 +594,7 @@ export type StudentUpdateWithoutUserInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   university?: Prisma.UniversityUpdateOneRequiredWithoutStudentsNestedInput
 }
 
@@ -576,6 +604,7 @@ export type StudentUncheckedUpdateWithoutUserInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type StudentCreateManyUniversityInput = {
@@ -584,12 +613,14 @@ export type StudentCreateManyUniversityInput = {
   studentNumber: string
   courseProgram: string
   yearLevel: string
+  qrToken?: string
 }
 
 export type StudentUpdateWithoutUniversityInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
 }
 
@@ -599,6 +630,7 @@ export type StudentUncheckedUpdateWithoutUniversityInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type StudentUncheckedUpdateManyWithoutUniversityInput = {
@@ -607,6 +639,7 @@ export type StudentUncheckedUpdateManyWithoutUniversityInput = {
   studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
   courseProgram?: Prisma.StringFieldUpdateOperationsInput | string
   yearLevel?: Prisma.StringFieldUpdateOperationsInput | string
+  qrToken?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -618,6 +651,7 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   studentNumber?: boolean
   courseProgram?: boolean
   yearLevel?: boolean
+  qrToken?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
@@ -629,6 +663,7 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   studentNumber?: boolean
   courseProgram?: boolean
   yearLevel?: boolean
+  qrToken?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
@@ -640,6 +675,7 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   studentNumber?: boolean
   courseProgram?: boolean
   yearLevel?: boolean
+  qrToken?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
@@ -651,9 +687,10 @@ export type StudentSelectScalar = {
   studentNumber?: boolean
   courseProgram?: boolean
   yearLevel?: boolean
+  qrToken?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "universityId" | "studentNumber" | "courseProgram" | "yearLevel", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "universityId" | "studentNumber" | "courseProgram" | "yearLevel" | "qrToken", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   university?: boolean | Prisma.UniversityDefaultArgs<ExtArgs>
@@ -680,6 +717,7 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     studentNumber: string
     courseProgram: string
     yearLevel: string
+    qrToken: string
   }, ExtArgs["result"]["student"]>
   composites: {}
 }
@@ -1111,6 +1149,7 @@ export interface StudentFieldRefs {
   readonly studentNumber: Prisma.FieldRef<"Student", 'String'>
   readonly courseProgram: Prisma.FieldRef<"Student", 'String'>
   readonly yearLevel: Prisma.FieldRef<"Student", 'String'>
+  readonly qrToken: Prisma.FieldRef<"Student", 'String'>
 }
     
 

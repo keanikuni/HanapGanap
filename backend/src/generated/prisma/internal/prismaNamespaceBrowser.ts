@@ -121,7 +121,8 @@ export const StudentScalarFieldEnum = {
   universityId: 'universityId',
   studentNumber: 'studentNumber',
   courseProgram: 'courseProgram',
-  yearLevel: 'yearLevel'
+  yearLevel: 'yearLevel',
+  qrToken: 'qrToken'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -200,7 +201,7 @@ export const AttendanceScalarFieldEnum = {
   id: 'id',
   registrationId: 'registrationId',
   inTime: 'inTime',
-  outTime: 'outTime'
+  isConfirm: 'isConfirm'
 } as const
 
 export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
