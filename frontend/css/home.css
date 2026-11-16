@@ -1,42 +1,60 @@
 body{
     background-color: #FFF8E7;
     margin: 0;
+    overflow-x: hidden;
 }
 
 .buttonBTN{
     background-color: #829BD3;
     font-family: "Stack Sans Headline";
-    width: 100px;
+    font-size: 32px;
+    width: 300px;
+    height: auto;
     border-radius: 20px;
     border: none;
     color: #FFF8E7;
 }
 
+
+
 h2{
     font-family: "Instrument Serif";
     margin: 0;
     font-weight: 400;
+    font-size: 48px;
+}
+
+.paraTEXT{
+    font-family: "Stack Sans Headline";
+    font-weight: 300;
     font-size: 24px;
+    margin: 24px;
 }
 
 p{
     font-family: "Stack Sans Headline";
     font-weight: 300;
-    font-size: 16px;
+    font-size: 24px;
 }
 
 /* HERO SECTION */
 
 #hero{
     background-color: #A53636;
-    padding-bottom: 70px;
+    padding-bottom: 30%;
 }
 
+#logo{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
 #logoSVG{
-    position: relative;
-    margin-bottom: 10%;
-    margin-top: 70%;
+    display: block;
+    height: auto;
+    width: 80%;
+    margin: auto;
 }
 
 #logotagline{
@@ -45,7 +63,7 @@ p{
     background-color: #FFF8E7;
     justify-content: center;
     align-items: center;
-    margin: 0;
+    padding-block: 40%;
     border-radius: 0 0 120px 120px;
     width: 100%;
     max-height: 30%;
@@ -54,11 +72,11 @@ p{
 #logotagline .h2TEXT {
     color: #829BD3;
     margin: -5px;
+    font-size: 48px;
 }
 
 #tagline{
     text-align: center;
-    margin-bottom: 70px;
 }
 
 #heroBTN{
@@ -66,11 +84,12 @@ p{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 70px;
+    margin-top: 30%;
+    width: 100%;
 }
 
 #heroBTN .button:first-of-type {
-    padding-bottom: 10px;
+    padding-bottom: 30px;
 }
 
 
@@ -84,22 +103,30 @@ p{
     display: flex;
     background-color: #829BD3;
     overflow: hidden;
-
+    width: 100%;
 }
 
-.carouselBottomLine .group{
+.group{
     display: flex;
     flex-shrink: 0;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
+    will-change: transform;
+    animation: scrolling 15s linear infinite;
+    padding-right: 2rem;
 }
 
 .carouselBottomLine p{
     margin-block: 0px;
 }
- 
+
+@keyframes scrolling {
+    from{translate: 0;}
+    to {translate: -100%;}
+}
+
 #value .h2TEXT{
     text-align: center;
     color: #829BD3;
@@ -108,12 +135,35 @@ p{
 
 #value .paraTEXT{
     text-align: center;
-    margin-block: 24x;
+    margin-bottom: 24x;
+}
+
+#value {
+    padding-bottom: 24px;
 }
 
 /*END OF VALUE PROPOSITION SECTION*/
 
 /*FEATURES SECTION*/
+.featuresCarousel{
+    margin-block: 24px;
+    overflow-x: auto;
+}
+
+.featuresItem{
+    flex: 0 0 220px;
+    height: 300px;
+    background-color:#A53636;
+    scroll-snap-align: start;
+}
+
+.featuresGroup{
+    display: flex;
+    gap: 2rem;
+    padding-inline: 30px;
+    scroll-snap-type: x mandatory;
+}
+
 #features{
     background-color: #F2AEB7;
 }
@@ -166,7 +216,7 @@ p{
 
 #CTA .h2TEXT{
     text-align: center;
-    color: #FFF8E7
+    color: #FFF8E7;
 }
 
 #CTA .button{
@@ -177,7 +227,102 @@ p{
 }
 /*END OF CALL TO ACTION SECTION*/
 
+@media (min-width: 768px) {
+    /*HERO*/
 
+    h2{
+        font-size: 52px;
+    }
+
+    .paraTEXT{
+        font-size: 32px;
+    }
+
+    #hero{
+        padding-bottom: 20%;
+    }
+
+    #logotagline{
+        padding-block: 20%;
+    }
+
+    #logotagline .h2TEXT{
+        font-size: 52px;
+    }
+
+    #heroBTN{
+        margin-top: 20%;
+    }
+
+    /*FEATURES*/
+
+    .featuresItem{
+        height: 400px;
+    }
+
+}
+
+@media (min-width: 1200px) {
+
+    .buttonBTN:hover{
+    transform: scale(105%);
+    rotate: 1deg;
+    background-color: #596f9d;
+    }
+
+    p{
+        font-size: 40px;
+    }
+
+    h2{
+        font-size: 74px;
+    }
+
+    .paraTEXT{
+        font-size: 40px;
+    }
+
+    #hero{
+        padding-bottom: 10%;
+    }
+
+    #logotagline{
+        padding-block: 10%;
+        flex-direction: row;
+    }
+
+    #logotagline .h2TEXT{
+        font-size: 74px;
+        justify-content: auto;
+        align-items: center;
+        padding-block: 0;
+        gap: 2rem;
+    }
+
+    #logo{
+        width: 50%;
+        height: auto;
+    }
+
+    #tagline{
+        width: 50%;
+        height: auto;
+    }
+
+    #logoSVG{
+        width: 50%;
+    }
+
+    #heroBTN{
+        margin-top: 10%;
+    }
+
+    /*FEATURES*/
+
+    .featuresItem{
+        height: 400px;
+    }
+}
 
 
 
