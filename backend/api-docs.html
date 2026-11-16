@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HanapGanap API Reference</title>
+<style>
+:root{--bg:#f5f7fa;--panel:#fff;--ink:#16202e;--mute:#5b6778;--line:#dde3ec;--accent:#2f55c8;--code:#0f1b2d;--codeink:#d9e4f7;
+--get:#0f7b5f;--post:#2f55c8;--patch:#a35c00;--delete:#b3261e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1420;--panel:#141d2c;--ink:#e6ecf5;--mute:#9aa7ba;--line:#26334a;--accent:#7a9bff;--code:#080e18;--codeink:#cfdcf3;
+--get:#4cc9a3;--post:#7a9bff;--patch:#f0b455;--delete:#ff8a80}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI",system-ui,-apple-system,sans-serif}
+code,pre{font-family:ui-monospace,"Cascadia Code",Consolas,monospace}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}
+nav{position:sticky;top:0;height:100vh;overflow-y:auto;padding:24px 18px;border-right:1px solid var(--line);background:var(--panel)}
+nav h1{font-size:1.15rem;margin:0 0 2px}
+nav .sub{color:var(--mute);font-size:.85rem;margin-bottom:14px}
+nav input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit;font-size:.9rem}
+nav a{display:block;color:var(--ink);text-decoration:none;padding:4px 8px;border-radius:5px;font-size:.92rem}
+nav a:hover,nav a:focus-visible{background:var(--bg);outline:none}
+nav .grp{margin:14px 0 2px;font-weight:600;font-size:.95rem;color:var(--accent)}
+nav .ep{font-size:.82rem;color:var(--mute);display:flex;gap:6px;align-items:baseline}
+nav .ep b{font-size:.68rem;min-width:44px;font-weight:700}
+main{padding:36px clamp(18px,4vw,56px) 80px;max-width:940px}
+h2{font-size:1.6rem;margin:48px 0 6px;padding-top:8px}
+h3{font-size:1.1rem;margin:0}
+p{margin:.5em 0}
+.lead{color:var(--mute);max-width:62ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin:14px 0}
+.ep-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ep-head code{font-size:.98rem;font-weight:600;word-break:break-all}
+.badge{font:700 .72rem ui-monospace,Consolas,monospace;padding:3px 8px;border-radius:4px;color:#fff}
+.GET{background:var(--get)}.POST{background:var(--post)}.PATCH{background:var(--patch)}.DELETE{background:var(--delete)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge{color:#0d1420}}
+nav .GET,nav .POST,nav .PATCH,nav .DELETE{background:none}
+nav .GET b{color:var(--get)}nav .POST b{color:var(--post)}nav .PATCH b{color:var(--patch)}nav .DELETE b{color:var(--delete)}
+.access{margin-left:auto;font-size:.8rem;color:var(--mute);border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+.access.lock{color:var(--ink);border-color:var(--accent)}
+.label{font-weight:600;font-size:.85rem;color:var(--mute);margin:12px 0 4px}
+pre{background:var(--code);color:var(--codeink);padding:12px 14px;border-radius:6px;overflow-x:auto;margin:0;font-size:.85rem;line-height:1.5}
+ul.notes{margin:4px 0 0;padding-left:20px;color:var(--ink)}
+ul.notes li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600}
+.tablewrap{overflow-x:auto}
+p code,li code,td code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:.88em}
+.hide{display:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:820px){.layout{grid-template-columns:1fr}nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}.access{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav aria-label="API sections">
+  <h1>HanapGanap API</h1>
+  <div class="sub">Version 1 · Base path <code>/api</code></div>
+  <input id="q" type="search" placeholder="Filter endpoints" aria-label="Filter endpoints">
+  <div id="toc"></div>
+</nav>
+<main>
+  <h1 style="font-size:2.1rem;margin:0 0 8px">HanapGanap API reference</h1>
+  <p class="lead">REST API for browsing university events, registering, checking in, and issuing certificates. Requests and responses use JSON, except certificate downloads, which return a PDF.</p>
+
+  <h2 id="start">Getting started</h2>
+  <div class="card">
+    <div class="label" style="margin-top:0">Base URL</div>
+    <pre>http://localhost:8000/api</pre>
+    <div class="label">Authentication</div>
+    <p>Log in with <code>POST /auth/login</code> to get a token. Send it on every protected request. Tokens expire after 24 hours.</p>
+    <pre>Authorization: Bearer &lt;token&gt;</pre>
+    <div class="label">Roles</div>
+    <p>Each user has one role: <code>guest</code>, <code>student</code>, <code>organizer</code> or <code>admin</code>. The access badge on each endpoint shows who can call it. Admin accounts are created with the seed script, not through registration.</p>
+    <div class="label">Errors</div>
+    <p>Errors return a JSON body with a <code>message</code> field.</p>
+    <pre>{ "message": "This event is full" }</pre>
+    <div class="tablewrap" style="margin-top:10px"><table>
+      <tr><th>Status</th><th>Meaning</th></tr>
+      <tr><td><code>400</code></td><td>Missing or invalid input</td></tr>
+      <tr><td><code>401</code></td><td>No token, or the token is invalid or expired</td></tr>
+      <tr><td><code>403</code></td><td>Your role or ownership does not allow this action</td></tr>
+      <tr><td><code>404</code></td><td>Record or route not found</td></tr>
+      <tr><td><code>409</code></td><td>Conflict with current state (duplicate, full, closed, in use)</td></tr>
+      <tr><td><code>500</code></td><td>Server error</td></tr>
+    </table></div>
+    <div class="label">Dates</div>
+    <p>Send dates as ISO 8601 strings with an offset, for example <code>2026-12-10T09:00:00+08:00</code>.</p>
+  </div>
+
+  <div id="docs"></div>
+</main>
+</div>
+
+<script>
+const PUB="Public", ANY="Any logged-in user", ADM="Admin", ORG="Organizer (owner)";
+const G=[
+{id:"auth",name:"Authentication",intro:"Create an account, log in, and read your own profile.",eps:[
+ {m:"POST",p:"/auth/register",a:PUB,d:"Create an account. The role decides which profile details are required. The admin role cannot be self-registered.",
+  b:`// Student
+{ "fullName": "Juan Dela Cruz", "email": "juan@school.edu.ph", "password": "secret123",
+  "role": "student", "universityId": 1, "studentNumber": "2023-00123",
+  "courseProgram": "BSIT", "yearLevel": "3rd" }
+
+// Organizer: role, universityId, orgName
+// Guest: role, contactNumber, schoolOrAffiliation (optional)`,
+  r:`{ "token": "eyJhbGciOi...", "user": { "id": 7, "fullName": "Juan Dela Cruz", "email": "juan@school.edu.ph", "role": "student" } }`,
+  n:["Returns 201.","Students must use an email that ends with their university’s email domain.","409 if the email or student number is already registered."]},
+ {m:"POST",p:"/auth/login",a:PUB,d:"Exchange an email and password for a token.",
+  b:`{ "email": "juan@school.edu.ph", "password": "secret123" }`,
+  r:`{ "token": "eyJhbGciOi...", "user": { "id": 7, "fullName": "Juan Dela Cruz", "email": "juan@school.edu.ph", "role": "student" } }`,
+  n:["401 for a wrong email or password."]},
+ {m:"GET",p:"/auth/me",a:ANY,d:"Return the logged-in user with their role profile (guest, student, organizer or admin) and university. A student’s profile includes the qrToken to show as a QR code.",
+  r:`{ "id": 7, "fullName": "Juan Dela Cruz", "email": "juan@school.edu.ph", "role": "student",
+  "student": { "studentNumber": "2023-00123", "qrToken": "3f2a9c1e-....", "university": { "id": 1, "name": "..." } } }`}
+]},
+{id:"universities",name:"Universities",intro:"Universities that host events. They are deactivated, never deleted.",eps:[
+ {m:"GET",p:"/universities",a:PUB,d:"List active universities, sorted by name. Use it for the registration dropdown and event filters.",
+  r:`[ { "id": 1, "name": "Pampanga State University", "emailDomain": "psu.edu.ph", "address": "Bacolor, Pampanga" } ]`},
+ {m:"GET",p:"/universities/all",a:ADM,d:"List every university, including inactive ones."},
+ {m:"POST",p:"/universities",a:ADM,d:"Add a university.",
+  b:`{ "name": "Pampanga State University", "emailDomain": "@psu.edu.ph", "address": "Bacolor, Pampanga" }`,
+  n:["Returns 201. A leading @ in emailDomain is removed.","409 if the name already exists."]},
+ {m:"PATCH",p:"/universities/:id",a:ADM,d:"Edit a university or deactivate it. Send only the fields you want to change.",
+  b:`{ "isActive": false }`,n:["Editable fields: name, emailDomain, address, isActive.","Changing emailDomain only affects new registrations."]}
+]},
+{id:"categories",name:"Categories",intro:"Event categories such as Technical, Cultural or Sports.",eps:[
+ {m:"GET",p:"/categories",a:PUB,d:"List categories with the number of events in each.",
+  r:`[ { "id": 1, "name": "Workshop", "_count": { "events": 12 } } ]`},
+ {m:"POST",p:"/categories",a:ADM,d:"Create a category.",b:`{ "name": "Workshop" }`,n:["Returns 201. 409 if the name exists."]},
+ {m:"PATCH",p:"/categories/:id",a:ADM,d:"Rename a category. Events keep their link.",b:`{ "name": "Workshops & Seminars" }`},
+ {m:"DELETE",p:"/categories/:id",a:ADM,d:"Delete a category.",n:["409 if any event still uses it."]}
+]},
+{id:"events",name:"Events",intro:"Browse and manage events. Organizers can only change their own events.",eps:[
+ {m:"GET",p:"/events",a:PUB,d:"Browse events, soonest first. All filters are optional.",
+  b:`GET /events?universityId=1&categoryId=2&status=upcoming&search=summit`,
+  r:`[ { "id": 5, "title": "Tech Summit 2026", "venue": "Main Auditorium", "status": "upcoming",
+    "startDatetime": "...", "participantLimit": 200,
+    "category": {...}, "university": {...}, "organizer": {...}, "images": [],
+    "_count": { "registrations": 41 } } ]`,
+  n:["status is one of upcoming, ongoing, completed, cancelled.","Not paginated yet."]},
+ {m:"GET",p:"/events/:id",a:PUB,d:"Get one event with its category, university, organizer, images and registration count."},
+ {m:"POST",p:"/events",a:"Organizer",d:"Create an event. The organizer and university come from your token.",
+  b:`{ "categoryId": 1, "title": "Tech Summit 2026", "description": "A day of talks and workshops.",
+  "venue": "Main Auditorium", "startDatetime": "2026-12-10T09:00:00+08:00",
+  "endDatetime": "2026-12-10T17:00:00+08:00", "registrationDeadline": "2026-12-08T23:59:00+08:00",
+  "participantLimit": 200 }`,
+  n:["Returns 201.","End must be after start. The deadline must be on or before the start.","participantLimit must be a positive whole number."]},
+ {m:"PATCH",p:"/events/:id",a:ORG,d:"Update an event. Send only the fields you want to change.",
+  b:`{ "venue": "Room 204", "participantLimit": 250, "status": "ongoing" }`,
+  n:["Editable fields: title, description, venue, categoryId, status, startDatetime, endDatetime, registrationDeadline, participantLimit. Setting status to ongoing or completed is not allowed here; use POST /events/:id/start or /events/:id/end.","409 if the event is completed or cancelled.","The limit cannot be lower than the current number of registrations."]},
+ {m:"POST",p:"/events/:id/start",a:ORG,d:"Mark an upcoming event as ongoing. Registration closes once an event is ongoing.",
+  r:`{ "event": { "id": 5, "status": "ongoing" }, "registered": 41 }`,
+  n:["No request body.","An event can be started at any time before its scheduled end. The scheduled times are not changed.","409 if the event is not upcoming, or its scheduled end time has passed.","Events also become ongoing automatically when their start time passes."]},
+ {m:"POST",p:"/events/:id/end",a:ORG,d:"End an event that has started. Check-in closes and certificates become available to confirmed attendees.",
+  r:`{ "event": { "id": 5, "status": "completed" }, "summary": { "registered": 41, "attended": 33 } }`,
+  n:["No request body.","If the event ends before its planned end time, the end time is set to now.","409 if the event is still upcoming and its start time has not arrived (start it first, or cancel it), or it is already completed or cancelled.","Events are also moved to ongoing and completed automatically when their start and end times pass."]},
+ {m:"DELETE",p:"/events/:id",a:"Organizer (owner) or Admin",d:"Delete an event.",
+  r:`{ "message": "Event has registrants, so it was marked as cancelled" }`,
+  n:["An event with registrants is marked cancelled instead of deleted."]},
+ {m:"POST",p:"/events/:id/images",a:ORG,d:"Upload up to 5 images for an event. The first image uploaded is the preview.",
+  b:`Content-Type: multipart/form-data
+images: <file>   (repeat the field for several files)`,
+  r:`[ { "id": 3, "fileName": "3f2a9c1e-....jpg", "filePath": "/uploads/3f2a9c1e-....jpg" } ]`,
+  n:["Returns 201. Use the field name images.","JPG, PNG and WEBP only, 5 MB each, at most 10 images per event.","Show an image at http://localhost:8000 + filePath."]},
+ {m:"DELETE",p:"/events/:id/images/:imageId",a:ORG,d:"Delete one image and its file.",n:["404 if the image does not belong to this event."]}
+]},
+{id:"registrations",name:"Registrations",intro:"Sign up for events and see who is attending.",eps:[
+ {m:"POST",p:"/events/:id/register",a:"Guest, student or organizer",d:"Register yourself for an event.",
+  r:`{ "id": 42, "isConfirmed": true, "registeredAt": "...", "event": { "id": 5, "title": "...", "venue": "...", "startDatetime": "..." } }`,
+  n:["Returns 201.","409 if the event is not upcoming, the deadline passed, the event is full, or you already registered."]},
+ {m:"DELETE",p:"/events/:id/register",a:ANY,d:"Cancel your registration.",
+  n:["409 if the event is no longer upcoming, or you already checked in."]},
+ {m:"GET",p:"/registrations/mine",a:ANY,d:"List your registrations with event details, attendance and a certificateAvailable flag, newest first."},
+ {m:"GET",p:"/events/:id/participants",a:"Organizer (owner) or Admin",d:"List everyone registered for an event, with student or guest details and check-in times.",
+  r:`{ "event": { "id": 5, "title": "...", "participantLimit": 200 }, "total": 41, "participants": [ ... ] }`}
+]},
+{id:"attendance",name:"Attendance",intro:"Attendance is confirmed when an organizer scans a student’s QR code. The QR holds the student’s personal qrToken.",eps:[
+ {m:"POST",p:"/attendance/scan",a:ORG,d:"Confirm a student’s attendance by scanning their QR code at the event.",
+  b:`{ "eventId": 5, "qrToken": "3f2a9c1e-...." }`,
+  r:`{ "attendee": { "id": 7, "fullName": "Juan Dela Cruz", "studentNumber": "2023-00123" }, "event": { "id": 5, "title": "..." }, "attendance": { "isConfirm": true, "inTime": "..." } }`,
+  n:["Returns 201. The student shows their qrToken, from GET /auth/me, as a QR code.","404 if the QR code is unknown, or the student is not registered for this event.","409 if already checked in, or the event is cancelled or completed."]},
+ {m:"POST",p:"/attendance/check-in",a:ORG,d:"Manual fallback: confirm attendance by registration id, for guests or students who cannot show a QR code.",
+  b:`{ "registrationId": 42 }`,n:["Returns 201. 409 if already checked in."]}
+]},
+{id:"certificates",name:"Certificates",intro:"Certificates are not stored. The PDF is generated from the database each time a student asks for it.",eps:[
+ {m:"GET",p:"/events/:id/certificate",a:"Student (attendee)",d:"Download your participation certificate for an event as a PDF. Your registration is found from your login token.",
+  n:["Send the Authorization header. A plain link will not work, so use fetch and save the blob.","404 if you are not registered for the event.","409 if the event was cancelled or has not ended yet.","403 if your attendance was not confirmed.","GET /registrations/mine has a certificateAvailable flag you can use to show or hide the download button."]}
+]},
+{id:"notifications",name:"Notifications",intro:"In-app updates for registered participants.",eps:[
+ {m:"GET",p:"/notifications",a:ANY,d:"List your notifications, newest first.",
+  b:`GET /notifications?page=1&limit=20`,
+  r:`{ "page": 1, "limit": 20, "total": 3, "notifications": [ { "id": 9, "title": "Venue changed", "message": "...", "type": "schedule_change", "event": {...} } ] }`,
+  n:["limit is between 1 and 100."]},
+ {m:"POST",p:"/events/:id/notify",a:ORG,d:"Send a notification to everyone registered for the event.",
+  b:`{ "title": "Venue changed", "message": "The seminar is now at Room 204.", "type": "schedule_change" }`,
+  r:`{ "sent": 41 }`,
+  n:["type is one of reminder, schedule_change, cancellation, announcement (default announcement).","409 if there are no registrants or the event is completed."]}
+]},
+{id:"admin",name:"Admin",intro:"Dashboard tools. Every endpoint here requires the admin role.",eps:[
+ {m:"GET",p:"/admin/users",a:ADM,d:"List users. All filters are optional.",
+  b:`GET /admin/users?role=student&verified=false&search=juan&page=1&limit=20`,
+  r:`{ "page": 1, "limit": 20, "total": 95, "users": [ ... ] }`},
+ {m:"PATCH",p:"/admin/users/:id",a:ADM,d:"Set a user’s email verification status.",b:`{ "emailVerified": true }`},
+ {m:"GET",p:"/admin/events",a:ADM,d:"List all events for review, with organizer contact details.",
+  b:`GET /admin/events?status=upcoming&universityId=1&search=summit&page=1`},
+ {m:"GET",p:"/admin/stats",a:ADM,d:"Dashboard counts.",
+  r:`{ "users": { "total": 120, "byRole": { "guest": 10, "student": 95, "organizer": 14, "admin": 1 }, "unverified": 8 },
+  "events": { "total": 30, "byStatus": { "upcoming": 12, "ongoing": 2, "completed": 14, "cancelled": 2 } },
+  "registrations": 640, "attended": 410, "activeUniversities": 4 }`}
+]}
+];
+
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const docs=document.getElementById("docs"), toc=document.getElementById("toc");
+let tocHtml='<a href="#start" class="grp">Getting started</a>', html="", n=0;
+
+G.forEach(g=>{
+  tocHtml+=`<div class="grp" data-g="${g.id}">${g.name}</div>`;
+  html+=`<section data-g="${g.id}"><h2 id="${g.id}">${g.name}</h2><p class="lead">${g.intro}</p>`;
+  g.eps.forEach(e=>{
+    const id="ep"+(++n), open=e.a!==PUB;
+    const key=(e.m+" "+e.p+" "+g.name).toLowerCase();
+    tocHtml+=`<a class="ep ${e.m}" href="#${id}" data-k="${esc(key)}" data-g="${g.id}"><b>${e.m}</b><span>${esc(e.p)}</span></a>`;
+    html+=`<article class="card" id="${id}" data-k="${esc(key)}">
+      <div class="ep-head"><span class="badge ${e.m}">${e.m}</span><code>${esc(e.p)}</code>
+      <span class="access ${open?"lock":""}">${esc(e.a)}</span></div>
+      <p>${esc(e.d)}</p>
+      ${e.b?`<div class="label">${e.m==="GET"?"Request":"Request body"}</div><pre>${esc(e.b)}</pre>`:""}
+      ${e.r?`<div class="label">Response</div><pre>${esc(e.r)}</pre>`:""}
+      ${e.n?`<div class="label">Notes</div><ul class="notes">${e.n.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+    </article>`;
+  });
+  html+="</section>";
+});
+toc.innerHTML=tocHtml; docs.innerHTML=html;
+
+document.getElementById("q").addEventListener("input",ev=>{
+  const q=ev.target.value.trim().toLowerCase();
+  document.querySelectorAll("[data-k]").forEach(el=>el.classList.toggle("hide",q&&!el.dataset.k.includes(q)));
+  document.querySelectorAll("section[data-g]").forEach(s=>{
+    s.classList.toggle("hide",q&&!s.querySelector("article:not(.hide)"));
+  });
+  document.querySelectorAll("nav .grp[data-g]").forEach(h=>{
+    h.classList.toggle("hide",q&&!toc.querySelector(`a.ep[data-g="${h.dataset.g}"]:not(.hide)`));
+  });
+});
+</script>
+</body>
+</html>
