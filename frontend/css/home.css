@@ -15,11 +15,7 @@ body{
     color: #FFF8E7;
 }
 
-.buttonBTN:hover{
-    transform: scale(105%);
-    rotate: 1deg;
-    background-color: #596f9d;
-}
+
 
 h2{
     font-family: "Instrument Serif";
@@ -231,7 +227,102 @@ p{
 }
 /*END OF CALL TO ACTION SECTION*/
 
+@media (min-width: 768px) {
+    /*HERO*/
 
+    h2{
+        font-size: 52px;
+    }
+
+    .paraTEXT{
+        font-size: 32px;
+    }
+
+    #hero{
+        padding-bottom: 20%;
+    }
+
+    #logotagline{
+        padding-block: 20%;
+    }
+
+    #logotagline .h2TEXT{
+        font-size: 52px;
+    }
+
+    #heroBTN{
+        margin-top: 20%;
+    }
+
+    /*FEATURES*/
+
+    .featuresItem{
+        height: 400px;
+    }
+
+}
+
+@media (min-width: 1200px) {
+
+    .buttonBTN:hover{
+    transform: scale(105%);
+    rotate: 1deg;
+    background-color: #596f9d;
+    }
+
+    p{
+        font-size: 40px;
+    }
+
+    h2{
+        font-size: 74px;
+    }
+
+    .paraTEXT{
+        font-size: 40px;
+    }
+
+    #hero{
+        padding-bottom: 10%;
+    }
+
+    #logotagline{
+        padding-block: 10%;
+        flex-direction: row;
+    }
+
+    #logotagline .h2TEXT{
+        font-size: 74px;
+        justify-content: auto;
+        align-items: center;
+        padding-block: 0;
+        gap: 2rem;
+    }
+
+    #logo{
+        width: 50%;
+        height: auto;
+    }
+
+    #tagline{
+        width: 50%;
+        height: auto;
+    }
+
+    #logoSVG{
+        width: 50%;
+    }
+
+    #heroBTN{
+        margin-top: 10%;
+    }
+
+    /*FEATURES*/
+
+    .featuresItem{
+        height: 400px;
+    }
+}
 
 
 
