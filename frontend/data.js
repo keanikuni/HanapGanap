@@ -1,5 +1,3 @@
-// Fake data shaped like the database. Replace with fetch() once the back end is ready.
-// Field names follow the ERD. "location" and "image_path" don't exist in the DB yet.
 const events = [
   { event_id: 1, title: "Tech Fair", description: "A day of demos and talks from student developers.", category: "Technical", org_name: "Maria", university: "Sample University", location: "Main Gym", start_datetime: "2026-12-03 09:00:00", end_datetime: "2026-12-03 17:00:00", status: "upcoming", image_path: "" },
   { event_id: 2, title: "Sports Fest", description: "Inter-department games all day.", category: "Sports", org_name: "Jake", university: "Sample University", location: "Open Field", start_datetime: "2026-11-10 08:00:00", end_datetime: "2026-11-10 18:00:00", status: "ongoing", image_path: "" },
