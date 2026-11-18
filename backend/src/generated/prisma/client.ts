@@ -101,3 +101,8 @@ export type Attendance = Prisma.AttendanceModel
  * 
  */
 export type Notification = Prisma.NotificationModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel

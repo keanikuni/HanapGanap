@@ -2,6 +2,7 @@ import express from 'express';
 import prisma from '../config/prismaClient.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
 import { toId, idParam } from '../utils/validate.js';
+import createAuditLog from '../utils/auditlogger.js';
 
 const router = express.Router();
 
@@ -73,18 +74,70 @@ router.patch('/users/:id', async (req, res) => {
     const { emailVerified } = req.body;
 
     if (typeof emailVerified !== 'boolean') {
-        return res.status(400).json({ message: "emailVerified must be true or false" });
+        return res.status(400).json({
+            message: "emailVerified must be true or false"
+        });
     }
 
     try {
-        const user = await prisma.user.update({
-            where: { id: req.targetId },
-            data: { emailVerified },
-            omit: { passwordHash: true },
+        const user = await prisma.$transaction(async (tx) => {
+
+            // Get the user's current information
+            const oldUser = await tx.user.findUnique({
+                where: { id: req.targetId },
+                select: {
+                    id: true,
+                    fullName: true,
+                    email: true,
+                    emailVerified: true
+                }
+            });
+
+            if (!oldUser) {
+                const error = new Error("User not found");
+                error.code = 'P2025';
+                throw error;
+            }
+            if (oldUser.emailVerified === emailVerified) {
+        return oldUser;
+        }
+
+            // Update the user's verification status
+            const updatedUser = await tx.user.update({
+                where: { id: req.targetId },
+                data: { emailVerified },
+                omit: { passwordHash: true }
+            });
+
+            // Save the audit log
+            await createAuditLog({
+                userId: req.user.id,
+                userRole: req.user.role,
+                action: "UPDATE",
+                entity: "User",
+                entityId: String(req.targetId),
+                description: `Updated email verification status for ${oldUser.fullName}`,
+                oldValues: {
+                    emailVerified: oldUser.emailVerified
+                },
+                newValues: {
+                    emailVerified: updatedUser.emailVerified
+                },
+                ipAddress: req.ip
+            }, tx);
+
+            return updatedUser;
         });
+
         res.json(user);
+
     } catch (err) {
-        if (err.code === 'P2025') return res.status(404).json({ message: "User not found" });
+        if (err.code === 'P2025') {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
         console.log(err.message);
         res.sendStatus(500);
     }
