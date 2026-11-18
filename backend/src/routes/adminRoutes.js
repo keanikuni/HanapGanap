@@ -98,6 +98,9 @@ router.patch('/users/:id', async (req, res) => {
                 error.code = 'P2025';
                 throw error;
             }
+            if (oldUser.emailVerified === emailVerified) {
+        return oldUser;
+        }
 
             // Update the user's verification status
             const updatedUser = await tx.user.update({

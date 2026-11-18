@@ -225,6 +225,7 @@ export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[k
 export const AuditLogScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  userRole: 'userRole',
   action: 'action',
   entity: 'entity',
   entityId: 'entityId',
