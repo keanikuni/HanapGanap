@@ -226,7 +226,7 @@ const options = {
 };
 
 https.createServer(options, app).listen(PORT, () => {
-   console.log(`Server has started on https://localhost:${PORT}`);
+    console.log(`Server has started on https://localhost:${PORT}`);
 });
 
 app.listen(PORT, () => {
