@@ -186,17 +186,26 @@ router.post('/login', loginLimiter, async (req, res) => {
 
 router.get('/me', requireAuth, async (req, res) => {
     try {
+        const university = { select: { id: true, name: true, emailDomain: true } };
+
         const user = await prisma.user.findUnique({
             where: { id: req.user.id },
             omit: { passwordHash: true },
-            include: { guest: true, student: { include: { university: true } }, organizer: true, admin: true },
+            include: {
+                guest: true,
+                student: { include: { university } },
+                organizer: { include: { university } },
+                admin: { include: { university } },
+            },
         });
         if (!user) return res.status(404).json({ message: "User not found" });
-        res.json(user);
+
+        // Return only the profile that matches the role, under one key
+        const { guest, student, organizer, admin, ...account } = user;
+        res.json({ ...account, profile: { guest, student, organizer, admin }[user.role] });
     } catch (err) {
         console.log(err.message);
         res.sendStatus(500);
     }
 });
-
 export default router;
