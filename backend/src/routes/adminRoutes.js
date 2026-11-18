@@ -69,7 +69,7 @@ router.get('/users', async (req, res) => {
     }
 });
 
-// ─── Update a user's verification status ──────────────────
+// ─── Update a user's `verification status ──────────────────
 router.patch('/users/:id', async (req, res) => {
     const { emailVerified } = req.body;
 

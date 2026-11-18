@@ -10,7 +10,8 @@ import routes from './routes/index.js';
 import { IMAGE_DIR } from './middleware/uploadMiddleware.js';
 import { notFoundHandler, errorHandler } from './middleware/errorMiddleware.js';
 import { rateLimit } from './utils/rateLimit.js';
-
+import fs from "fs";
+import https from "https";
 // This one file runs everything: the event API (/api), the static frontend, the uploaded
 // images (/uploads) and the PDF tool (/pdf). It replaces the old pdfServer.js, which
 // started a second server on the same port.
@@ -219,8 +220,16 @@ app.use('/pdf', pdfRouter);
 app.use(notFoundHandler); // after all routes
 app.use(errorHandler);    // handles multer errors, bad JSON, Prisma errors, everything else
 
+const options = {
+  key: fs.readFileSync('./localhost+2-key.pem'),
+  cert: fs.readFileSync('./localhost+2.pem'),
+};
+
+https.createServer(options, app).listen(PORT, () => {
+    console.log(`Server has started on https://localhost:${PORT}`);
+});
+
 app.listen(PORT, () => {
-    console.log(`Server has started on http://localhost:${PORT}`);
     console.log(`PDF tool: http://localhost:${PORT}/pdf-tool.html${pdfTools ? '' : ' (disabled until npm install)'}`);
     startEventStatusJob();
 });
