@@ -1,11 +1,11 @@
-/* ===== Tokens: replace the hex values with the exact ones from Figma ===== */
+
 :root {
   --cream: #fff8e7;
   --red: #a33636;
   --blue: #8499d3;
   --text: #1a1a1a;
   --font-body: "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif; /* footer headings: check Figma */
+  --font-serif: "Playfair Display", Georgia, serif; /* footer headings */
 }
 
 * { box-sizing: border-box; }

@@ -1,4 +1,4 @@
-// Hamburger toggle (shared by every page)
+// Nav toggle (shared by every page)
 const toggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".main-nav");
 
