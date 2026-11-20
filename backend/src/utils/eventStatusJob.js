@@ -27,14 +27,14 @@ export function startEventStatusJob(intervalMs = 60 * 1000) {
     if (process.env.EVENT_STATUS_JOB === 'false') {
         console.log('[events] automatic status updates are off');
         return;
-    }``
+    }
 
     const run = async () => {
         try {
             const { started, ended } = await updateEventStatuses();
             if (started || ended) console.log(`[events] ${started} started, ${ended} ended`);
         } catch (err) {
-            console.log(`[events] status update failed: ${err.message}`);
+            console.error("[events] status update failed:", err);
         }
     };
 

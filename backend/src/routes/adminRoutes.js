@@ -5,9 +5,11 @@ import { toId, idParam } from '../utils/validate.js';
 import createAuditLog from '../utils/auditlogger.js';
 
 const router = express.Router();
+console.log("ADMIN ROUTES FILE LOADED");
 
 // Everything in this file requires a logged-in admin
 router.use(requireAuth, requireRole('admin'));
+
 
 const VALID_ROLES = ['guest', 'student', 'organizer', 'admin'];
 const VALID_STATUSES = ['upcoming', 'ongoing', 'completed', 'cancelled'];
@@ -224,5 +226,66 @@ router.get('/stats', async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+
+// ─── View audit logs ──────────────────────────────────────
+// ?action=UPDATE&entity=User&page=1&limit=20
+router.get('/audit-logs', async (req, res) => {
+    try {
+        const { action, entity } = req.query;
+        const { limit, page, skip } = getPaging(req.query);
+
+        if (action && typeof action !== 'string') {
+            return res.status(400).json({
+                message: "Invalid action"
+            });
+        }
+
+        if (entity && typeof entity !== 'string') {
+            return res.status(400).json({
+                message: "Invalid entity"
+            });
+        }
+
+        const where = {
+            ...(action && { action }),
+            ...(entity && { entity })
+        };
+
+        const [logs, total] = await Promise.all([
+            prisma.auditLog.findMany({
+                where,
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            fullName: true,
+                            email: true
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: 'desc'
+                },
+                take: limit,
+                skip
+            }),
+
+            prisma.auditLog.count({ where })
+        ]);
+
+        res.json({
+            page,
+            limit,
+            total,
+            logs
+        });
+
+    } catch (err) {
+        console.log(err.message);
+        res.sendStatus(500);
+    }
+});
+
 
 export default router;

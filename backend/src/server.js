@@ -207,6 +207,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
+
 // ─── API routes ───────────────────────────────────────────
 // routes/index.js mounts auth, events, universities, categories,
 // registrations, attendance, certificates, notifications and admin under /api
@@ -227,9 +228,6 @@ const options = {
 
 https.createServer(options, app).listen(PORT, () => {
     console.log(`Server has started on https://localhost:${PORT}`);
-});
-
-app.listen(PORT, () => {
-    console.log(`PDF tool: http://localhost:${PORT}/pdf-tool.html${pdfTools ? '' : ' (disabled until npm install)'}`);
+    console.log(`PDF tool: https://localhost:${PORT}/pdf-tool.html${pdfTools ? '' : ' (disabled until npm install)'}`);
     startEventStatusJob();
 });

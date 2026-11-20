@@ -24,4 +24,5 @@ router.use("/", registrationRoutes);
 router.use("/", certificateRoutes);
 router.use("/", notificationRoutes);
 
+
 export default router;
