@@ -66,7 +66,7 @@ router.delete('/events/:id/register', requireAuth, async (req, res) => {
         if (registration.event.status !== 'upcoming') {
             return res.status(409).json({ message: "Can't cancel: event has already started or ended" });
         }
-        if (registration.attendance?.inTime) {
+        if (registration.attendance?.isConfirm) {
             return res.status(409).json({ message: "Can't cancel after check-in" });
         }
 
@@ -105,7 +105,7 @@ router.get('/registrations/mine', requireAuth, async (req, res) => {
                 certificateAvailable:
                     r.event.status !== 'cancelled' &&
                     (r.event.status === 'completed' || r.event.endDatetime < now) &&
-                    !!r.attendance?.inTime,
+                    !!r.attendance?.isConfirm,
             }))
         );
     } catch (err) {
@@ -139,7 +139,7 @@ router.get('/events/:id/participants', requireAuth, requireRole('organizer', 'ad
                         guest: { select: { contactNumber: true, schoolOrAffiliation: true } },
                     },
                 },
-                attendance: { select: { inTime: true, outTime: true } },
+                attendance: { select: { isConfirm: true, inTime: true } },
             },
             orderBy: { registeredAt: 'asc' },
         });
