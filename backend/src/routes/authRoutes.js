@@ -155,7 +155,7 @@ router.post('/register', registerLimiter, async (req, res) => {
         if (error.code === 'P2003') {
             return res.status(400).json({ message: "Invalid university" });
         }
-        console.log(error.message);
+       console.log(err.message);
         res.sendStatus(500);
     }
 });
@@ -179,24 +179,38 @@ router.post('/login', loginLimiter, async (req, res) => {
             user: { id: user.id, fullName: user.fullName, email: user.email, role: user.role },
         });
     } catch (err) {
-        console.log(err.message);
-        res.sendStatus(500);
+        console.error("LOGIN ERROR:", err);
+    console.error("ERROR STACK:", err.stack);
+
+    res.status(500).json({
+        message: "Internal server error",
+        error: err.message
+    });
     }
 });
 
 router.get('/me', requireAuth, async (req, res) => {
     try {
+        const university = { select: { id: true, name: true, emailDomain: true } };
+
         const user = await prisma.user.findUnique({
             where: { id: req.user.id },
             omit: { passwordHash: true },
-            include: { guest: true, student: { include: { university: true } }, organizer: true, admin: true },
+            include: {
+                guest: true,
+                student: { include: { university } },
+                organizer: { include: { university } },
+                admin: { include: { university } },
+            },
         });
         if (!user) return res.status(404).json({ message: "User not found" });
-        res.json(user);
+
+        // Return only the profile that matches the role, under one key
+        const { guest, student, organizer, admin, ...account } = user;
+        res.json({ ...account, profile: { guest, student, organizer, admin }[user.role] });
     } catch (err) {
         console.log(err.message);
         res.sendStatus(500);
     }
 });
-
 export default router;

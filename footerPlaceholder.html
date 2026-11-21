@@ -61,20 +61,18 @@
       text-underline-offset: 3px;
     }
 
-
+    /* logo */
     .footer__wordmark {
-      display: flex;
-      justify-content: center;
       background: var(--blue);
-      color: var(--cream);
-      font-weight: 700;
-      font-size: 32vw;            
-      line-height: 0.75;
-      letter-spacing: -0.075em;
-      white-space: nowrap;
-      overflow: hidden;
       padding-bottom: 6px;
-      user-select: none;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .footer__wordmark img {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
     .footer__base {
@@ -82,7 +80,7 @@
       background: var(--cream);
     }
 
-    /* tablet*/
+    /* tablet */
     @media (min-width: 768px) {
       .footer__nav {
         flex-direction: row;
@@ -140,7 +138,9 @@
       </div>
     </nav>
 
-    <div class="footer__wordmark" aria-hidden="true">hnpgnp</div>
+    <div class="footer__wordmark">
+      <img src="frontend/vectors/logoWarmWhite.svg" alt="HanapGanap">
+    </div>
   </footer>
   <div class="footer__base"></div>
 
