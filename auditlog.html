@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Audit Log | hnpgnp</title>
+  <title>Audit Log</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@300&display=swap" rel="stylesheet">
@@ -112,6 +112,9 @@
       gap: 0.4rem;
     }
 
+    .pager { margin-top: 0.8rem; }
+    .pager button { font: inherit; padding: 0.3rem 0.8rem; cursor: pointer; }
+
     /* 768 px */
     @media (min-width: 768px) {
       .nav { padding: 0.5rem 1rem; }
@@ -150,16 +153,24 @@
 
   <main class="page">
     <section class="card" aria-labelledby="audit-title">
-      <p class="card__account">Account Name</p>
+      <p class="card__account">Admin</p>
       <h1 class="card__title" id="audit-title">Audit Log</h1>
 
-      <ul class="log" id="audit-log">
-        <li>Opened Account Page: 2026-11-16</li>
-      </ul>
+      <ul class="log" id="audit-log"></ul>
+
+      <div class="pager">
+        <button id="prev">Previous</button>
+        <span id="page-info"></span>
+        <button id="next">Next</button>
+      </div>
     </section>
   </main>
 
   <script>
+    const API = '/api';
+    let page = 1;
+    let totalPages = 1;
+
     // load the shared nav, then wire up the hamburger
     fetch('navPlaceholder.html')
       .then(res => res.text())
@@ -177,12 +188,52 @@
       })
       .catch(err => console.error('Could not load navPlaceholder.html', err));
 
-    // add entries to the log, e.g. addLogEntry('Opened Account Page', '2026-11-16')
-    function addLogEntry(action, date) {
+    // add one entry to the log
+    function addLogEntry(log) {
       const li = document.createElement('li');
-      li.textContent = `${action}: ${date}`;
+      const name = log.user ? log.user.fullName : 'Unknown';
+      const date = new Date(log.createdAt).toLocaleString();
+      li.textContent = `${log.action} ${log.entity || ''} - ${log.description || ''} (${name}, ${date})`;
       document.getElementById('audit-log').appendChild(li);
     }
+
+    function showMessage(text) {
+      document.getElementById('audit-log').innerHTML = '<li>' + text + '</li>';
+    }
+
+    function loadLogs() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        showMessage('Please log in as an admin.');
+        return;
+      }
+
+      fetch(`${API}/admin/audit-logs?page=${page}&limit=20`, {
+        headers: { Authorization: 'Bearer ' + token }
+      })
+        .then(res => {
+          if (res.status === 401) throw new Error('Session expired, please log in again.');
+          if (res.status === 403) throw new Error('Admins only.');
+          if (!res.ok) throw new Error('Could not load the audit log.');
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById('audit-log').innerHTML = '';
+          if (data.logs.length === 0) return showMessage('No audit logs yet.');
+
+          data.logs.forEach(addLogEntry);
+          totalPages = Math.ceil(data.total / data.limit);
+          document.getElementById('page-info').textContent = `Page ${data.page} of ${totalPages}`;
+          document.getElementById('prev').disabled = page <= 1;
+          document.getElementById('next').disabled = page >= totalPages;
+        })
+        .catch(err => showMessage(err.message));
+    }
+
+    document.getElementById('prev').addEventListener('click', () => { page--; loadLogs(); });
+    document.getElementById('next').addEventListener('click', () => { page++; loadLogs(); });
+
+    loadLogs();
   </script>
 </body>
 </html>
