@@ -72,6 +72,7 @@ model User {
 
   registrations Registration[]
   notifications Notification[]
+  auditLogs AuditLog[]
 
   @@map("users")
 }
@@ -240,3 +241,27 @@ model Notification {
   @@index([eventId])
   @@map("notification")
 }
+
+// Table for recording audit logs
+
+model AuditLog {
+  id          Int      @id @default(autoincrement()) @map("audit_log_id")
+  userId      Int?     @map("user_id")
+  userRole String?     @map("user_role")
+  action      String
+  entity      String?
+  entityId    String?  @map("entity_id")
+  description String?
+  oldValues   Json?    @map("old_values")
+  newValues   Json?    @map("new_values")
+  ipAddress   String?  @map("ip_address")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([entity, entityId])
+  @@map("audit_logs")
+}
+
