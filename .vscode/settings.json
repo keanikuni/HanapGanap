@@ -1,6 +1,7 @@
 {
     "python.terminal.useEnvFile": true,
     "cSpell.words": [
+        "auditlogger",
         "qrcode"
     ]
 }

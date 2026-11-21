@@ -1,4 +1,13 @@
-// Events View: read ?id= from the URL and fill in the page
+// Halimbawa: Kumuha ng lahat ng events mula sa backend
+fetch(`${API_URL}/events`)
+  .then(res => res.json())
+  .then(backendData => {
+    // I-convert ang bawat event gamit ang toEvent function
+    const events = backendData.map(item => toEvent(item));
+    // Gamitin para ipakita sa page 
+    console.log(events);
+  });
+
 const params = new URLSearchParams(window.location.search);
 const id = Number(params.get("id")) || 1;
 const ev = events.find((e) => e.event_id === id);
