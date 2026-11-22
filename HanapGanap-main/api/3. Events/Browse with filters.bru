@@ -1,0 +1,23 @@
+meta {
+  name: Browse with filters
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/events?status=upcoming&categoryId=1&search=summit
+  body: none
+  auth: none
+}
+
+params:query {
+  status: upcoming
+  categoryId: 1
+  search: summit
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

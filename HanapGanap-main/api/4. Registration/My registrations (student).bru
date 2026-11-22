@@ -1,0 +1,21 @@
+meta {
+  name: My registrations (student)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/registrations/mine
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{studentToken}}
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

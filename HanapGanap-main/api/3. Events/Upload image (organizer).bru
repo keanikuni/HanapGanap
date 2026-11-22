@@ -1,0 +1,29 @@
+meta {
+  name: Upload image (organizer)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/events/{{eventId}}/images
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{organizerToken}}
+}
+
+body:multipart-form {
+  images: @file(test-assets/poster.jpg)
+}
+
+script:post-response {
+  if (Array.isArray(res.body) && res.body[0]) bru.setVar("imageId", res.body[0].id);
+}
+
+tests {
+  test("Status is 201", function () {
+    expect(res.getStatus()).to.equal(201);
+  });
+}

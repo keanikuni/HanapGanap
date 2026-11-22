@@ -1,0 +1,27 @@
+meta {
+  name: Deactivate the new university (admin)
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/universities/{{newUniversityId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "isActive": false
+  }
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

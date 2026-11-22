@@ -1,0 +1,28 @@
+meta {
+  name: Scan again (expect 409)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/attendance/scan
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{organizerToken}}
+}
+
+body:json {
+  {
+    "eventId": {{eventId}},
+    "qrToken": "{{qrToken}}"
+  }
+}
+
+tests {
+  test("Status is 409", function () {
+    expect(res.getStatus()).to.equal(409);
+  });
+}
