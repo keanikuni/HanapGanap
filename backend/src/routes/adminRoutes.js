@@ -5,6 +5,7 @@ import { toId, idParam } from '../utils/validate.js';
 import createAuditLog from '../utils/auditlogger.js';
 
 const router = express.Router();
+console.log("ADMIN ROUTES FILE LOADED");
 
 // Everything in this file requires a logged-in admin
 router.use(requireAuth, requireRole('admin'));
