@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events</title>
+  <link rel="stylesheet" href="css/event.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="events.html">hnpgnp</a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#">the team</a></li>
+        <li><a href="events.html">events</a></li>
+        <li><a href="#">features</a></li>
+      </ul>
+      <a href="#">log in/sign up</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <label>Sort
+        <select id="sort">
+          <option value="date">Date</option>
+          <option value="title">Title</option>
+          <option value="category">Category</option>
+        </select>
+      </label>
+    </div>
+    <section class="events-grid" id="events-grid"></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-columns">
+      <div>
+        <h3>about</h3>
+        <ul><li><a href="#">Terms of Service</a></li><li><a href="#">Privacy Policy</a></li></ul>
+      </div>
+      <div>
+        <h3>explore</h3>
+        <ul><li><a href="events.html">events</a></li><li><a href="#">the team</a></li><li><a href="#">features</a></li><li><a href="#">log in/sign up</a></li></ul>
+      </div>
+      <div>
+        <h3>say hi!</h3>
+        <ul><li><a href="#">facebook</a></li><li><a href="#">instagram</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-logo" aria-hidden="true">hnpgnp</div>
+  </footer>
+
+  <script src="script/main.js"></script>
+  <script src="script/events.js"></script>
+</body>
+</html>

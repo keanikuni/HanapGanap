@@ -1,19 +1,46 @@
-// Events listing: build the cards from the data, and sort them
+// Events listing: load the events from the API, build the cards, and sort them.
+// Needs main.js loaded first (API_URL, toEvent, formatDate).
 const grid = document.getElementById("events-grid");
 const sortSelect = document.getElementById("sort");
 let events = [];
 
+function showMessage(text) {
+  grid.innerHTML = "";
+  const p = document.createElement("p");
+  p.textContent = text;
+  grid.appendChild(p);
+}
+
 function renderEvents(list) {
+  if (list.length === 0) {
+    showMessage("No events yet. Check back soon!");
+    return;
+  }
+
   grid.innerHTML = "";
   list.forEach((ev) => {
     const card = document.createElement("a");
     card.className = "event-card";
-    card.href = `event.html?id=${ev.event_id}`;
-    card.innerHTML = `
-      <div class="thumb">${ev.image_path ? `<img src="${ev.image_path}" alt="">` : ""}</div>
-      <h2>${ev.title}</h2>
-      <p>${ev.location} &middot; ${formatDate(ev.start_datetime || ev.start_date)}</p>
-    `;
+    card.href = `event.html?id=${encodeURIComponent(ev.event_id)}`;
+
+    const thumb = document.createElement("div");
+    thumb.className = "thumb";
+    if (ev.image_path) {
+      const img = document.createElement("img");
+      img.src = ev.image_path;
+      img.alt = "";
+      img.loading = "lazy";
+      thumb.appendChild(img);
+    }
+
+    // textContent, not innerHTML: titles and venues are typed in by organizers
+    const title = document.createElement("h2");
+    title.textContent = ev.title;
+
+    const info = document.createElement("p");
+    info.textContent = `${ev.location} · ${formatDate(ev.start_datetime)}`;
+
+    card.append(thumb, title, info);
     grid.appendChild(card);
   });
 }
@@ -21,25 +48,25 @@ function renderEvents(list) {
 function sortEvents(by) {
   const copy = [...events];
   if (by === "title") copy.sort((a, b) => a.title.localeCompare(b.title));
-  if (by === "date") copy.sort((a, b) => new Date(a.start_datetime || a.start_date) - new Date(b.start_datetime || b.start_date));
+  if (by === "date") copy.sort((a, b) => new Date(a.start_datetime) - new Date(b.start_datetime));
   if (by === "category") copy.sort((a, b) => (a.category || "").localeCompare(b.category || ""));
   renderEvents(copy);
 }
 
 sortSelect.addEventListener("change", () => sortEvents(sortSelect.value));
 
-// Kumuha ng events — gamitin ang sample data kung hindi available ang backend
 async function loadEvents() {
+  showMessage("Loading events…");
   try {
     const res = await fetch(`${API_URL}/events`);
-    if (!res.ok) throw new Error("Backend not available");
-    const rawData = await res.json();
-    events = rawData.map(item => toEvent(item));
+    if (!res.ok) throw new Error(`Server answered ${res.status}`);
+    events = (await res.json()).map(toEvent);
   } catch (err) {
-    console.log("Using sample data instead:", err);
-    events = window.events || []; // Gamitin ang data.js kung walang backend
+    console.error("Could not load events:", err);
+    showMessage("Couldn't load events. Make sure the backend is running, then refresh.");
+    return;
   }
-  sortEvents("date");
+  sortEvents(sortSelect.value);
 }
 
 document.addEventListener("DOMContentLoaded", loadEvents);

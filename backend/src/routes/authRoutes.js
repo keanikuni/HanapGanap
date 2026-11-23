@@ -155,7 +155,7 @@ router.post('/register', registerLimiter, async (req, res) => {
         if (error.code === 'P2003') {
             return res.status(400).json({ message: "Invalid university" });
         }
-       console.log(err.message);
+        console.log(error.message);
         res.sendStatus(500);
     }
 });
@@ -179,13 +179,9 @@ router.post('/login', loginLimiter, async (req, res) => {
             user: { id: user.id, fullName: user.fullName, email: user.email, role: user.role },
         });
     } catch (err) {
+        // Log the details on the server; never send them to the browser
         console.error("LOGIN ERROR:", err);
-    console.error("ERROR STACK:", err.stack);
-
-    res.status(500).json({
-        message: "Internal server error",
-        error: err.message
-    });
+        res.status(500).json({ message: "Internal server error" });
     }
 });
 
