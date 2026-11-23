@@ -197,14 +197,14 @@ app.use(express.json());
 
 // ─── Static files ─────────────────────────────────────────
 // Backend/src -> up two levels -> frontend
-app.use(express.static(path.join(__dirname, '../../')));
+app.use(express.static(path.join(__dirname, '../../frontend')));
 
 // Public event images: /uploads/<file> -> uploads/images/<file>
 app.use('/uploads', express.static(IMAGE_DIR));
 
 // Fallback home page (only used if the frontend folder has no index.html)
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../index.html'));
+    res.sendFile(path.join(__dirname, '../index.html'));
 });
 
 
