@@ -1,0 +1,21 @@
+meta {
+  name: Download certificate not registered (expect 404)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/events/{{eventId}}/certificate
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{organizerToken}}
+}
+
+tests {
+  test("Status is 404", function () {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

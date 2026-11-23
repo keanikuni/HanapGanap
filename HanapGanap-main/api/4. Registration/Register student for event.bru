@@ -1,0 +1,25 @@
+meta {
+  name: Register student for event
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/events/{{eventId}}/register
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{studentToken}}
+}
+
+script:post-response {
+  if (res.body && res.body.id) bru.setVar("registrationId", res.body.id);
+}
+
+tests {
+  test("Status is 201", function () {
+    expect(res.getStatus()).to.equal(201);
+  });
+}

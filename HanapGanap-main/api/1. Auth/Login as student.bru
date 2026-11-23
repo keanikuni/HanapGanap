@@ -1,0 +1,28 @@
+meta {
+  name: Login as student
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{studentEmail}}",
+    "password": "{{password}}"
+  }
+}
+
+script:post-response {
+  if (res.body && res.body.token) bru.setVar("studentToken", res.body.token);
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}
