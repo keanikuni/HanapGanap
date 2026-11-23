@@ -13,7 +13,6 @@ if (process.env.NODE_ENV === 'production') {
     console.error('Refusing to run the mock seed in production.');
     process.exit(1);
 }
-
 // ─── Settings ─────────────────────────────────────────────
 const MOCK_PASSWORD = 'password123';          // every mock user (except the admin) uses this
 const ADMIN = { fullName: 'System Admin', email: 'admin@sample.edu.ph', password: 'ChangeMe123!' };
@@ -22,7 +21,7 @@ const STUDENT_COUNT = 30;
 // ─── Small helpers ────────────────────────────────────────
 // Seeded random generator, so every run produces the same data
 function makeRandom(seed) {
-    return () => {
+    return () => { 
         seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
         let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
         t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
