@@ -1,90 +1,128 @@
-body{
+body {
     margin: 0;
     padding: 0;
 }
 
 #navBar {
-    width: 100%;
-    overflow-x: hidden;
-    background-color: #FFF8E7;
     position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    background-color: #FFF8E7;
 }
 
-#menuToggle{
+#NAVcontainer {
+    display: flex;
+    min-height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+#NAVlogo {
+    padding-block: 10px;
+}
+
+#NAVlogo img {
     display: block;
-    margin-left: auto;
+    width: auto;
+    height: 30px;
 }
 
-#mainNavID{
+#NAVmenuToggle {
+    display: block;
+    padding: 0.25rem 0.5rem;
+    border: 0;
+    background: transparent;
+    color: #A53636;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#NAVMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
     display: none;
     flex-direction: column;
-    position: absolute;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem 1rem;
+    background-color: #FFF8E7;
+    box-sizing: border-box;
 }
 
-#mainNavID.active{
+#NAVMenu.active {
     display: flex;
 }
 
-@media (min-width: 768px){
-
-}
-
-@media (min-width: 1200px) {
-
-#menuToggle{
-    display: none;
-}
-
-#container{
-    height: 50px;
-}
-
-#container {
+#NAVmainNavID, #NAVaccount {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 70%;
-    flex-shrink: 0;
-    margin-inline: 3%;
-}
-
-#logo img{
-    height: 5%;
-    width: auto;
-}
-
-#mainNavID, #account{
-    display: flex;
-    flex-direction: row;
-    gap: 3em;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
     list-style: none;
-    flex-shrink: 0;
 }
 
-#team h2:hover, #events h2:hover, #features h2:hover, #account h2:hover{
+#NAVcontainer h2 {
+    margin: 0;
+    color: #A53636;
+    font-family: 'Stack Sans Headline';
+    font-weight: 100;
+    transition: all 0.1s ease-out;
+}
+
+#NAVcontainer a {
+    color: inherit;
+    text-decoration: none;
+}
+
+#NAVcontainer h2:hover {
     transform: scale(103%);
     background-color: #A53636;
     color: #FFF8E7;
     transition: all 0.1s ease-in;
 }
 
-#team h2, #events h2, #features h2, #account h2{
-    font-family: 'Stack Sans Headline';
-    font-weight: 100;
-    color: #A53636;
-    transition: all 0.1s ease-out;
-}
+@media (min-width: 1200px) {
+    #NAVcontainer {
+        position: relative;
+    }
 
-#team a, #events a, #features a, #account a{
-    text-decoration: none;
-    color: inherit;
-}
+    #NAVmenuToggle {
+        display: none;
+    }
 
-#account {
-    margin-left: auto;
-}
+    #NAVMenu {
+        position: static;
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0;
+        background: transparent;
+    }
 
+    #NAVmainNavID {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #NAVmainNavID, #NAVaccount {
+        flex-direction: row;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    #NAVaccount {
+        margin-left: auto;
+    }
 }

@@ -3,22 +3,26 @@
 <script>
 
     function toggleMenu(){
-        const nav = document.getElementById("mainNavID");
+        const menu = document.getElementById("NAVMenu");
+        const toggle = document.getElementById("NAVmenuToggle");
 
-        nav.classList.toggle("active");
+        const isOpen = menu.classList.toggle("active");
+        toggle.setAttribute("aria-expanded", isOpen);
     }
 
 </script>
 
 <nav id="navBar">
-    <button id="menuToggle" onclick="toggleMenu()">&#9776;</button>
-    <div id="container">
-    <div id="logo"><a href="index.html"><img src="frontend/vectors/logoRedBlue.svg"></a></div>
-    <ul class="mainNav" id="mainNavID">
-        <li id="team"><a href="team.html"><h2>the team</h2></a></li>
-        <li id="events"><a href="events.html"><h2>events</h2></a></li>
-        <li id="features"><a href="features.html"><h2>features</h2></a></li>
-    </ul>
-    <div id="account"><a><h2>account</h2></a></div>
+    <div id="NAVcontainer">
+        <div id="NAVlogo"><a href="index.html"><img src="frontend/vectors/logoRedBlue.svg"></a></div>
+        <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="navMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
+        <div id="NAVMenu">
+            <ul class="NAVmainNav" id="NAVmainNavID">
+                <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+            </ul>
+            <div id="NAVaccount"><a href="signup.html"><h2 class="NAVh2">account</h2></a></div>
+        </div>
     </div>
 </nav>
