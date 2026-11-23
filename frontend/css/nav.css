@@ -12,6 +12,7 @@ body{
 
 #menuToggle{
     display: block;
+    margin-left: auto;
 }
 
 #mainNavID{
@@ -49,10 +50,11 @@ body{
 }
 
 #logo img{
-    height: 10%;
+    height: 5%;
+    width: auto;
 }
 
-#mainNavID{
+#mainNavID, #account{
     display: flex;
     flex-direction: row;
     gap: 3em;
@@ -79,6 +81,10 @@ body{
 #team a, #events a, #features a, #account a{
     text-decoration: none;
     color: inherit;
+}
+
+#account {
+    margin-left: auto;
 }
 
 }
