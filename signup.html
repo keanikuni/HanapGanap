@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hnpgnp | Sign up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="frontend/css/login.css">
+</head>
+<body>
+
+  <header class="siteHeader">
+    <a href="index.html" class="logoLink">
+      <img src="frontend/vectors/logoRedBlue.svg" alt="hnpgnp" class="logoImage">
+    </a>
+  </header>
+
+  <main class="pageMain">
+    <p id="status" class="statusMessage" aria-live="polite"></p>
+
+    <!-- SIGN UP -->
+    <section id="signupSection" class="authSection">
+      <h1 class="authTitle">ready to find events? dive in!</h1>
+      <form id="signupForm" class="authForm" novalidate>
+        <div class="fieldGroup">
+          <label for="signupRole" class="fieldLabel">I am a</label>
+          <select id="signupRole" class="fieldInput">
+            <option value="student">Student</option>
+            <option value="guest">Guest</option>
+            <option value="organizer">Organizer</option>
+          </select>
+        </div>
+        <div class="fieldGroup" data-roles="student organizer">
+          <label for="signupUniversity" class="visuallyHidden">University</label>
+          <select id="signupUniversity" class="fieldInput" aria-describedby="signupUniversityError">
+            <option value="">University</option>
+          </select>
+          <div class="fieldError" id="signupUniversityError"></div>
+        </div>
+        <div class="fieldGroup">
+          <label for="signupName" class="visuallyHidden">Full name</label>
+          <input type="text" id="signupName" class="fieldInput" placeholder="Full name" autocomplete="name" aria-describedby="signupNameError">
+          <div class="fieldError" id="signupNameError"></div>
+        </div>
+        <div class="fieldGroup">
+          <label for="signupEmail" class="visuallyHidden">Email</label>
+          <input type="email" id="signupEmail" class="fieldInput" placeholder="School email" autocomplete="email" aria-describedby="signupEmailError">
+          <div class="fieldError" id="signupEmailError"></div>
+        </div>
+        <div class="fieldGroup" data-roles="student">
+          <label for="signupStudentNumber" class="visuallyHidden">Student number</label>
+          <input type="text" id="signupStudentNumber" class="fieldInput" placeholder="Student number" autocomplete="off" aria-describedby="signupStudentNumberError">
+          <div class="fieldError" id="signupStudentNumberError"></div>
+        </div>
+        <div class="fieldGroup" data-roles="student">
+          <label for="signupCourse" class="visuallyHidden">Course or program</label>
+          <input type="text" id="signupCourse" class="fieldInput" placeholder="Course / program" autocomplete="off" aria-describedby="signupCourseError">
+          <div class="fieldError" id="signupCourseError"></div>
+        </div>
+        <div class="fieldGroup" data-roles="student">
+          <label for="signupYear" class="visuallyHidden">Year level</label>
+          <select id="signupYear" class="fieldInput" aria-describedby="signupYearError">
+            <option value="">Year level</option>
+            <option value="1st">1st year</option>
+            <option value="2nd">2nd year</option>
+            <option value="3rd">3rd year</option>
+            <option value="4th">4th year</option>
+            <option value="5th">5th year</option>
+          </select>
+          <div class="fieldError" id="signupYearError"></div>
+        </div>
+        <div class="fieldGroup" data-roles="organizer">
+          <label for="signupOrgName" class="visuallyHidden">Organization name</label>
+          <input type="text" id="signupOrgName" class="fieldInput" placeholder="Organization name" autocomplete="off" aria-describedby="signupOrgNameError">
+          <div class="fieldError" id="signupOrgNameError"></div>
+        </div>
+        <div class="fieldGroup" data-roles="guest">
+          <label for="signupContact" class="visuallyHidden">Contact number</label>
+          <input type="tel" id="signupContact" class="fieldInput" placeholder="Contact number" autocomplete="tel" aria-describedby="signupContactError">
+          <div class="fieldError" id="signupContactError"></div>
+        </div>
+        <div class="fieldGroup" data-roles="guest">
+          <label for="signupAffiliation" class="visuallyHidden">School or affiliation (optional)</label>
+          <input type="text" id="signupAffiliation" class="fieldInput" placeholder="School / affiliation (optional)" autocomplete="off" aria-describedby="signupAffiliationError">
+          <div class="fieldError" id="signupAffiliationError"></div>
+        </div>
+        <div class="fieldGroup">
+          <label for="signupPassword" class="visuallyHidden">Password</label>
+          <input type="password" id="signupPassword" class="fieldInput" placeholder="Password" autocomplete="new-password" aria-describedby="signupPasswordError">
+          <div class="fieldError" id="signupPasswordError"></div>
+        </div>
+        <div class="fieldGroup">
+          <label for="signupConfirm" class="visuallyHidden">Confirm password</label>
+          <input type="password" id="signupConfirm" class="fieldInput" placeholder="Confirm password" autocomplete="new-password" aria-describedby="signupConfirmError">
+          <div class="fieldError" id="signupConfirmError"></div>
+        </div>
+
+        <div class="fieldError" id="signupFormError" role="alert"></div>
+        <button type="submit" class="pillButton"><span class="labelMobile">Enter</span><span class="labelDesktop">Sign Up</span></button>
+      </form>
+      <p class="switchPrompt">already have an account? <a href="login.html">log in</a></p>
+    </section>
+
+      </main>
+
+  <footer class="siteFooter">
+    <div class="footerGroups">
+      <nav class="footerGroup" aria-label="Explore">
+        <h2 class="footerHeading">explore</h2>
+        <ul class="footerLinks">
+          <li><a href="events.html">events</a></li>
+          <li><a href="team.html">the team</a></li>
+          <li><a href="features.html">features</a></li>
+          <li><a href="login.html">log in/sign up</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footerGroup" aria-label="About">
+        <h2 class="footerHeading">about</h2>
+        <ul class="footerLinks">
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="privacypolicy.html">Privacy Policy</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footerGroup" aria-label="Social media">
+        <h2 class="footerHeading">say hi!</h2>
+        <ul class="footerLinks">
+          <li><a href="#">facebook</a></li>
+          <li><a href="#">instagram</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <img src="frontend/vectors/logoWarmWhite.svg" alt="" class="footerWordmark">
+  </footer>
+
+  <script src="script/main.js"></script>
+  <script src="script/auth.js"></script>
+  <script src="script/signup.js"></script>
+</body>
+</html>
