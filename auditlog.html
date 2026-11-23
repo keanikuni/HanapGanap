@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audit Log</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #fff6e5;
+      --red: #A53636;       
+      --page-red: #A53636;  
+      --card: #D9D9D9;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--page-red);
+      font-family: "Stack Sans Headline", system-ui, sans-serif;
+      font-weight: 300;
+    }
+
+    /* nav */
+
+    /* base */
+    .nav {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--cream);
+      padding: 0.35rem 0.6rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    }
+    .nav__logo img { height: 1rem; display: block; }
+
+    .nav__toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: none;
+      border: 0;
+      padding: 0.25rem;
+      cursor: pointer;
+    }
+    .nav__toggle span { width: 14px; height: 2px; background: var(--red); }
+
+    .nav__menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    }
+    .nav__menu.is-open { display: flex; }
+
+    .nav__links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav a { color: var(--red); text-decoration: none; font-size: 0.85rem; }
+    .nav__toggle:focus-visible,
+    .nav a:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+    /* page */
+
+    .page {
+      flex: 1;
+      padding: 0.75rem;
+    }
+
+    .card {
+      background: var(--card);
+      color: #000;
+      padding: 0.75rem;
+      min-height: 8rem;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .card__account,
+    .card__title { margin: 0; font-size: inherit; font-weight: 300; }
+    .card__title { margin-top: 0.4rem; }
+
+    .log {
+      list-style: none;
+      margin: 0.6rem 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .pager { margin-top: 0.8rem; }
+    .pager button { font: inherit; padding: 0.3rem 0.8rem; cursor: pointer; }
+
+    /* 768 px */
+    @media (min-width: 768px) {
+      .nav { padding: 0.5rem 1rem; }
+      .nav__logo img { height: 1.4rem; }
+      .nav__toggle { gap: 4px; }
+      .nav__toggle span { width: 20px; }
+      .nav a { font-size: 1rem; }
+
+      .page { padding: 1.25rem; }
+      .card { padding: 1rem 1.25rem; min-height: 10rem; font-size: 0.95rem; }
+    }
+
+    /* 1200px */
+    @media (min-width: 1200px) {
+      .nav {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        padding: 0.6rem 1.5rem;
+      }
+      .nav__logo { justify-self: start; }
+      .nav__logo img { height: 1.6rem; }
+      .nav__toggle { display: none; }
+
+      .nav__menu { display: contents; }
+      .nav__links { flex-direction: row; justify-content: center; gap: 2rem; }
+      .nav__login { justify-self: end; }
+
+      .page { padding: 1.5rem 2rem; }
+      .card { padding: 1.25rem 1.5rem; min-height: 12rem; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <main class="page">
+    <section class="card" aria-labelledby="audit-title">
+      <p class="card__account">Admin</p>
+      <h1 class="card__title" id="audit-title">Audit Log</h1>
+
+      <ul class="log" id="audit-log"></ul>
+
+      <div class="pager">
+        <button id="prev">Previous</button>
+        <span id="page-info"></span>
+        <button id="next">Next</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const API = '/api';
+    let page = 1;
+    let totalPages = 1;
+
+    // load the shared nav, then wire up the hamburger
+    fetch('navPlaceholder.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('nav-placeholder').innerHTML = html;
+
+        const toggle = document.querySelector('.nav__toggle');
+        const menu = document.querySelector('.nav__menu');
+        if (!toggle || !menu) return;
+
+        toggle.addEventListener('click', () => {
+          const open = menu.classList.toggle('is-open');
+          toggle.setAttribute('aria-expanded', open);
+        });
+      })
+      .catch(err => console.error('Could not load navPlaceholder.html', err));
+
+    // add one entry to the log
+    function addLogEntry(log) {
+      const li = document.createElement('li');
+      const name = log.user ? log.user.fullName : 'Unknown';
+      const date = new Date(log.createdAt).toLocaleString();
+      li.textContent = `${log.action} ${log.entity || ''} - ${log.description || ''} (${name}, ${date})`;
+      document.getElementById('audit-log').appendChild(li);
+    }
+
+    function showMessage(text) {
+      document.getElementById('audit-log').innerHTML = '<li>' + text + '</li>';
+    }
+
+    function loadLogs() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        showMessage('Please log in as an admin.');
+        return;
+      }
+
+      fetch(`${API}/admin/audit-logs?page=${page}&limit=20`, {
+        headers: { Authorization: 'Bearer ' + token }
+      })
+        .then(res => {
+          if (res.status === 401) throw new Error('Session expired, please log in again.');
+          if (res.status === 403) throw new Error('Admins only.');
+          if (!res.ok) throw new Error('Could not load the audit log.');
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById('audit-log').innerHTML = '';
+          if (data.logs.length === 0) return showMessage('No audit logs yet.');
+
+          data.logs.forEach(addLogEntry);
+          totalPages = Math.ceil(data.total / data.limit);
+          document.getElementById('page-info').textContent = `Page ${data.page} of ${totalPages}`;
+          document.getElementById('prev').disabled = page <= 1;
+          document.getElementById('next').disabled = page >= totalPages;
+        })
+        .catch(err => showMessage(err.message));
+    }
+
+    document.getElementById('prev').addEventListener('click', () => { page--; loadLogs(); });
+    document.getElementById('next').addEventListener('click', () => { page++; loadLogs(); });
+
+    loadLogs();
+  </script>
+</body>
+</html>
