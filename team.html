@@ -9,9 +9,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&family=Momo+Trust+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="frontend/css/team.css">
+    <link rel="stylesheet" href="frontend/css/nav.css">
+    <link rel="stylesheet" href="frontend/css/footer.css">
+
+    <script> //nav
+        function toggleMenu(){
+        const menu = document.getElementById("NAVMenu");
+        const toggle = document.getElementById("NAVmenuToggle");
+
+        const isOpen = menu.classList.toggle("active");
+        toggle.setAttribute("aria-expanded", isOpen);
+    }
+    </script>
 </head>
 <body>
-    <nav></nav>
+    <nav id="navBar">
+        <div id="NAVcontainer">
+            <div id="NAVlogo"><a href="index.html"><img src="frontend/vectors/logoRedBlue.svg"></a></div>
+            <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="navMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
+            <div id="NAVMenu">
+                <ul class="NAVmainNav" id="NAVmainNavID">
+                    <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                    <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                    <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+                </ul>
+                <div id="NAVaccount"><a href="signup.html"><h2 class="NAVh2">account</h2></a></div>
+            </div>
+        </div>
+    </nav>
 
     <section id="headerSection"> <!--top section-->
         <div class="head"><h1 class="headTEXT"><i>our</i> team</h1></div>

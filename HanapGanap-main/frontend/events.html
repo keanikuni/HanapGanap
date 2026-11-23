@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event</title>
+  <title>Events</title>
   <link rel="stylesheet" href="css/event.css">
 </head>
+
 <body>
   <header class="site-header">
     <a class="logo" href="events.html">hnpgnp</a>
@@ -21,19 +22,16 @@
   </header>
 
   <main>
-    <section class="event">
-      <div class="event-image" id="event-image"></div>
-<div class="event-info">
-  <h1 id="event-title">Event Name</h1>
-  <p id="event-location">Location</p>
-  <p id="event-date"></p>
-  <p id="event-category"></p>
-  <p id="event-organizer"></p>
-  <p id="event-university"></p>
-  <p id="event-status"></p>
-</div>
-      <p class="event-desc" id="event-desc">Event Description</p>
-    </section>
+    <div class="toolbar">
+      <label>Sort
+        <select id="sort">
+          <option value="date">Date</option>
+          <option value="title">Title</option>
+          <option value="category">Category</option>
+        </select>
+      </label>
+    </div>
+    <section class="events-grid" id="events-grid"></section>
   </main>
 
   <footer class="site-footer">
@@ -54,7 +52,6 @@
     <div class="footer-logo" aria-hidden="true">hnpgnp</div>
   </footer>
 
-  <script src="script/data.js"></script>
   <script src="script/main.js"></script>
   <script src="script/event.js"></script>
 </body>

@@ -1,0 +1,17 @@
+meta {
+  name: List universities (public)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/universities
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

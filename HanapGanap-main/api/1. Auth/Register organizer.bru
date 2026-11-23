@@ -1,0 +1,28 @@
+meta {
+  name: Register organizer
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fullName": "Maria Santos",
+    "email": "{{organizerEmail}}",
+    "password": "{{password}}",
+    "role": "organizer",
+    "universityId": {{universityId}},
+    "orgName": "Computer Society"
+  }
+}
+
+tests {
+  test("Status is 201", function () {
+    expect(res.getStatus()).to.equal(201);
+  });
+}

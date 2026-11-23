@@ -14,7 +14,7 @@ h1{
     color: #A53636;
 }
 
-h2{
+h2:not(nav h2){
     font-family: "Momo Trust Display";
     letter-spacing: -0.13em;
     color: #FFF8E7;
@@ -44,7 +44,7 @@ h2{
 
 
 @media (min-width: 768px) {
-    h2{
+    h2:not(nav h2){
         font-size: 96px;
         text-shadow: 0px 0px 2px #000;
     }
@@ -59,7 +59,7 @@ h2{
 }
 
 @media (min-width: 1200px){
-    h2{
+    h2:not(nav h2){
         font-size: 120px;
         text-shadow: 0px 0px 2.5px #000;
     }

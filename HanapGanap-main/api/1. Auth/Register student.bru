@@ -1,0 +1,30 @@
+meta {
+  name: Register student
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fullName": "Juan Dela Cruz",
+    "email": "{{studentEmail}}",
+    "password": "{{password}}",
+    "role": "student",
+    "universityId": {{universityId}},
+    "studentNumber": "{{studentNumber}}",
+    "courseProgram": "BSIT",
+    "yearLevel": "3rd"
+  }
+}
+
+tests {
+  test("Status is 201", function () {
+    expect(res.getStatus()).to.equal(201);
+  });
+}

@@ -1,0 +1,337 @@
+/* Login + Sign up. Fonts come from Google Fonts (linked in the HTML), same as the home page.
+   Breakpoints match the mockups: mobile (base), tablet 700px+, desktop 1200px+ */
+
+:root {
+  --creamBg: #FFF8E7;
+  --brickRed: #A53636;
+  --periwinkle: #829BD3;
+  --periwinkleDark: #6D88C6;
+  --white: #FFFFFF;
+  --ink: #000000;
+
+  --serifFont: "Instrument Serif", "Times New Roman", serif;
+  --sansFont: "Stack Sans Headline", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ---------- Base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  background: var(--creamBg);
+  color: var(--ink);
+  font-family: var(--sansFont);
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Button labels: "Enter" on mobile/tablet, "Log In" / "Sign Up" on desktop */
+.labelDesktop { display: none; }
+
+/* ---------- Header ---------- */
+
+.siteHeader {
+  padding: 0 12px;
+  height: 41px;
+  display: flex;
+  align-items: center;
+  background: var(--creamBg);
+}
+
+.logoLink { display: inline-block; line-height: 0; }
+.logoLink:focus-visible { outline: 3px solid var(--brickRed); outline-offset: 3px; }
+.logoImage { display: block; width: 87px; height: auto; }
+
+/* ---------- Main ---------- */
+
+.pageMain {
+  flex: 1 0 auto;
+  min-height: 700px;
+  padding: 100px 30px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.statusMessage {
+  margin: 0 0 20px;
+  color: var(--brickRed);
+  font-size: 15px;
+  text-align: center;
+}
+.statusMessage:empty { display: none; }
+
+.authSection {
+  width: 100%;
+  max-width: 341px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.authTitle {
+  margin: 0 0 25px;
+  color: var(--brickRed);
+  font-family: var(--serifFont);
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 38px;
+  text-align: center;
+}
+
+.welcomeText {
+  margin: 0 0 25px;
+  font-size: 18px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Forms ---------- */
+
+.authForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fieldGroup { display: flex; flex-direction: column; gap: 6px; }
+
+.fieldInput {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--sansFont);
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+}
+.fieldInput::placeholder { color: var(--ink); opacity: 1; }
+.fieldInput:focus-visible { outline: 3px solid var(--periwinkle); outline-offset: 2px; }
+.fieldInput[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--brickRed); }
+
+.fieldError {
+  color: var(--brickRed);
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: center;
+}
+.fieldError:empty { display: none; }
+
+/* Visible label, used by the "I am a" dropdown */
+.fieldLabel {
+  color: var(--brickRed);
+  font-size: 16px;
+  text-align: center;
+}
+
+select.fieldInput { text-align-last: center; cursor: pointer; }
+
+/* ---------- Button ---------- */
+
+.pillButton {
+  width: 119px;
+  height: 40px;
+  margin: 5px auto 0;
+  border: 0;
+  border-radius: 20px;
+  background: var(--periwinkle);
+  color: var(--white);
+  font-family: var(--sansFont);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+}
+.pillButton:hover { background: var(--periwinkleDark); }
+.pillButton:active { transform: translateY(1px); }
+.pillButton:focus-visible { outline: 3px solid var(--brickRed); outline-offset: 3px; }
+
+a.pillButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  text-decoration: none;
+}
+
+.switchPrompt {
+  margin: 24px 0 0;
+  color: var(--brickRed);
+  font-size: 14px;
+  text-align: center;
+}
+.switchPrompt a { color: var(--brickRed); text-decoration: underline; }
+.switchPrompt a:focus-visible { outline: 2px solid var(--brickRed); outline-offset: 2px; }
+
+/* ---------- Footer (mobile: stacked, explore / about / say hi!) ---------- */
+
+.siteFooter { padding-top: 62px; background: var(--periwinkle); }
+
+.footerGroups {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 38px;
+}
+
+.footerGroup { text-align: center; }
+
+.footerHeading {
+  margin: 0 0 22px;
+  color: var(--brickRed);
+  font-family: var(--serifFont);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.footerLinks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 16px;
+  line-height: 21px;
+}
+.footerLinks a { color: var(--white); text-decoration: none; }
+.footerLinks a:hover { text-decoration: underline; }
+.footerLinks a:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
+
+/* Cream wordmark runs off the bottom edge of the blue band */
+.footerWordmark {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 68px auto -7px;
+}
+
+/* ---------- Tablet (700px+) ---------- */
+
+@media (min-width: 700px) {
+  .siteHeader { height: 48px; padding: 0 13px; }
+  .logoImage { width: 115px; }
+
+  .pageMain { min-height: 565px; padding: 100px 30px 60px; }
+
+  /* wide enough for the heading to sit on one line; the form stays 341px */
+  .authSection { max-width: 620px; }
+  .authTitle { margin-bottom: 40px; }
+  .authForm, .switchPrompt { max-width: 341px; }
+
+  .siteFooter { padding-top: 70px; }
+
+  /* columns spread across the width, left-aligned: about / explore / say hi! */
+  .footerGroups {
+    display: grid;
+    grid-template-columns: 246fr 235fr 200fr;
+    align-items: start;
+    gap: 0;
+    padding: 0 10%;
+  }
+  .footerGroup { text-align: left; }
+  .footerGroup:nth-child(2) { order: -1; }   /* "about" first, like the mockup */
+  .footerHeading { font-size: 38px; margin-bottom: 14px; }
+  .footerLinks { font-size: 17px; }
+
+  .footerWordmark { margin-top: 40px; }
+}
+
+/* ---------- Desktop (1200px+): heading left, form right ---------- */
+
+@media (min-width: 1200px) {
+  .labelMobile { display: none; }
+  .labelDesktop { display: inline; }
+
+  .siteHeader { height: 62px; padding: 0 22px; }
+  .logoImage { width: 123px; }
+
+  .pageMain {
+    min-height: 816px;
+    padding: 190px 8% 80px;
+    align-items: stretch;
+  }
+
+  /* login / sign up: two columns. The welcome view keeps the single column. */
+  #loginSection,
+  #signupSection {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 472px);
+    column-gap: 4%;
+    justify-items: stretch;
+    align-items: start;
+  }
+
+  #loginSection .authTitle,
+  #signupSection .authTitle {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    margin: 0;
+    padding-left: 3%;
+    font-size: clamp(64px, 6.25vw, 90px);
+    line-height: 0.94;
+    text-align: left;
+  }
+
+  #loginSection .authForm,
+  #signupSection .authForm {
+    grid-column: 2;
+    grid-row: 1;
+    max-width: none;
+    gap: 28px;
+  }
+
+  #loginSection .switchPrompt,
+  #signupSection .switchPrompt {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: none;
+    font-size: 16px;
+  }
+
+  #welcomeSection { align-self: center; }
+
+  .fieldInput { height: 55px; font-size: 28px; }
+  .fieldError { font-size: 14px; }
+  .fieldLabel { font-size: 20px; }
+
+  .pillButton { width: 164px; height: 55px; border-radius: 28px; font-size: 30px; }
+
+  .siteFooter { padding-top: 125px; }
+
+  .footerGroups {
+    grid-template-columns: 397fr 359fr 300fr;
+    padding: 0 0 0 17.4%;
+  }
+  .footerHeading { font-size: clamp(44px, 4.2vw, 60px); margin-bottom: 8px; }
+  .footerLinks { font-size: clamp(18px, 1.7vw, 24px); line-height: 1.3; }
+
+  .footerWordmark { margin-top: 60px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pillButton:active { transform: none; }
+}

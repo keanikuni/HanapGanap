@@ -1,0 +1,25 @@
+meta {
+  name: All events for review
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/admin/events?status=completed
+  body: none
+  auth: bearer
+}
+
+params:query {
+  status: completed
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}
