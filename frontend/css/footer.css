@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Footer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
-  <style>
+
     :root {
       --blue: #829bd3;
       --red: #a53636;
@@ -105,44 +96,3 @@
 
       .footer__group h2 { font-size: 2.25rem; }
     }
-  </style>
-</head>
-<body>
-
-  <footer class="footer">
-    <nav class="footer__nav" aria-label="Footer">
-      <div class="footer__group">
-        <h2>explore</h2>
-        <ul>
-          <li><a href="#">events</a></li>
-          <li><a href="#">the team</a></li>
-          <li><a href="#">features</a></li>
-          <li><a href="#">log in/sign up</a></li>
-        </ul>
-      </div>
-
-      <div class="footer__group">
-        <h2>about</h2>
-        <ul>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-        </ul>
-      </div>
-
-      <div class="footer__group">
-        <h2>say hi!</h2>
-        <ul>
-          <li><a href="#">facebook</a></li>
-          <li><a href="#">instagram</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="footer__wordmark">
-      <img src="frontend/vectors/logoWarmWhite.svg" alt="HanapGanap">
-    </div>
-  </footer>
-  <div class="footer__base"></div>
-
-</body>
-</html>
