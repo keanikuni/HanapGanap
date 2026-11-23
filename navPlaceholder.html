@@ -1,11 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<link rel="stylesheet" href="frontend/css/nav.css">
+
+<script>
+
+    function toggleMenu(){
+        const nav = document.getElementById("mainNavID");
+
+        nav.classList.toggle("active");
+    }
+
+</script>
+
+<nav id="navBar">
+    <button id="menuToggle" onclick="toggleMenu()">&#9776;</button>
+    <div id="container">
+    <div id="logo"><a href="index.html"><img src="frontend/vectors/logoRedBlue.svg"></a></div>
+    <ul class="mainNav" id="mainNavID">
+        <li id="team"><a href="team.html"><h2>the team</h2></a></li>
+        <li id="events"><a href="events.html"><h2>events</h2></a></li>
+        <li id="features"><a href="features.html"><h2>features</h2></a></li>
+    </ul>
+    <div id="account"><a><h2>account</h2></a></div>
+    </div>
     
-</body>
-</html>
+    
+</nav>
