@@ -1,0 +1,90 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+#navBar {
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #FFF8E7;
+    position: sticky;
+}
+
+#menuToggle{
+    display: block;
+    margin-left: auto;
+}
+
+#mainNavID{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+}
+
+#mainNavID.active{
+    display: flex;
+}
+
+@media (min-width: 768px){
+
+}
+
+@media (min-width: 1200px) {
+
+#menuToggle{
+    display: none;
+}
+
+#container{
+    height: 50px;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 70%;
+    flex-shrink: 0;
+    margin-inline: 3%;
+}
+
+#logo img{
+    height: 5%;
+    width: auto;
+}
+
+#mainNavID, #account{
+    display: flex;
+    flex-direction: row;
+    gap: 3em;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    flex-shrink: 0;
+}
+
+#team h2:hover, #events h2:hover, #features h2:hover, #account h2:hover{
+    transform: scale(103%);
+    background-color: #A53636;
+    color: #FFF8E7;
+    transition: all 0.1s ease-in;
+}
+
+#team h2, #events h2, #features h2, #account h2{
+    font-family: 'Stack Sans Headline';
+    font-weight: 100;
+    color: #A53636;
+    transition: all 0.1s ease-out;
+}
+
+#team a, #events a, #features a, #account a{
+    text-decoration: none;
+    color: inherit;
+}
+
+#account {
+    margin-left: auto;
+}
+
+}
