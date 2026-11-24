@@ -1,11 +1,10 @@
-<link rel="stylesheet" href="frontend/css/nav.css">
+<link rel="stylesheet" href="css/nav.css">
 
 <script>
 
     function toggleMenu(){
         const menu = document.getElementById("NAVMenu");
         const toggle = document.getElementById("NAVmenuToggle");
-
         const isOpen = menu.classList.toggle("active");
         toggle.setAttribute("aria-expanded", isOpen);
     }
