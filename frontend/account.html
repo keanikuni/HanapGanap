@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My account · HanapGanap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/account.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav__logo" id="logoLink" href="index.html">
+    <img id="logoImg" alt="HanapGanap">
+  </a>
+  <button class="nav__toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav__menu" id="navMenu">
+    <ul class="nav__links">
+      <li><a id="navEvents" href="index.html">events</a></li>
+      <li><a href="#">the team</a></li>
+      <li><a href="#">features</a></li>
+    </ul>
+    <a class="nav__login" id="navLogin" href="login.html">log in/sign up</a>
+  </div>
+</header>
+
+<main id="app"><div class="state"><p>Loading your account…</p></div></main>
+
+<footer class="footer">
+  <div class="footer__cols">
+    <div><h3>explore</h3>
+      <a id="fEvents" href="index.html">events</a><a href="#">the team</a><a href="#">features</a><a id="fLogin" href="login.html">log in/sign up</a></div>
+    <div><h3>about</h3><a href="#">Terms of Service</a><a href="#">Privacy Policy</a></div>
+    <div><h3>say hi!</h3><a href="#">facebook</a><a href="#">Instagram</a></div>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- Draws the student's check-in QR code. If it can't load, the page still works without it. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+</body>
+</html>
