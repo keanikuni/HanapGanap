@@ -4,36 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Events</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/event.css">
 </head>
 <body>
 
-
   <div id="nav-container"></div>
 
   <main>
     <div class="toolbar">
-          <label>Sort by:</label>
-          <select id="sort">
-            <option value="selection" disabled selected>Sort by</option>
-          <option value="date">Date</option>
-          <option value="title">Title</option>
-          <option value="category">Category</option>
-        </select>
-      </label>
+      <label for="sort">Sort by:</label>
+      <select id="sort">
+        <option value="selection" disabled selected>Sort by</option>
+        <option value="date">Date</option>
+        <option value="title">Title</option>
+        <option value="category">Category</option>
+      </select>
     </div>
     <section class="events-grid" id="events-grid"></section>
   </main>
-
 
   <div id="footer-container"></div>
 
   <script src="script/main.js"></script>
   <script src="script/events.js"></script>
-
 
   <script>
     // Load Navbar

@@ -31,27 +31,34 @@ const ROLE_FIELDS = {
 
 let universities = [];
 
-
-const API_URL = "https://localhost:8000/api";
-const FILE_URL = "https://localhost:8000";
-
 async function loadUniversities() {
   const select = $("signupUniversity");
+
   try {
-    universities = await request("GET", `${API_URL}/universities`);
+    universities = await request("GET", "/universities");
+
     select.innerHTML = "";
+
     const first = document.createElement("option");
     first.value = "";
     first.textContent = "University";
+    first.disabled = true;
+    first.selected = true;
     select.appendChild(first);
+
     universities.forEach((u) => {
       const option = document.createElement("option");
       option.value = u.id;
-      option.textContent = u.name;      // textContent, so names can't inject HTML
+      option.textContent = u.name; // textContent, so names can't inject HTML
       select.appendChild(option);
     });
-  } catch {
-    select.options[0].textContent = "Can't load universities";
+  } catch (err) {
+    console.error("loadUniversities failed:", err);
+    select.innerHTML = "";
+    const fallback = document.createElement("option");
+    fallback.value = "";
+    fallback.textContent = "Can't load universities";
+    select.appendChild(fallback);
   }
 }
 
