@@ -9,6 +9,7 @@ body {
     z-index: 1000;
     width: 100%;
     background-color: #FFF8E7;
+    z-index: 3;
 }
 
 #NAVcontainer {

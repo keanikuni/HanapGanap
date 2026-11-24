@@ -241,6 +241,8 @@ byId("filters").addEventListener("click", (e) => {
   renderEvents();
 });
 
+byId("logoutBtn").addEventListener("click", goToLogin);
+
 // ---------- Start ----------
 
 async function init() {
