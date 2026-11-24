@@ -12,11 +12,13 @@ import { notFoundHandler, errorHandler } from './middleware/errorMiddleware.js';
 import { rateLimit } from './utils/rateLimit.js';
 import fs from "fs";
 import https from "https";
+import adminRoutes from "./routes/adminRoutes.js";
 // This one file runs everything: the event API (/api), the static frontend, the uploaded
 // images (/uploads) and the PDF tool (/pdf). It replaces the old pdfServer.js, which
 // started a second server on the same port.
 
 const app = express();
+app.use(express.static(path.join(process.cwd(), "../")));
 const PORT = process.env.PORT || 8000;
 
 if (!process.env.JWT_SECRET) {
@@ -210,7 +212,7 @@ app.get('/', (req, res) => {
 // ─── API routes ───────────────────────────────────────────
 // routes/index.js mounts auth, events, universities, categories,
 // registrations, attendance, certificates, notifications and admin under /api
-app.use('/api', routes);
+app.use("/api/admin", adminRoutes);
 
 // ─── PDF tool (no login) ──────────────────────────────────
 // Page: /pdf-tool.html   API: /pdf/generate, /pdf/extract, /pdf/edit, /pdf/verify
