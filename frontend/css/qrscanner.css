@@ -10,6 +10,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-block: 30%;
 }
 
 #qrH1 {
@@ -33,6 +34,7 @@ body{
     background-color: #829BD3;
     border-radius: 100px;
     border: none;
+    padding-inline: 5%;
 }
 
 #reader #html5-qrcode-anchor-scan-type-change{
@@ -40,10 +42,21 @@ body{
     color: #A53636;
 }
 
+#reader span{
+    font-family: 'Stack Sans Headline';
+    color: #A53636;
+}
+
 @media (min-width: 768px){
 
+#qrScannerMainDiv{
+    margin-block: 20%;
+}
 }
 
 @media (min-width: 1200px){
 
+#qrScannerMainDiv {
+    margin-block: 15%;
+}
 }
