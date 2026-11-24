@@ -1,5 +1,10 @@
 const jwt = localStorage.getItem('token');
     const eventId = Number(new URLSearchParams(location.search).get('eventId'));
+
+    if (eventId) {
+    document.getElementById('backButtonUniversal').href = `event.html?id=${eventId}`;
+    }
+
     const statusE1 = document.getElementById('status');
     let busy = false;
 
