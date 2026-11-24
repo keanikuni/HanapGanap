@@ -17,7 +17,7 @@ body{
 
 
 
-h2{
+h2:not(nav h2){
     font-family: "Instrument Serif";
     margin: 0;
     font-weight: 400;
@@ -205,7 +205,6 @@ p{
 /*CALL TO ACTION SECTION*/
 #CTA{
     background-color: #A53636;
-    border-radius: 120px;
     padding-block: 100px ;
 }
 
@@ -230,7 +229,7 @@ p{
 @media (min-width: 768px) {
     /*HERO*/
 
-    h2{
+    h2:not(nav h2){
         font-size: 52px;
     }
 
@@ -274,7 +273,7 @@ p{
         font-size: 40px;
     }
 
-    h2{
+    h2:not(nav h2){
         font-size: 74px;
     }
 
@@ -321,6 +320,7 @@ p{
 
     .featuresItem{
         height: 400px;
+        width: 500px;
     }
 }
 
