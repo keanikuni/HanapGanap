@@ -46,8 +46,10 @@ input.invalid,select.invalid,textarea.invalid{border-width:2px}
 .err{color:var(--red);font-size:.8rem;font-weight:700;min-height:1em}
 .count{align-self:flex-end;font-size:.78rem;color:#5a5a5a}
 .thumbs{display:flex;flex-wrap:wrap;gap:.6rem}
-.thumbs div{width:5.5rem;aspect-ratio:1/1;background:var(--red);overflow:hidden}
+.thumbs div{position:relative;width:5.5rem;aspect-ratio:1/1;background:var(--red);overflow:hidden}
 .thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb-remove{position:absolute;top:2px;right:2px;width:1.5rem;height:1.5rem;padding:0;border:0;border-radius:50%;background:var(--cream);color:var(--red);font:700 1.1rem/1 var(--font-body);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.thumb-remove:hover{background:var(--red);color:var(--cream)}
 .actions{display:flex;gap:.75rem;justify-content:flex-end;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.8rem 1.4rem;border:2px solid var(--red);background:var(--red);color:var(--cream);font:700 1rem var(--font-body);cursor:pointer}
 .btn:hover{filter:brightness(1.1)}
@@ -172,7 +174,7 @@ input.invalid,select.invalid,textarea.invalid{border-width:2px}
       <div class="field full">
         <label for="images">Photos (optional)</label>
         <input id="images" type="file" accept="image/jpeg,image/png,image/webp" multiple>
-        <span class="hint">Up to 5 photos, JPG, PNG or WEBP, 5 MB each. The first one is the preview.</span>
+        <span class="hint">Up to 5 photos, JPG, PNG or WEBP, 5 MB each. The first one is the preview. Click × on a photo to remove it.</span>
         <span class="err" data-for="images"></span>
         <div class="thumbs" id="thumbs"></div>
       </div>
@@ -315,6 +317,10 @@ async function loadCategories() {
   } catch (e) { sel.innerHTML = '<option value="">Couldn’t load categories</option>'; banner(e.message, "bad"); }
 }
 
+/* ---- Photos: keep our own list so individual photos can be removed ---- */
+let selectedFiles = [];
+const MAX_PHOTOS = 5;
+
 /* ---- Validation (rules from the API docs) ---- */
 const names = { title:"Title", category:"Category", description:"Description", venue:"Venue",
   startDatetime:"Start date and time", endDatetime:"End date and time",
@@ -339,7 +345,7 @@ function validate() {
   const lim = Number(val("participantLimit"));
   if (val("participantLimit") && (!Number.isInteger(lim) || lim < 1)) { setErr("participantLimit", "Enter a whole number of 1 or more."); ok = false; }
 
-  const files = [...$("images").files];
+  const files = selectedFiles;
   if (files.length > 5) { setErr("images", "Choose 5 photos or fewer."); ok = false; }
   else if (files.some(f => !/^image\/(jpeg|png|webp)$/.test(f.type))) { setErr("images", "Use JPG, PNG or WEBP files only."); ok = false; }
   else if (files.some(f => f.size > 5 * 1024 * 1024)) { setErr("images", "Each photo must be 5 MB or smaller."); ok = false; }
@@ -348,16 +354,48 @@ function validate() {
 
 /* ---- Small UI bits ---- */
 $("description").addEventListener("input", e => { $("descCount").textContent = e.target.value.length + " / 2000"; });
-$("images").addEventListener("change", e => {
-  const t = $("thumbs"); t.innerHTML = "";
-  [...e.target.files].slice(0, 5).forEach(f => {
-    const d = document.createElement("div"), img = document.createElement("img");
-    img.alt = ""; img.src = URL.createObjectURL(f); d.appendChild(img); t.appendChild(d);
+
+function renderThumbs() {
+  const t = $("thumbs");
+  t.querySelectorAll("img").forEach(i => URL.revokeObjectURL(i.src));
+  t.innerHTML = "";
+  selectedFiles.forEach((f, i) => {
+    const d = document.createElement("div");
+    const img = document.createElement("img");
+    img.alt = f.name;
+    img.src = URL.createObjectURL(f);
+    const x = document.createElement("button");
+    x.type = "button";
+    x.className = "thumb-remove";
+    x.setAttribute("aria-label", "Remove photo " + f.name);
+    x.textContent = "×";
+    x.addEventListener("click", () => {
+      selectedFiles.splice(i, 1);
+      setErr("images", "");
+      renderThumbs();
+    });
+    d.append(img, x);
+    t.appendChild(d);
   });
+}
+
+$("images").addEventListener("change", e => {
+  const incoming = [...e.target.files];
+  e.target.value = "";            // lets the same file be picked again later
+  setErr("images", "");
+  incoming.forEach(f => {
+    const dup = selectedFiles.some(s => s.name === f.name && s.size === f.size && s.lastModified === f.lastModified);
+    if (dup) return;
+    if (selectedFiles.length >= MAX_PHOTOS) { setErr("images", "Only 5 photos allowed. Extra photos were skipped."); return; }
+    selectedFiles.push(f);
+  });
+  renderThumbs();
 });
+
 $("resetBtn").addEventListener("click", () => {
   Object.keys(names).concat("images").forEach(n => setErr(n, ""));
-  $("thumbs").innerHTML = ""; $("descCount").textContent = "0 / 2000"; banner("", "ok");
+  selectedFiles = []; renderThumbs();
+  $("descCount").textContent = "0 / 2000"; banner("", "ok");
 });
 
 /* ---- Submit ---- */
@@ -381,7 +419,7 @@ form.addEventListener("submit", async e => {
   setBusy($("saveBtn"), true, "Create event");
   try {
     const ev = await api("/events", { method: "POST", json: payload });
-    const files = [...$("images").files];
+    const files = [...selectedFiles];
     let note = "";
     if (files.length && ev && ev.id) {
       const fd = new FormData();
@@ -390,7 +428,7 @@ form.addEventListener("submit", async e => {
       catch (err) { note = " The event was saved, but the photos didn’t upload: " + err.message; }
     }
     banner("Event created." + note, note ? "bad" : "ok");
-    form.reset(); $("thumbs").innerHTML = ""; $("descCount").textContent = "0 / 2000";
+    form.reset(); selectedFiles = []; renderThumbs(); $("descCount").textContent = "0 / 2000";
     $("organizer").value = $("whoOrg").textContent;
     $("university").value = $("whoUni").textContent === "–" ? "" : $("whoUni").textContent;
   } catch (err) {
