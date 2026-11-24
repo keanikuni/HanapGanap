@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Organizer | HanapGanap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@300;400;600&family=Playfair+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/footer.css">
+
+<script> //nav
+    function toggleMenu(){
+        const menu = document.getElementById("NAVMenu");
+        const toggle = document.getElementById("NAVmenuToggle");
+
+        const isOpen = menu.classList.toggle("active");
+        toggle.setAttribute("aria-expanded", isOpen);
+    }
+</script>
+
+<style>
+:root{--cream:#fff8e7;--red:#a33636;--blue:#8499d3;--text:#1a1a1a;
+--font-body:"Helvetica Neue",Arial,sans-serif;--font-serif:"Playfair Display",Georgia,serif;--font-stack-sans:"Stack Sans Headline",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--text);font-family:var(--font-body);line-height:1.4}
+a{color:inherit;text-decoration:none}
+ul{list-style:none;margin:0;padding:0}
+
+.org{max-width:1000px;margin:0 auto;padding:1.5rem 1.5rem 2rem;min-height:70vh}
+.org h1{font-family:var(--font-stack-sans);font-weight:300;font-size:1.6rem;margin:0 0 .25rem;color:#000}
+.lead{font-size:.9rem;margin:0 0 1.5rem}
+.banner{padding:.7rem .9rem;font-weight:700;margin-bottom:1.1rem;border:2px solid var(--red);color:var(--red)}
+.banner[hidden]{display:none}
+
+.org-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem}
+.org-link{display:block;border:2px solid var(--red);padding:1.25rem 1.25rem 1.4rem;background:var(--cream)}
+.org-link:hover{background:var(--red);color:var(--cream)}
+.org-link h2{font-family:var(--font-stack-sans);font-weight:300;font-size:1.3rem;margin:0 0 .4rem;color:var(--red)}
+.org-link:hover h2{color:var(--cream)}
+.org-link p{margin:0;font-size:.9rem}
+.org-link:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.logout{margin-top:1.5rem;background:none;border:0;padding:0;font:700 .9rem var(--font-body);color:var(--red);text-decoration:underline;cursor:pointer}
+</style>
+</head>
+<body>
+
+<nav id="navBar">
+        <div id="NAVcontainer">
+            <div id="NAVlogo"><a href="index.html"><img src="vectors/logoRedBlue.svg" alt="HanapGanap"></a></div>
+            <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="NAVMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
+            <div id="NAVMenu">
+                <ul class="NAVmainNav" id="NAVmainNavID">
+                    <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                    <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                    <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+                </ul>
+                <div id="NAVaccount"><a href="signup.html"><h2 class="NAVh2">account</h2></a></div>
+            </div>
+        </div>
+    </nav>
+
+<main class="org" id="app" hidden>
+  <h1>Organizer</h1>
+  <p class="lead" id="welcome"></p>
+  <div class="banner" id="banner" hidden role="alert"></div>
+
+  <div class="org-links" id="links">
+    <a class="org-link" href="dashboard_organizer.html">
+      <h2>Dashboard</h2>
+      <p>See your event counts, registrations and what’s coming up.</p>
+    </a>
+    <a class="org-link" href="create_eventpage.html">
+      <h2>Create event</h2>
+      <p>Set up a new event with its details, schedule and photos.</p>
+    </a>
+    <a class="org-link" href="events.html">
+      <h2>Events</h2>
+      <p>Browse events and manage the ones you organize.</p>
+    </a>
+  </div>
+
+  <button type="button" class="logout" id="logoutBtn">Log out</button>
+</main>
+
+<footer class="footer">
+    <nav class="footer__nav" aria-label="Footer">
+    <div class="footer__group">
+        <h2>explore</h2>
+        <ul>
+            <li><a href="#">events</a></li>
+            <li><a href="#">the team</a></li>
+            <li><a href="#">features</a></li>
+            <li><a href="#">log in/sign up</a></li>
+        </ul>
+    </div>
+
+    <div class="footer__group">
+        <h2>about</h2>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+        </ul>
+    </div>
+
+    <div class="footer__group">
+        <h2>say hi!</h2>
+        <ul>
+        <li><a href="#">facebook</a></li>
+        <li><a href="#">instagram</a></li>
+        </ul>
+    </div>
+    </nav>
+
+    <div class="footer__wordmark">
+    <img src="vectors/logoWarmWhite.svg" alt="HanapGanap">
+    </div>
+</footer>
+<div class="footer__base"></div>
+
+<script>
+/* ---- Settings: change these to match your setup ---- */
+const API_BASE   = "https://localhost:8000/api"; // the docs say http; this uses https
+const TOKEN_KEY  = "token";                      // where your app stores the login token
+const LOGIN_PAGE = "signup.html";                // where to send people who aren’t logged in
+
+const $ = id => document.getElementById(id);
+const getToken = () => { try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } };
+function toLogin(){ try { localStorage.removeItem(TOKEN_KEY); } catch {} location.replace(LOGIN_PAGE); }
+
+$("logoutBtn").addEventListener("click", toLogin);
+
+/* Guard: only logged-in organizers see the links */
+(async function init() {
+  const token = getToken();
+  if (!token) return toLogin();
+  $("app").hidden = false;
+  try {
+    const res = await fetch(API_BASE + "/auth/me", { headers: { Authorization: "Bearer " + token } });
+    if (res.status === 401) return toLogin();
+    const me = await res.json();
+    if (!res.ok) throw new Error(me.message || "Couldn’t load your account.");
+    if (me.role !== "organizer") {
+      $("links").hidden = true;
+      $("banner").textContent = "Only organizer accounts can use this page. Log in with an organizer account.";
+      $("banner").hidden = false;
+      return;
+    }
+    const org = (me.organizer && (me.organizer.orgName || me.organizer.name)) || me.fullName;
+    const uni = me.organizer && me.organizer.university && me.organizer.university.name;
+    $("welcome").textContent = "Signed in as " + org + (uni ? " at " + uni : "") + ".";
+  } catch (e) {
+    $("banner").textContent = e.message && e.message !== "Failed to fetch"
+      ? e.message : "Can’t reach the server. Check that the API is running at " + API_BASE + ".";
+    $("banner").hidden = false;
+  }
+})();
+</script>
+</body>
+</html>
