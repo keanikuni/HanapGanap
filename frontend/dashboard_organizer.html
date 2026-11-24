@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Organizer Dashboard | hnpgnp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #fff6e5;
+      --red: #A53636;
+      --card: #D9D9D9;
+      --blue: #829bd3;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--cream);
+      color: #000;
+      font-family: "Stack Sans Headline", system-ui, sans-serif;
+      font-weight: 300;
+    }
+
+    .page {
+      flex: 1;
+      width: 100%;
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 0.9rem 0.75rem 2rem;
+      font-size: 0.7rem;
+      line-height: 1.45;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin: 0 0 0.75rem;
+      color: #000;
+      text-decoration: none;
+    }
+    .back-btn:hover { color: var(--red); }
+    .back-btn:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+    .card {
+      background: var(--card);
+      padding: 0.9rem 1rem;
+    }
+    .card p { margin: 0; }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 1rem 0 0.75rem;
+    }
+    .section-head h2 { margin: 0; font-size: inherit; font-weight: 300; }
+
+    .pill {
+      background: var(--blue);
+      color: #fff;
+      border: 0;
+      border-radius: 999px;
+      padding: 0.2rem 0.8rem;
+      font: inherit;
+      font-size: 0.95em;
+      cursor: pointer;
+    }
+    .pill:hover { filter: brightness(1.08); }
+    .pill:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+    .items {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .items a { color: #000; text-decoration: underline; }
+    .items a:hover { color: var(--red); }
+
+    @media (min-width: 768px) {
+      .page { padding: 1.5rem 1.5rem 3rem; font-size: 0.95rem; }
+      .card { padding: 1rem 1.25rem; }
+    }
+
+    @media (min-width: 1200px) {
+      .page { padding: 2rem 2rem 4rem; font-size: 1rem; }
+      .card { padding: 1.1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <main class="page">
+
+    <a class="back-btn" id="back-button" href="frontend/events.html">&lt; Back</a>
+
+    <section class="card" aria-label="Account information">
+      <p>Account Name: <span data-field="name"></span></p>
+      <p>University: <span data-field="university"></span></p>
+      <p>Email: <span data-field="email"></span></p>
+    </section>
+
+    <div class="section-head">
+      <h2>Events:</h2>
+      <button class="pill" id="create-event" type="button">Create Event</button>
+    </div>
+
+    <ul class="items" id="events"></ul>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="script/main.js"></script>
+  <script>
+    const API_BASE  = API_URL; // from script/main.js
+
+    async function apiFetch(path) {
+      const res = await fetch(API_BASE + path);
+
+      if (!res.ok) {
+        let msg = `Request failed (${res.status})`;
+        try { msg = (await res.json()).message || msg; } catch (e) {}
+        throw new Error(msg);
+      }
+      return res;
+    }
+
+    function fillList(ul, items, emptyText) {
+      ul.innerHTML = '';
+      if (!items.length) {
+        const li = document.createElement('li');
+        li.textContent = emptyText;
+        ul.appendChild(li);
+        return;
+      }
+      items.forEach(item => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.href || '#';
+        a.textContent = item.title;
+        if (item.onClick) {
+          a.addEventListener('click', e => { e.preventDefault(); item.onClick(); });
+        }
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+    }
+
+    async function init() {
+      // this page is organizer-only, so no role check. user info comes from localStorage
+      let user = {};
+      try { user = JSON.parse(localStorage.getItem('user')) || {}; } catch (e) {}
+
+      const profile = user.organizer || {};
+
+      const fields = {
+        name: user.fullName,
+        university: profile.university && profile.university.name,
+        email: user.email
+      };
+      document.querySelectorAll('[data-field]').forEach(el => {
+        el.textContent = fields[el.dataset.field] || '';
+      });
+
+      // no "my events" route, so filter the full list here
+      const all = await (await apiFetch('/events')).json();
+
+      const myIds = [user.id, user._id, profile.id, profile._id]
+        .filter(v => v != null)
+        .map(String);
+
+      // add the real field name here if the list comes back empty
+      const ownerIds = e => [
+        e.organizerId, e.organizer_id,
+        e.organizer && e.organizer.id, e.organizer && e.organizer._id,
+        e.organizer && e.organizer.user && e.organizer.user.id,
+        e.createdBy, e.createdBy && e.createdBy.id, e.createdBy && e.createdBy._id,
+        (typeof e.organizer === 'string' || typeof e.organizer === 'number') ? e.organizer : null
+      ].filter(v => v != null).map(String);
+
+      const mine = all.filter(e => ownerIds(e).some(id => myIds.includes(id)));
+
+      fillList(
+        document.getElementById('events'),
+        mine.map(e => ({ title: e.title, href: '#' })), // TODO: link to event page
+        'No events yet.'
+      );
+    }
+
+    init().catch(err => console.error('Dashboard failed to load', err));
+
+    // Create Event button -> create event page
+    document.getElementById('create-event').addEventListener('click', () => {
+      location.href = 'frontend/create_eventpage.html';
+    });
+
+    // nav hamburger calls this (scripts inside the loaded nav file don't run)
+    function toggleMenu() {
+      const menu = document.getElementById('NAVMenu');
+      const toggle = document.getElementById('NAVmenuToggle');
+      const isOpen = menu.classList.toggle('active');
+      toggle.setAttribute('aria-expanded', isOpen);
+    }
+
+    fetch('navPlaceholder.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('nav-placeholder').innerHTML = html;
+      })
+      .catch(err => console.error('Could not load navPlaceholder.html', err));
+
+    fetch('footerPlaceholder.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      })
+      .catch(err => console.error('Could not load footerPlaceholder.html', err));
+  </script>
+</body>
+</html>
