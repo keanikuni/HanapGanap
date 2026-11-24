@@ -27,9 +27,9 @@
    ================================================================ */
 :root {
   --cream: #fff8e7;
-  --red: #a33636;
-  --blue: #8499d3;
-  --text: #1a1a1a;
+  --red: #A53636;
+  --blue: #829BD3;
+  --text: #000000;
   --font-body: "Helvetica Neue", Arial, sans-serif;
   --font-serif: "Playfair Display", Georgia, serif; /* footer headings */
   --font-stack-sans: "Stack Sans Headline", sans-serif;
