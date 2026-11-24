@@ -1,89 +1,83 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Event · HanapGanap</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/event.css">
-  <link rel="stylesheet" href="css/nav.css">
-  <link rel="stylesheet" href="css/footer.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event · HanapGanap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/event.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
 
-  <header class="nav">
-    <a class="nav__logo" id="logoLink" href="index.html">
-      <img id="logoImg" alt="HanapGanap">
-    </a>
+<nav id="navBar">
+    <div id="NAVcontainer">
+        <div id="NAVlogo"><a href="index.html"><img src="vectors/logoRedBlue.svg"></a></div>
+        <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="navMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
+        <div id="NAVMenu">
+            <ul class="NAVmainNav" id="NAVmainNavID">
+                <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+            </ul>
+            <div id="NAVaccount"><a href="signup.html"><h2 class="NAVh2">account</h2></a></div>
+        </div>
+    </div>
+</nav>
 
-    <button class="nav__toggle" id="navToggle" type="button"
-      aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
-      <span></span><span></span><span></span>
-    </button>
+<main id="app"><div class="state"><p>Loading event…</p></div></main>
 
-    <div class="nav__menu" id="navMenu">
-      <ul class="nav__links">
-        <li><a id="navEvents" href="index.html">events</a></li>
+<footer class="footer">
+<nav class="footer__nav" aria-label="Footer">
+<div class="footer__group">
+    <h2>explore</h2>
+    <ul>
+        <li><a href="#">events</a></li>
         <li><a href="#">the team</a></li>
         <li><a href="#">features</a></li>
-      </ul>
-      <a class="nav__login" id="navLogin" href="login.html">log in/sign up</a>
+        <li><a href="#">log in/sign up</a></li>
+    </ul>
+</div>
+
+<div class="footer__group">
+    <h2>about</h2>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+        </ul>
     </div>
-  </header>
-
-  <main id="app">
-    <div class="state">
-      <p>Loading event…</p>
+    
+    <div class="footer__group">
+        <h2>say hi!</h2>
+        <ul>
+        <li><a href="#">facebook</a></li>
+        <li><a href="#">instagram</a></li>
+        </ul>
     </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer__cols">
-      <div>
-        <h3>explore</h3>
-        <a id="fEvents" href="index.html">events</a>
-        <a href="#">the team</a>
-        <a href="#">features</a>
-        <a id="fLogin" href="login.html">log in/sign up</a>
-      </div>
-
-      <div>
-        <h3>about</h3>
-        <a href="#">Terms of Service</a>
-        <a href="#">Privacy Policy</a>
-      </div>
-
-      <div>
-        <h3>say hi!</h3>
-        <a href="#">facebook</a>
-        <a href="#">Instagram</a>
-      </div>
+    </nav>
+    
+    <div class="footer__wordmark">
+    <img src="vectors/logoWarmWhite.svg" alt="HanapGanap">
     </div>
-  </footer>
+    </footer>
+<div class="footer__base"></div>
 
-  <dialog id="confirm" aria-labelledby="confirmTitle">
-    <form method="dialog">
-      <h3 id="confirmTitle">Cancel your registration?</h3>
-      <p>Your spot opens up for someone else. You can register again while spots are still available.</p>
+<dialog id="confirm" aria-labelledby="confirmTitle">
+  <form method="dialog">
+    <h3 id="confirmTitle">Cancel your registration?</h3>
+    <p>Your spot opens up for someone else. You can register again while spots are still available.</p>
+    <div class="row">
+      <button class="btn btn--ghost" value="keep">Keep my spot</button>
+      <button class="btn" value="cancel">Cancel registration</button>
+    </div>
+  </form>
+</dialog>
 
-      <div class="row">
-        <button class="btn btn--ghost" value="keep">Keep my spot</button>
-        <button class="btn" value="cancel">Cancel registration</button>
-      </div>
-    </form>
-  </dialog>
+<div id="toast" role="status" aria-live="polite"></div>
 
-  <div id="toast" role="status" aria-live="polite"></div>
-
-  <!-- QR Code Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-  <!-- Event Page Logic -->
-  <script src="script/event.js" defer></script>
-
+<script src="script/event.js"></script>
 </body>
 </html>
