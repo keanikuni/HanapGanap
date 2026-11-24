@@ -144,7 +144,7 @@ $("signupForm").addEventListener("submit", async (e) => {
   try {
     const data = await request("POST", "/auth/register", body);   // replies { token, user }
     saveSession(data.token, data.user);
-    goTo("index.html");
+    goTo(homeFor(data.user));
   } catch (err) {
     if (err.status === 409) setError("signupEmail", err.message);
     else setFormError("signupFormError", err.message);
