@@ -18,7 +18,7 @@
 
         if (!res.ok) return (document.getElementById('msg').textContent = 'Please log in again');
 
-        const me = await res.json();
+        const me = await res.json();`
 
         if (!me.student) return (document.getElementById('mssg').textContent = 'Only students have QR Codes');
 

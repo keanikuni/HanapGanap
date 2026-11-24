@@ -6,8 +6,8 @@ toggle.addEventListener("click", () => {
   const isOpen = nav.classList.toggle("open");
   toggle.setAttribute("aria-expanded", isOpen);
 });
-const API_URL = "http://localhost:8000/api";
-const FILE_URL = "http://localhost:8000";
+const API_URL = "https://localhost:8000/a`pi";
+const FILE_URL = "https://localhost:8000";
 
 function toEvent(e) {
   return {

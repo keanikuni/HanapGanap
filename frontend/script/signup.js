@@ -31,10 +31,14 @@ const ROLE_FIELDS = {
 
 let universities = [];
 
+
+const API_URL = "https://localhost:8000/api";
+const FILE_URL = "https://localhost:8000";
+
 async function loadUniversities() {
   const select = $("signupUniversity");
   try {
-    universities = await request("GET", "/universities");
+    universities = await request("GET", `${API_URL}/universities`);
     select.innerHTML = "";
     const first = document.createElement("option");
     first.value = "";
