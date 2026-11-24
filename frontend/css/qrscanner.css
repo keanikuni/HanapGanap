@@ -5,3 +5,45 @@ body{
     width: 100%;
 }
 
+#qrScannerMainDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#qrH1 {
+    font-family: 'Instrument Serif';
+    color: #A53636;
+    font-size: 48px;
+    font-weight: 400;
+}
+
+#eventName {
+    font-family: 'Stack Sans Headline';
+    font-weight: 4000;
+}
+
+#status {
+    font-family: 'Stack Sans Headline';
+}
+
+#reader button{
+    font-family: 'Stack Sans Headline';
+    background-color: #829BD3;
+    border-radius: 100px;
+    border: none;
+}
+
+#reader #html5-qrcode-anchor-scan-type-change{
+    font-family: 'Stack Sans Headline';
+    color: #A53636;
+}
+
+@media (min-width: 768px){
+
+}
+
+@media (min-width: 1200px){
+
+}

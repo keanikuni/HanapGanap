@@ -5,18 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HanapGanap | Attendance Scanner</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+
     <script src="script/main.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script> <!--external library for camera function-->
     <script src="script/qrcodeScanner.js" defer></script>
 
     <link rel="stylesheet" href="css/qrscanner.css">
     
-
 </head>
 <body>
-    <h1>Attendance Scanner</h1>
-    <h2 id="eventName"></h2>
-    <div id="reader" style="width: 320px"></div>
-    <p id="status"></p>
+
+    <nav></nav>
+
+    <div id="qrScannerMainDiv">
+        <h1 id="qrH1">Attendance Scanner</h1>
+        <h2 id="eventName">samlple</h2>
+        <div id="reader" style="width: 320px"></div>
+        <p id="status"></p>
+    </div>
+
+    <footer></footer>
+
 </body>
 </html>
