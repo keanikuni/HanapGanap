@@ -43,6 +43,15 @@ function at(days, hour, minute = 0) {
 const addHours = (d, h) => new Date(d.getTime() + h * 3600 * 1000);
 const addMinutes = (d, m) => new Date(d.getTime() + m * 60 * 1000);
 
+// Image colour per category, used for the placeholder pictures
+const CATEGORY_COLORS = {
+    Technical: '1e40af', Cultural: '9d174d', Sports: '166534', Workshop: 'b45309',
+    Seminar: '6b21a8', Competition: 'b91c1c', Academic: '0f766e',
+};
+// Labelled placeholder image (reliable, no random photos). Shows the given text on a coloured background.
+const placeholder = (cat, text) =>
+    `https://placehold.co/800x450/${CATEGORY_COLORS[cat] || '334155'}/ffffff/png?text=${encodeURIComponent(text)}`;
+
 // ─── Source data ──────────────────────────────────────────
 const CATEGORIES = ['Technical', 'Cultural', 'Sports', 'Workshop', 'Seminar', 'Competition', 'Academic'];
 
@@ -70,6 +79,7 @@ const YEARS = ['1st', '2nd', '3rd', '4th'];
 
 // days: offset from today. live: true makes the event happen right now.
 // uni and org are indexes into UNIVERSITIES and ORGANIZERS. fill: share of students who sign up.
+// photos (optional): your own direct image URLs for the event. Without it, a labelled placeholder image is used.
 const EVENTS = [
     { title: 'Intramurals Opening Ceremony', cat: 'Sports', uni: 1, org: 3, venue: 'University Gym', days: -45, hour: 8, hours: 6, limit: 150, status: 'completed', fill: 0.8 },
     { title: 'Intro to Web Development Workshop', cat: 'Workshop', uni: 0, org: 0, venue: 'Computer Lab 3', days: -20, hour: 13, hours: 4, limit: 40, status: 'completed', fill: 0.7 },
@@ -195,11 +205,14 @@ async function main() {
                 registrationDeadline: deadline,
                 status: e.status,
                 createdAt: addHours(start, -24 * 14),
-                // Placeholder photos from the web, so the frontend has previews to show
+                // Use e.photos if you set them, otherwise labelled placeholders (title + category/venue)
                 images: {
-                    create: [1, 2].map((n) => ({
-                        fileName: `mock-event-${i + 1}-${n}.jpg`,
-                        filePath: `https://picsum.photos/seed/hanapganap-${i + 1}-${n}/800/450`,
+                    create: (e.photos?.length ? e.photos : [
+                        placeholder(e.cat, e.title),
+                        placeholder(e.cat, `${e.cat} | ${e.venue}`),
+                    ]).map((url, n) => ({
+                        fileName: `mock-event-${i + 1}-${n + 1}.png`,
+                        filePath: url,
                     })),
                 },
             },
