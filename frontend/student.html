@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Student Page | HanapGanap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/student.css">
+</head>
+<body>
+  <main class="student">
+    <header class="student__head">
+      <a href="events.html">Browse events</a>
+      <h1 id="greeting">My events</h1>
+      <p class="student__sub" id="subline"></p>
+    </header>
+
+    <div class="message" id="message" role="status" aria-live="polite" hidden></div>
+
+    <div id="content" hidden>
+      <section class="stats" aria-label="Student activity summary">
+        <div class="stat"><strong id="statJoined">0</strong><span>Events joined</span></div>
+        <div class="stat"><strong id="statAttended">0</strong><span>Events attended</span></div>
+        <div class="stat"><strong id="statCerts">0</strong><span>Certificates earned</span></div>
+      </section>
+
+      <div class="tabs" role="tablist" aria-label="Student information">
+        <button class="tab" id="tab-events" type="button" role="tab" aria-selected="true" aria-controls="panel-events">My events</button>
+        <button class="tab" id="tab-certs" type="button" role="tab" aria-selected="false" aria-controls="panel-certs">Certificates</button>
+        <button class="tab" id="tab-qr" type="button" role="tab" aria-selected="false" aria-controls="panel-qr">My check-in QR</button>
+      </div>
+
+      <section class="panel" id="panel-events" role="tabpanel" aria-labelledby="tab-events">
+        <p class="hint">Events you registered for, including your attendance status.</p>
+        <div class="filters" id="filters" aria-label="Filter events">
+          <button class="chip is-active" type="button" data-filter="all">All</button>
+          <button class="chip" type="button" data-filter="upcoming">Upcoming</button>
+          <button class="chip" type="button" data-filter="ongoing">Happening now</button>
+          <button class="chip" type="button" data-filter="attended">Attended</button>
+          <button class="chip" type="button" data-filter="missed">Missed</button>
+        </div>
+        <ul class="cards" id="eventList" aria-live="polite"></ul>
+        <p class="empty" id="eventsEmpty" hidden></p>
+      </section>
+
+      <section class="panel" id="panel-certs" role="tabpanel" aria-labelledby="tab-certs" hidden>
+        <p class="hint">Certificates for events where you checked in are ready after the event ends.</p>
+        <ul class="cards" id="certList"></ul>
+        <p class="empty" id="certsEmpty" hidden></p>
+        <h2 class="subhead" id="pendingHead" hidden>In progress</h2>
+        <ul class="cards" id="pendingList"></ul>
+      </section>
+
+      <section class="panel" id="panel-qr" role="tabpanel" aria-labelledby="tab-qr" hidden>
+        <p class="hint">Show this QR code to an event organizer when you check in.</p>
+        <div class="qr"><div id="qrcode"></div></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="script/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="script/student.js"></script>
+</body>
+</html>

@@ -27,6 +27,10 @@ router.post('/events/:id/register', requireAuth, requireRole('guest', 'student',
             const event = await tx.event.findUnique({ where: { id: req.eventId } });
             if (!event) throw new HttpError(404, "Event not found");
 
+            if (req.user.role === 'organizer' || req.user.role === 'admin') {
+                throw new HttpError(403, 'Organizer and admin accounts can’t register for events');
+            }
+         
             if (event.status !== 'upcoming') {
                 throw new HttpError(409, `Registration is closed: event is ${event.status}`);
             }

@@ -1,45 +1,87 @@
 // Events listing: build the cards from the data, and sort them
-const grid = document.getElementById("events-grid");
-const sortSelect = document.getElementById("sort");
-let events = [];
+// Needs main.js loaded first (API_URL, toEvent). data.js is optional (sample data).
+
+let allEvents = [];   // renamed from "events" so it can't clash with window.events from data.js
+
+// Use the project's formatDate if another file defines one, otherwise a simple fallback
+const fmtDate =
+  typeof formatDate === "function"
+    ? formatDate
+    : (value) => {
+        const d = new Date(value);
+        return isNaN(d)
+          ? ""
+          : d.toLocaleDateString("en-PH", { year: "numeric", month: "short", day: "numeric" });
+      };
+
+const startOf = (ev) => ev.start_datetime || ev.start_date;
 
 function renderEvents(list) {
+  const grid = document.getElementById("events-grid");
   grid.innerHTML = "";
+
+  if (list.length === 0) {
+    const empty = document.createElement("p");
+    empty.textContent = "No events found.";
+    grid.appendChild(empty);
+    return;
+  }
+
   list.forEach((ev) => {
     const card = document.createElement("a");
     card.className = "event-card";
-    card.href = `event.html?id=${ev.event_id}`;
-    card.innerHTML = `
-      <div class="thumb">${ev.image_path ? `<img src="${ev.image_path}" alt="">` : ""}</div>
-      <h2>${ev.title}</h2>
-      <p>${ev.location} &middot; ${formatDate(ev.start_datetime || ev.start_date)}</p>
-    `;
+    card.href = `event.html?id=${encodeURIComponent(ev.event_id)}`;
+
+    const thumb = document.createElement("div");
+    thumb.className = "thumb";
+    if (ev.image_path) {
+      const img = document.createElement("img");
+      img.src = ev.image_path;
+      img.alt = "";
+      thumb.appendChild(img);
+    }
+
+    // textContent, so event titles/venues typed by organizers can't inject HTML
+    const title = document.createElement("h2");
+    title.textContent = ev.title;
+
+    const details = document.createElement("p");
+    details.textContent = `${ev.location || "TBA"} \u00B7 ${fmtDate(startOf(ev))}`;
+
+    card.append(thumb, title, details);
     grid.appendChild(card);
   });
 }
 
 function sortEvents(by) {
-  const copy = [...events];
-  if (by === "title") copy.sort((a, b) => a.title.localeCompare(b.title));
-  if (by === "date") copy.sort((a, b) => new Date(a.start_datetime || a.start_date) - new Date(b.start_datetime || b.start_date));
+  // The "Sort by" placeholder has the value "selection": treat it (or anything unknown) as date
+  if (!["title", "date", "category"].includes(by)) by = "date";
+  const copy = [...allEvents];
+  if (by === "title") copy.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+  if (by === "date") copy.sort((a, b) => new Date(startOf(a)) - new Date(startOf(b)));
   if (by === "category") copy.sort((a, b) => (a.category || "").localeCompare(b.category || ""));
   renderEvents(copy);
 }
 
-sortSelect.addEventListener("change", () => sortEvents(sortSelect.value));
-
-// Kumuha ng events — gamitin ang sample data kung hindi available ang backend
+// Fetch events; use the sample data (data.js) only if the backend is unavailable
 async function loadEvents() {
   try {
     const res = await fetch(`${API_URL}/events`);
     if (!res.ok) throw new Error("Backend not available");
-    const rawData = await res.json();
-    events = rawData.map(item => toEvent(item));
+    const json = await res.json();
+    // Accept either a plain array or an object like { events: [...] } / { data: [...] }
+    const rawData = Array.isArray(json) ? json : json.events || json.data || [];
+    console.log("Events from backend:", rawData);
+    allEvents = rawData.map((item) => toEvent(item));
   } catch (err) {
-    console.log("Using sample data instead:", err);
-    events = window.events || []; // Gamitin ang data.js kung walang backend
+    console.error("Using sample data instead:", err);
+    allEvents = window.events || [];
   }
-  sortEvents("date");
+  sortEvents(document.getElementById("sort").value);
 }
 
-document.addEventListener("DOMContentLoaded", loadEvents);
+document.addEventListener("DOMContentLoaded", () => {
+  const sortSelect = document.getElementById("sort");
+  sortSelect.addEventListener("change", () => sortEvents(sortSelect.value));
+  loadEvents();
+});
