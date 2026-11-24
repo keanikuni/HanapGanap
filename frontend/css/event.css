@@ -72,7 +72,8 @@
 
 /* --- Description --- */
 .event .event-desc{font-size:1.1rem;line-height:1.75;max-width:70ch;padding-top:1.25rem;border-top:1px solid rgba(163,54,54,.22)}
-.event-desc h2{font-family:var(--font-stack-sans);font-weight:300;font-size:1.4rem;margin:0 0 .6rem;color:var(--black)}
+.event-desc h2{font-family:var(--font-stack-sans);font-weight:300;font-size:1.4rem;margin:0 0 .6rem;color:var(--black)}e
+
 .event-desc .desc-text{margin:0;white-space:pre-line}
 
 /* --- Join block --- */
