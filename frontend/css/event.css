@@ -155,7 +155,11 @@ ul { list-style: none; margin: 0; padding: 0; }
 .event-image{position:relative}
 .event-image button.photo{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer}
 .photo-count{position:absolute;right:.6rem;bottom:.6rem;background:var(--cream);color:var(--red);font-size:.8rem;font-weight:700;padding:.1rem .6rem;pointer-events:none}
-.event-desc{white-space:pre-line}
+
+/* --- Description: larger and easier to read --- */
+.event .event-desc{font-size:1.1rem;line-height:1.75;max-width:70ch;padding-top:1.25rem;border-top:1px solid rgba(163,54,54,.22)}
+.event-desc h2{font-family:var(--font-stack-sans);font-weight:300;font-size:1.4rem;margin:0 0 .6rem;color:var(--text)}
+.event-desc .desc-text{margin:0;white-space:pre-line}
 
 /* --- Join block --- */
 .spots{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;font-size:.9rem;font-weight:700;margin-bottom:.4rem}
