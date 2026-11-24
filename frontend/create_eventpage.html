@@ -80,10 +80,14 @@ input.invalid,select.invalid,textarea.invalid{border-width:2px}
                     <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
                     <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
                 </ul>
-                <div id="NAVaccount"><a href="signup.html"><h2 class="NAVh2">account</h2></a></div>
+                <div id="NAVaccount">
+                    <a href="signup.html" id="accountLink">
+                        <h2 class="NAVh2">account</h2>
+                    </a>
+                </div>
             </div>
         </div>
-    </nav>
+</nav>
 
 <main class="create">
   <h1>Create event</h1>
@@ -440,5 +444,6 @@ form.addEventListener("submit", async e => {
 
 init();
 </script>
+<script src="script/account.js"></script>
 </body>
 </html>
