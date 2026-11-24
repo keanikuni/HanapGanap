@@ -8,8 +8,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@300;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/student.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
+
+    <nav id="navBar">
+            <div id="NAVcontainer">
+                <div id="NAVlogo"><a href="index.html"><img src="vectors/logoRedBlue.svg" alt="HanapGanap"></a></div>
+                <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="NAVMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
+                <div id="NAVMenu">
+                    <ul class="NAVmainNav" id="NAVmainNavID">
+                        <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                        <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                        <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+                    </ul>
+                    <div id="NAVaccount">
+                        <a href="signup.html" id="accountLink">
+                            <h2 class="NAVh2">account</h2>
+                        </a>
+                    </div>
+                </div>
+            </div>
+    </nav>
+    
   <main class="student">
     <header class="student__head">
       <a href="events.html">Browse events</a>
@@ -65,8 +87,46 @@
     </div>
   </main>
 
+
+  <footer class="footer">
+      <nav class="footer__nav" aria-label="Footer">
+      <div class="footer__group">
+          <h2>explore</h2>
+          <ul>
+              <li><a href="#">events</a></li>
+              <li><a href="#">the team</a></li>
+              <li><a href="#">features</a></li>
+              <li><a href="#">log in/sign up</a></li>
+          </ul>
+      </div>
+  
+      <div class="footer__group">
+          <h2>about</h2>
+          <ul>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+          </ul>
+      </div>
+  
+      <div class="footer__group">
+          <h2>say hi!</h2>
+          <ul>
+          <li><a href="#">facebook</a></li>
+          <li><a href="#">instagram</a></li>
+          </ul>
+      </div>
+      </nav>
+  
+      <div class="footer__wordmark">
+      <img src="vectors/logoWarmWhite.svg" alt="HanapGanap">
+      </div>
+  </footer>
+  <div class="footer__base"></div>
+
   <script src="script/main.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="script/student.js"></script>
+
+  
 </body>
 </html>
