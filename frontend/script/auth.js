@@ -120,5 +120,7 @@ function clearSession() {
 
 // Where each kind of user lands after logging in or signing up
 function homeFor(user) {
-  return user.role === "admin" ? "admin-dashboard.html" : "events.html";
+  if (user.role === "admin") return "admin-dashboard.html";
+  if (user.role === "student") return "student.html";
+  return "events.html";
 }

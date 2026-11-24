@@ -44,7 +44,7 @@ accountLink.addEventListener('click', async (event) => {
         // Redirect based on the user's role
         switch (user.role.toLowerCase()) {
             case 'student':
-                window.location.href = 'student_page.html';
+                window.location.href = 'student.html';
                 break;
 
             case 'organizer':
