@@ -1,0 +1,7 @@
+{
+  "name": "HanapGanap",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix backend run dev"
+  }
+}
