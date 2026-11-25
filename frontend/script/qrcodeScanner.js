@@ -5,6 +5,15 @@ const jwt = localStorage.getItem('token');
     document.getElementById('backButtonUniversal').href = `event.html?id=${eventId}`;
     }
 
+    const backBtn = document.getElementById('backButtonUniversal');
+
+backBtn.addEventListener('click', () => {
+    if (history.length > 1) {
+        history.back();                      // returns to the dashboard they came from
+    } else {
+        location.href = 'dashboard_organizer.html';   // fallback if opened directly
+    }
+});
     const statusE1 = document.getElementById('status');
     let busy = false;
 

@@ -56,7 +56,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 /* Summary numbers */
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: .6rem;
   margin: 1.25rem 0;
 }
@@ -130,6 +130,10 @@ ul { list-style: none; margin: 0; padding: 0; }
 .card__title a { text-decoration: none; }
 .card__title a:hover { text-decoration: underline; }
 .card__meta { margin: 0; color: var(--muted); font-size: .92rem; }
+.card__attendance { margin: 0; font-size: .92rem; font-weight: 700; }
+.card__attendance--attended { color: #2e7d4f; }
+.card__attendance--missed, .card__attendance--cancelled { color: #7a7a7a; }
+.card__attendance--upcoming, .card__attendance--ongoing { color: var(--red); }
 
 .badge {
   flex-shrink: 0;
@@ -166,7 +170,10 @@ ul { list-style: none; margin: 0; padding: 0; }
   .cards { grid-template-columns: 1fr 1fr; }
 }
 
+@media (max-width: 600px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 420px) {
-  .stats { grid-template-columns: 1fr; }
   .card__top { flex-direction: column; }
 }

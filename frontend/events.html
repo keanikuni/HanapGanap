@@ -32,8 +32,11 @@
         </div>
     </nav>
 
+
   <main>
     <div class="toolbar">
+       
+
       <label for="sort">Sort by:</label>
       <select id="sort">
         <option value="selection" disabled selected>Sort by</option>
@@ -41,6 +44,27 @@
         <option value="title">Title</option>
         <option value="category">Category</option>
       </select>
+
+       <div id="backButtonDiv" style="
+
+        padding-left: 1%;
+        padding-top: 1%;
+        z-index: 1000;
+    ">
+        <button id="backButtonUniversal"
+            type="button"
+            aria-label="Go back"
+            data-fallback="dashboard_organizer.html"
+            style="
+                font-family: 'Stack Sans Headline';
+                font-size: 24px;
+                background-color: #829BD3;
+                border-radius: 100px;
+                border: none;
+                padding-inline: 10px;
+                cursor: pointer;
+            ">&#171; Back</button>
+        </div>
     </div>
     <section class="events-grid" id="events-grid"></section>
   </main>
@@ -87,4 +111,5 @@
   <div class="footer__base"></div>
 </body>
 <script src="script/account.js"></script>
+<script src="script/backButton.js" defer></script>
 </html>

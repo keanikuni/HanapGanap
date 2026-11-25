@@ -32,6 +32,27 @@
             </div>
     </nav>
     
+<div id="backButtonDiv" style="
+        position: fixed;
+        padding-left: 1%;
+        padding-top: 5%;
+        z-index: 1000;
+    ">
+        <button id="backButtonUniversal"
+            type="button"
+            aria-label="Go back"
+            data-fallback="dashboard_organizer.html"
+            style="
+                font-family: 'Stack Sans Headline';
+                font-size: 24px;
+                background-color: #829BD3;
+                border-radius: 100px;
+                border: none;
+                padding-inline: 10px;
+                cursor: pointer;
+            ">&#171; Back</button>
+    </div>
+
   <main class="student">
     <header class="student__head">
       <a href="events.html">Browse events</a>
@@ -50,6 +71,7 @@
       <section class="stats" aria-label="Student activity summary">
         <div class="stat"><strong id="statJoined">0</strong><span>Events joined</span></div>
         <div class="stat"><strong id="statAttended">0</strong><span>Events attended</span></div>
+        <div class="stat"><strong id="statMissed">0</strong><span>Not attended</span></div>
         <div class="stat"><strong id="statCerts">0</strong><span>Certificates earned</span></div>
       </section>
 
@@ -66,7 +88,7 @@
           <button class="chip" type="button" data-filter="upcoming">Upcoming</button>
           <button class="chip" type="button" data-filter="ongoing">Happening now</button>
           <button class="chip" type="button" data-filter="attended">Attended</button>
-          <button class="chip" type="button" data-filter="missed">Missed</button>
+          <button class="chip" type="button" data-filter="missed">Not attended</button>
         </div>
         <ul class="cards" id="eventList" aria-live="polite"></ul>
         <p class="empty" id="eventsEmpty" hidden></p>
@@ -126,7 +148,6 @@
   <script src="script/main.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="script/student.js"></script>
-
-  
+  <script src="script/backButton.js" defer></script>
 </body>
 </html>

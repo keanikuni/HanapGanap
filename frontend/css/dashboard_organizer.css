@@ -520,6 +520,102 @@ button {
     font-weight: 700;
 }
 
+.participants-modal-content {
+    max-width: 1000px;
+}
+
+.participant-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+.participant-stat {
+    padding: .8rem 1rem;
+    border-radius: 10px;
+    background: var(--blue);
+    color: white;
+}
+
+.participant-stat--attended {
+    background: var(--green);
+}
+
+.participant-stat span,
+.participant-stat strong {
+    display: block;
+}
+
+.participant-stat strong {
+    font-size: 1.5rem;
+}
+
+.participant-toolbar {
+    display: flex;
+    gap: .7rem;
+    margin-bottom: 1rem;
+}
+
+.participant-toolbar input,
+.participant-toolbar select {
+    min-width: 0;
+    padding: .7rem .85rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+}
+
+.participant-toolbar input {
+    flex: 1;
+}
+
+.participant-table-wrap {
+    overflow-x: auto;
+}
+
+.participant-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: .9rem;
+}
+
+.participant-table th,
+.participant-table td {
+    padding: .75rem;
+    border-bottom: 1px solid #e8e8e8;
+    text-align: left;
+    vertical-align: top;
+}
+
+.participant-table th {
+    color: var(--muted);
+    font-size: .78rem;
+    text-transform: uppercase;
+}
+
+.participant-table td small {
+    display: block;
+    color: var(--muted);
+}
+
+.attendance-badge {
+    display: inline-block;
+    padding: .2rem .55rem;
+    border-radius: 999px;
+    background: #eee;
+    color: #555;
+    font-size: .78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.attendance-badge--attended {
+    background: #e2f2e8;
+    color: var(--green);
+}
+
 /* Accessibility */
 
 button:focus-visible,
@@ -574,6 +670,10 @@ select:focus-visible {
 
     .toolbar select {
         max-width: none;
+    }
+
+    .participant-toolbar {
+        flex-direction: column;
     }
 
     .profile-card {
