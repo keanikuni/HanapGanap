@@ -8,14 +8,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/login.css">
+   <link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
 
-  <header class="siteHeader">
-    <a href="index.html" class="logoLink">
-      <img src="vectors/logoRedBlue.svg" alt="hnpgnp" class="logoImage">
-    </a>
-  </header>
+ <nav id="navBar">
+        <div id="NAVcontainer">
+            <div id="NAVlogo"><a href="index.html"><img src="vectors/logoRedBlue.svg"></a></div>
+            <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="navMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
+            <div id="NAVMenu">
+                <ul class="NAVmainNav" id="NAVmainNavID">
+                    <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                    <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                    <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+                </ul>
+                <div id="NAVaccount">
+                    <a href="signup.html" id="accountLink">
+                        <h2 class="NAVh2">account</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
 
   <div id="backButtonDiv" style="
         position: fixed;
@@ -126,37 +142,40 @@
 
       </main>
 
-  <footer class="siteFooter">
-    <div class="footerGroups">
-      <nav class="footerGroup" aria-label="Explore">
-        <h2 class="footerHeading">explore</h2>
-        <ul class="footerLinks">
-          <li><a href="events.html">events</a></li>
-          <li><a href="team.html">the team</a></li>
-          <li><a href="features.html">features</a></li>
-          <li><a href="login.html">log in/sign up</a></li>
+   <footer class="footer">
+    <nav class="footer__nav" aria-label="Footer">
+    <div class="footer__group">
+        <h2>explore</h2>
+        <ul>
+            <li><a href="#">events</a></li>
+            <li><a href="#">the team</a></li>
+            <li><a href="#">features</a></li>
+            <li><a href="#">log in/sign up</a></li>
         </ul>
-      </nav>
-
-      <nav class="footerGroup" aria-label="About">
-        <h2 class="footerHeading">about</h2>
-        <ul class="footerLinks">
-          <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="privacypolicy.html">Privacy Policy</a></li>
-        </ul>
-      </nav>
-
-      <nav class="footerGroup" aria-label="Social media">
-        <h2 class="footerHeading">say hi!</h2>
-        <ul class="footerLinks">
-          <li><a href="#">facebook</a></li>
-          <li><a href="#">instagram</a></li>
-        </ul>
-      </nav>
     </div>
 
-    <img src="vectors/logoWarmWhite.svg" alt="" class="footerWordmark">
-  </footer>
+    <div class="footer__group">
+        <h2>about</h2>
+        <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+        </ul>
+    </div>
+
+    <div class="footer__group">
+        <h2>say hi!</h2>
+        <ul>
+        <li><a href="#">facebook</a></li>
+        <li><a href="#">instagram</a></li>
+        </ul>
+    </div>
+    </nav>
+
+    <div class="footer__wordmark">
+    <img src="vectors/logoWarmWhite.svg" alt="HanapGanap">
+    </div>
+</footer>
+<div class="footer__base"></div>
 
   <script src="script/main.js"></script>
   <script src="script/auth.js"></script>
