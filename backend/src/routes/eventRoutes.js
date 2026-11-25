@@ -147,13 +147,19 @@ router.post('/', requireAuth, requireRole('organizer'), async (req, res) => {
     }
 });
 
-// ─── Update event (owner) ─────────────────────────────────
-router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => {
+// ─── Update event (owner or admin) ────────────────────────
+router.patch('/:id', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
     try {
-        const event = await loadOwnedEvent(req, res);
-        if (!event) return;
+        let event;
+        if (req.user.role === 'admin') {
+            event = await prisma.event.findUnique({ where: { id: req.eventId } });
+            if (!event) return res.status(404).json({ message: "Event not found" });
+        } else {
+            event = await loadOwnedEvent(req, res);
+            if (!event) return;
+        }
 
-        if (event.status === 'completed' || event.status === 'cancelled') {
+        if (req.user.role !== 'admin' && (event.status === 'completed' || event.status === 'cancelled')) {
             return res.status(409).json({ message: `A ${event.status} event can't be edited` });
         }
 
@@ -166,6 +172,13 @@ router.patch('/:id', requireAuth, requireRole('organizer'), async (req, res) => 
 
         if (status && !VALID_STATUSES.includes(status)) {
             return res.status(400).json({ message: "Invalid status" });
+        }
+        if (req.user.role === 'admin' && status && status !== 'cancelled') {
+            return res.status(400).json({ message: "Admins can only change event status to cancelled" });
+        }
+        if (req.user.role === 'admin' && status === 'cancelled'
+            && (event.status === 'completed' || event.status === 'cancelled')) {
+            return res.status(409).json({ message: `A ${event.status} event can't be cancelled` });
         }
 
         const problem = validateEventFields({ startDatetime, endDatetime, registrationDeadline, participantLimit });

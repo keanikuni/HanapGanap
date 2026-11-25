@@ -4,24 +4,49 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>hnpgnp admin dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/footer.css">
 <link rel="stylesheet" href="css/admin-dashboard.css">
 </head>
 <body>
-<header>
-  <div class="bar">
-    <div class="logo">hnp<b>gnp</b></div>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">&#9776;</button>
-    <nav id="nav" role="tablist">
-      <button role="tab" data-tab="users" aria-selected="true">Users</button>
-      <button role="tab" data-tab="organizers" aria-selected="false">Organizers</button>
-      <button role="tab" data-tab="events" aria-selected="false">Events</button>
+<nav id="navBar">
+        <div id="NAVcontainer">
+            <div id="NAVlogo"><a href="index.html"><img src="vectors/logoRedBlue.svg" alt="HanapGanap"></a></div>
+            <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="NAVMenu" aria-expanded="false">&#9776;</button>
+            <div id="NAVMenu">
+                <ul class="NAVmainNav" id="NAVmainNavID">
+                    <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                    <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                    <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+                </ul>
+                <div id="NAVaccount">
+                    <a href="signup.html" id="accountLink">
+                        <h2 class="NAVh2">account</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
     </nav>
-  </div>
-</header>
 
-<main>
-  <h1>hnpgnp admin dashboard</h1>
+<main id="admin-main">
+  <div class="dashboard-heading">
+    <div>
+      <p class="eyebrow">HANAPGANAP / ADMIN</p>
+      <h1>Admin Dashboard</h1>
+      <p class="dashboard-subtitle">Manage users, organizers, and events across the platform.</p>
+    </div>
+    <button id="admin-logout" class="admin-logout" type="button">Log Out</button>
+  </div>
   <p id="status" class="status" role="status" hidden></p>
+
+  <div id="admin-tabs" role="tablist" aria-label="Admin dashboard sections">
+    <button role="tab" data-tab="users" aria-selected="true">Users</button>
+    <button role="tab" data-tab="organizers" aria-selected="false">Organizers</button>
+    <button role="tab" data-tab="events" aria-selected="false">Events</button>
+  </div>
 
   <section class="glance" aria-label="At a glance">
     <div class="stat"><span>Users</span><strong id="s-users">0</strong></div>
@@ -32,10 +57,94 @@
   <section class="panel">
     <h2 id="title"></h2>
     <p id="sub"></p>
+    <form id="event-filters" class="event-filters" hidden>
+      <label>
+        Search events
+        <input id="event-search" type="search" placeholder="Search by event title">
+      </label>
+      <label>
+        Status
+        <select id="event-status">
+          <option value="all">All statuses</option>
+          <option value="upcoming">Upcoming</option>
+          <option value="ongoing">Ongoing</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </label>
+      <button class="act" type="submit">Search</button>
+    </form>
     <div class="wrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
   </section>
 </main>
 
-<script src="admin-dashboard.js" defer></script>
+<div class="modal" id="edit-event-modal" hidden>
+  <section class="modal-content" role="dialog" aria-modal="true" aria-labelledby="edit-event-title">
+    <div class="modal-head">
+      <h2 id="edit-event-title">Edit event</h2>
+      <button class="close" type="button" data-close="edit-event-modal" aria-label="Close">&times;</button>
+    </div>
+    <p id="edit-event-error" class="form-error" role="alert" hidden></p>
+    <form id="edit-event-form">
+      <input id="edit-event-id" type="hidden">
+      <label for="edit-event-name">Title</label>
+      <input id="edit-event-name" maxlength="150" required>
+      <label for="edit-event-description">Description</label>
+      <textarea id="edit-event-description" rows="4" required></textarea>
+      <label for="edit-event-venue">Venue</label>
+      <input id="edit-event-venue" required>
+      <label for="edit-event-category">Category</label>
+      <select id="edit-event-category" required></select>
+      <label for="edit-event-start">Starts</label>
+      <input id="edit-event-start" type="datetime-local" required>
+      <label for="edit-event-end">Ends</label>
+      <input id="edit-event-end" type="datetime-local" required>
+      <label for="edit-event-deadline">Registration deadline</label>
+      <input id="edit-event-deadline" type="datetime-local" required>
+      <label for="edit-event-limit">Participant limit</label>
+      <input id="edit-event-limit" type="number" min="1" step="1" required>
+      <div class="modal-actions">
+        <button class="act" type="button" data-close="edit-event-modal">Cancel</button>
+        <button class="act primary" type="submit">Save changes</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<footer class="footer">
+  <nav class="footer__nav" aria-label="Footer">
+    <div class="footer__group">
+      <h2>explore</h2>
+      <ul>
+        <li><a href="events.html">events</a></li>
+        <li><a href="team.html">the team</a></li>
+        <li><a href="features.html">features</a></li>
+        <li><a href="signup.html">log in/sign up</a></li>
+      </ul>
+    </div>
+    <div class="footer__group">
+      <h2>about</h2>
+      <ul>
+        <li><a href="copyright.html">Terms of Service</a></li>
+        <li><a href="privacypolicy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer__group">
+      <h2>say hi!</h2>
+      <ul>
+        <li><a href="https://www.facebook.com/">facebook</a></li>
+        <li><a href="https://www.instagram.com/">instagram</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="footer__wordmark">
+    <img src="vectors/logoWarmWhite.svg" alt="HanapGanap">
+  </div>
+</footer>
+<div class="footer__base"></div>
+
+<script src="script/main.js"></script>
+<script src="script/admin-dashboard.js" defer></script>
+<script src="script/account.js" defer></script>
 </body>
 </html>
