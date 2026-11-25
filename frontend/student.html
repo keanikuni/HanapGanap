@@ -32,6 +32,27 @@
             </div>
     </nav>
     
+<div id="backButtonDiv" style="
+        position: fixed;
+        padding-left: 1%;
+        padding-top: 5%;
+        z-index: 1000;
+    ">
+        <button id="backButtonUniversal"
+            type="button"
+            aria-label="Go back"
+            data-fallback="dashboard_organizer.html"
+            style="
+                font-family: 'Stack Sans Headline';
+                font-size: 24px;
+                background-color: #829BD3;
+                border-radius: 100px;
+                border: none;
+                padding-inline: 10px;
+                cursor: pointer;
+            ">&#171; Back</button>
+    </div>
+
   <main class="student">
     <header class="student__head">
       <a href="events.html">Browse events</a>
@@ -127,7 +148,6 @@
   <script src="script/main.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="script/student.js"></script>
-
-  
+  <script src="script/backButton.js" defer></script>
 </body>
 </html>

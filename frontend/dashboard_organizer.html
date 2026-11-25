@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="css/dashboard_organizer.css">
-      
+
   <style>
     :root {
       --cream: #fff6e5;
@@ -18,8 +18,6 @@
       --card: #D9D9D9;
       --blue: #829bd3;
     }
-
-    
 
     body {
       margin: 0;
@@ -31,487 +29,450 @@
       font-weight: 300;
     }
 
-    .page {
-      flex: 1;
-      width: 100%;
-      max-width: 60rem;
-      margin: 0 auto;
-      padding: 0.9rem 0.75rem 2rem;
-      font-size: 0.7rem;
-      line-height: 1.45;
-    }
-
-    .back-btn {
+    /* Lets <a class="btn"> look like the <button class="btn"> elements */
+    a.btn {
       display: inline-block;
-      margin: 0 0 0.75rem;
-      color: #000;
+      text-align: center;
       text-decoration: none;
-    }
-    .back-btn:hover { color: var(--red); }
-    .back-btn:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
-
-    .card {
-      background: var(--card);
-      padding: 0.9rem 1rem;
-    }
-    .card p { margin: 0; }
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      margin: 1rem 0 0.75rem;
-    }
-    .section-head h2 { margin: 0; font-size: inherit; font-weight: 300; }
-
-    .pill {
-      background: var(--blue);
-      color: #fff;
-      border: 0;
-      border-radius: 999px;
-      padding: 0.2rem 0.8rem;
-      font: inherit;
-      font-size: 0.95em;
-      cursor: pointer;
-    }
-    .pill:hover { filter: brightness(1.08); }
-    .pill:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
-
-    .items {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .items a { color: #000; text-decoration: underline; }
-    .items a:hover { color: var(--red); }
-
-    @media (min-width: 768px) {
-      .page { padding: 1.5rem 1.5rem 3rem; font-size: 0.95rem; }
-      .card { padding: 1rem 1.25rem; }
-    }
-
-    @media (min-width: 1200px) {
-      .page { padding: 2rem 2rem 4rem; font-size: 1rem; }
-      .card { padding: 1.1rem 1.5rem; }
     }
   </style>
 </head>
 <body>
 
     <nav id="navBar">
-            <div id="NAVcontainer">
-                <div id="NAVlogo"><a href="index.html"><img src="vectors/logoRedBlue.svg" alt="HanapGanap"></a></div>
-                <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="NAVMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
-                <div id="NAVMenu">
-                    <ul class="NAVmainNav" id="NAVmainNavID">
-                        <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
-                        <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
-                        <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
-                    </ul>
-                    <div id="NAVaccount">
-                        <a href="signup.html" id="accountLink">
-                            <h2 class="NAVh2">account</h2>
-                        </a>
-                    </div>
+        <div id="NAVcontainer">
+            <div id="NAVlogo"><a href="index.html"><img src="vectors/logoRedBlue.svg" alt="HanapGanap"></a></div>
+            <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="NAVMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
+            <div id="NAVMenu">
+                <ul class="NAVmainNav" id="NAVmainNavID">
+                    <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                    <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                    <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+                </ul>
+                <div id="NAVaccount">
+                    <a href="signup.html" id="accountLink">
+                        <h2 class="NAVh2">account</h2>
+                    </a>
                 </div>
             </div>
+        </div>
     </nav>
 
+    <div id="backButtonDiv" style="
+        position: fixed;
+        padding-left: 1%;
+        padding-top: 5%;
+        z-index: 1000;
+    ">
+        <button id="backButtonUniversal"
+            type="button"
+            aria-label="Go back"
+            data-fallback="dashboard_organizer.html"
+            style="
+                font-family: 'Stack Sans Headline';
+                font-size: 24px;
+                background-color: #829BD3;
+                border-radius: 100px;
+                border: none;
+                padding-inline: 10px;
+                cursor: pointer;
+            ">&#171; Back</button>
+    </div>
+
     <main class="organizer">
-    
-            <!-- Dashboard Header -->
-            <header class="dashboard-head">
-                <div>
-                    <p class="eyebrow">HANAPGANAP / ORGANIZER</p>
-    
-                    <h1>Organizer Dashboard</h1>
-    
-                    <p class="subtitle">
-                        Manage your events and keep everything organized.
-                    </p>
-                </div>
-    
-                <div class="header-actions">
-    
-                    <button
-                        class="btn btn-primary"
-                        id="create-event"
-                        type="button">
-                        + Create Event
-                    </button>
-    
-                    <button
-                        class="btn btn-logout"
-                        id="logout-button"
-                        type="button">
-                        Log Out
-                    </button>
-    
-                </div>
-            </header>
-    
-            <!-- Organizer Profile -->
-            <section class="profile-card">
-    
-                <div class="profile-avatar" id="profile-avatar">
-                    O
-                </div>
-    
-                <div class="profile-info">
-    
-                    <p class="profile-label">
-                        Organizer Account
-                    </p>
-    
-                    <h2 data-field="name">
-                        Loading...
-                    </h2>
-    
-                    <p data-field="university">
-                        Loading university...
-                    </p>
-    
-                    <p data-field="email">
-                        Loading email...
-                    </p>
-    
-                </div>
-    
-            </section>
-    
-            <!-- Event Statistics -->
-            <section class="stats" aria-label="Event statistics">
-    
-                <article class="stat">
-                    <span>Total Events</span>
-                    <strong id="total-events">0</strong>
-                </article>
-    
-                <article class="stat">
-                    <span>Upcoming</span>
-                    <strong id="upcoming-events">0</strong>
-                </article>
-    
-                <article class="stat stat--ongoing">
-                    <span>Ongoing</span>
-                    <strong id="ongoing-events">0</strong>
-                </article>
-    
-                <article class="stat stat--completed">
-                    <span>Completed</span>
-                    <strong id="completed-events">0</strong>
-                </article>
-    
-            </section>
-    
-            <!-- My Events -->
-            <section class="events-section">
-    
-                <div class="section-head">
-    
-                    <div>
-                        <h2>My Events</h2>
-    
-                        <p class="subtitle">
-                            Manage the events you have organized.
-                        </p>
-                    </div>
-    
-                    <span class="event-count" id="event-count">
-                        0 events
-                    </span>
-    
-                </div>
-    
-                <!-- Search and Filter -->
-                <div class="toolbar">
-    
-                    <input
-                        type="search"
-                        id="event-search"
-                        placeholder="Search your events..."
-                        aria-label="Search events">
-    
-                    <select
-                        id="status-filter"
-                        aria-label="Filter events by status">
-    
-                        <option value="all">All Events</option>
-                        <option value="upcoming">Upcoming</option>
-                        <option value="ongoing">Ongoing</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
-    
-                    </select>
-    
-                </div>
-    
-                <!-- Loading -->
-                <div id="loading" class="empty">
-                    Loading your events...
-                </div>
-    
-                <!-- Error -->
-                <div
-                    id="error-message"
-                    class="message"
-                    hidden>
-                </div>
-    
-                <!-- Event Cards -->
-                <div class="cards" id="events"></div>
-    
-                <!-- Empty State -->
-                <div
-                    id="empty-events"
-                    class="empty"
-                    hidden>
-    
-                    <h3>No events found</h3>
-    
-                    <p>
-                        You haven't created any events matching this filter.
-                    </p>
-    
-                </div>
-    
-            </section>
-    
-            <div class="modal" id="participants-modal" role="dialog" aria-modal="true" aria-labelledby="participants-event-title" hidden>
-                <div class="modal-content participants-modal-content">
-                    <div class="modal-head">
-                        <div>
-                            <p class="eyebrow">EVENT ROSTER</p>
-                            <h2 id="participants-event-title">Participants</h2>
-                        </div>
-                        <button class="close-btn" data-close="participants-modal" type="button" aria-label="Close participants">&times;</button>
-                    </div>
 
-                    <div class="participant-stats" aria-live="polite">
-                        <div class="participant-stat">
-                            <span>Registered</span>
-                            <strong id="participants-total">0</strong>
-                        </div>
-                        <div class="participant-stat participant-stat--attended">
-                            <span>Attended</span>
-                            <strong id="participants-attended">0</strong>
-                        </div>
-                    </div>
+        <!-- Dashboard Header -->
+        <header class="dashboard-head">
+            <div>
+                <p class="eyebrow">HANAPGANAP / ORGANIZER</p>
 
-                    <div class="participant-toolbar">
-                        <input id="participants-search" type="search" placeholder="Search name, email, or student number" aria-label="Search participants">
-                        <select id="participants-filter" aria-label="Filter participants by attendance">
-                            <option value="all">All registrations</option>
-                            <option value="attended">Attended</option>
-                            <option value="not-attended">Not checked in</option>
-                        </select>
-                    </div>
+                <h1>Organizer Dashboard</h1>
 
-                    <p id="participants-loading" class="empty" hidden>Loading participants...</p>
-                    <p id="participants-error" class="message" role="alert" hidden></p>
-                    <p id="participants-empty" class="empty" hidden>No participants match this filter.</p>
-
-                    <div class="participant-table-wrap">
-                        <table class="participant-table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Participant details</th>
-                                    <th scope="col">Registered</th>
-                                    <th scope="col">Attendance</th>
-                                </tr>
-                            </thead>
-                            <tbody id="participants-rows"></tbody>
-                        </table>
-                    </div>
-                </div>
+                <p class="subtitle">
+                    Manage your events and keep everything organized.
+                </p>
             </div>
 
-            <!-- ================================= -->
-            <!-- EDIT EVENT MODAL -->
-            <!-- ================================= -->
-    
-            <div class="modal" id="edit-modal" hidden>
-    
-                <div class="modal-content">
-    
-                    <div class="modal-head">
-    
-                        <h2>Edit Event</h2>
-    
+            <div class="header-actions">
+
+                <button
+                    class="btn btn-primary"
+                    id="create-event"
+                    type="button">
+                    + Create Event
+                </button>
+
+                <button
+                    class="btn btn-logout"
+                    id="logout-button"
+                    type="button">
+                    Log Out
+                </button>
+
+            </div>
+        </header>
+
+        <!-- Organizer Profile -->
+        <section class="profile-card">
+
+            <div class="profile-avatar" id="profile-avatar">
+                O
+            </div>
+
+            <div class="profile-info">
+
+                <p class="profile-label">
+                    Organizer Account
+                </p>
+
+                <h2 data-field="name">
+                    Loading...
+                </h2>
+
+                <p data-field="university">
+                    Loading university...
+                </p>
+
+                <p data-field="email">
+                    Loading email...
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- Event Statistics -->
+        <section class="stats" aria-label="Event statistics">
+
+            <article class="stat">
+                <span>Total Events</span>
+                <strong id="total-events">0</strong>
+            </article>
+
+            <article class="stat">
+                <span>Upcoming</span>
+                <strong id="upcoming-events">0</strong>
+            </article>
+
+            <article class="stat stat--ongoing">
+                <span>Ongoing</span>
+                <strong id="ongoing-events">0</strong>
+            </article>
+
+            <article class="stat stat--completed">
+                <span>Completed</span>
+                <strong id="completed-events">0</strong>
+            </article>
+
+        </section>
+
+        <!-- My Events -->
+        <section class="events-section">
+
+            <div class="section-head">
+
+                <div>
+                    <h2>My Events</h2>
+
+                    <p class="subtitle">
+                        Manage the events you have organized.
+                    </p>
+                </div>
+
+                <span class="event-count" id="event-count">
+                    0 events
+                </span>
+
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="toolbar">
+
+                <input
+                    type="search"
+                    id="event-search"
+                    placeholder="Search your events..."
+                    aria-label="Search events">
+
+                <select
+                    id="status-filter"
+                    aria-label="Filter events by status">
+
+                    <option value="all">All Events</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+
+                </select>
+
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="empty">
+                Loading your events...
+            </div>
+
+            <!-- Error -->
+            <div
+                id="error-message"
+                class="message"
+                hidden>
+            </div>
+
+            <!-- Event Cards -->
+            <div class="cards" id="events"></div>
+
+            <!-- Empty State -->
+            <div
+                id="empty-events"
+                class="empty"
+                hidden>
+
+                <h3>No events found</h3>
+
+                <p>
+                    You haven't created any events matching this filter.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- ================================= -->
+        <!-- PARTICIPANTS MODAL -->
+        <!-- ================================= -->
+
+        <div class="modal" id="participants-modal" role="dialog" aria-modal="true" aria-labelledby="participants-event-title" hidden>
+            <div class="modal-content participants-modal-content">
+                <div class="modal-head">
+                    <div>
+                        <p class="eyebrow">EVENT ROSTER</p>
+                        <h2 id="participants-event-title">Participants</h2>
+                    </div>
+                    <button class="close-btn" data-close="participants-modal" type="button" aria-label="Close participants">&times;</button>
+                </div>
+
+                <div class="participant-stats" aria-live="polite">
+                    <div class="participant-stat">
+                        <span>Registered</span>
+                        <strong id="participants-total">0</strong>
+                    </div>
+                    <div class="participant-stat participant-stat--attended">
+                        <span>Attended</span>
+                        <strong id="participants-attended">0</strong>
+                    </div>
+                </div>
+
+                <div class="participant-toolbar">
+                    <input id="participants-search" type="search" placeholder="Search name, email, or student number" aria-label="Search participants">
+                    <select id="participants-filter" aria-label="Filter participants by attendance">
+                        <option value="all">All registrations</option>
+                        <option value="attended">Attended</option>
+                        <option value="not-attended">Not checked in</option>
+                    </select>
+                </div>
+
+                <p id="participants-loading" class="empty" hidden>Loading participants...</p>
+                <p id="participants-error" class="message" role="alert" hidden></p>
+                <p id="participants-empty" class="empty" hidden>No participants match this filter.</p>
+
+                <div class="participant-table-wrap">
+                    <table class="participant-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Participant details</th>
+                                <th scope="col">Registered</th>
+                                <th scope="col">Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participants-rows"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================= -->
+        <!-- EDIT EVENT MODAL -->
+        <!-- ================================= -->
+
+        <div class="modal" id="edit-modal" hidden>
+
+            <div class="modal-content">
+
+                <div class="modal-head">
+
+                    <h2>Edit Event</h2>
+
+                    <button
+                        class="close-btn"
+                        data-close="edit-modal"
+                        type="button">
+                        &times;
+                    </button>
+
+                </div>
+
+                <form id="edit-form">
+
+                    <input type="hidden" id="edit-id">
+
+                    <label for="edit-title">
+                        Event Title
+                    </label>
+
+                    <input
+                        id="edit-title"
+                        required
+                        maxlength="150">
+
+                    <label for="edit-description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="edit-description"
+                        rows="4"></textarea>
+
+                    <label for="edit-venue">
+                        Venue
+                    </label>
+
+                    <input
+                        id="edit-venue"
+                        required>
+
+                    <label for="edit-category">
+                        Category ID
+                    </label>
+
+                    <input
+                        id="edit-category"
+                        type="number"
+                        min="1"
+                        required>
+
+                    <label for="edit-start">
+                        Start Date and Time
+                    </label>
+
+                    <input
+                        id="edit-start"
+                        type="datetime-local"
+                        required>
+
+                    <label for="edit-end">
+                        End Date and Time
+                    </label>
+
+                    <input
+                        id="edit-end"
+                        type="datetime-local"
+                        required>
+
+                    <label for="edit-deadline">
+                        Registration Deadline
+                    </label>
+
+                    <input
+                        id="edit-deadline"
+                        type="datetime-local"
+                        required>
+
+                    <label for="edit-limit">
+                        Participant Limit
+                    </label>
+
+                    <input
+                        id="edit-limit"
+                        type="number"
+                        min="1"
+                        step="1"
+                        required>
+
+                    <div class="form-actions">
+
                         <button
-                            class="close-btn"
+                            class="btn btn-secondary"
                             data-close="edit-modal"
                             type="button">
-                            &times;
+                            Cancel
                         </button>
-    
-                    </div>
-    
-                    <form id="edit-form">
-    
-                        <input type="hidden" id="edit-id">
-    
-                        <label for="edit-title">
-                            Event Title
-                        </label>
-    
-                        <input
-                            id="edit-title"
-                            required
-                            maxlength="150">
-    
-                        <label for="edit-description">
-                            Description
-                        </label>
-    
-                        <textarea
-                            id="edit-description"
-                            rows="4">
-                        </textarea>
-    
-                        <label for="edit-venue">
-                            Venue
-                        </label>
-    
-                        <input
-                            id="edit-venue"
-                            required>
-    
-                        <label for="edit-category">
-                            Category ID
-                        </label>
-    
-                        <input
-                            id="edit-category"
-                            type="number"
-                            min="1"
-                            required>
-    
-                        <label for="edit-start">
-                            Start Date and Time
-                        </label>
-    
-                        <input
-                            id="edit-start"
-                            type="datetime-local"
-                            required>
-    
-                        <label for="edit-end">
-                            End Date and Time
-                        </label>
-    
-                        <input
-                            id="edit-end"
-                            type="datetime-local"
-                            required>
-    
-                        <label for="edit-deadline">
-                            Registration Deadline
-                        </label>
-    
-                        <input
-                            id="edit-deadline"
-                            type="datetime-local"
-                            required>
-    
-                        <label for="edit-limit">
-                            Participant Limit
-                        </label>
-    
-                        <input
-                            id="edit-limit"
-                            type="number"
-                            min="1"
-                            step="1"
-                            required>
-    
-                        <div class="form-actions">
-    
-                            <button
-                                class="btn btn-secondary"
-                                data-close="edit-modal"
-                                type="button">
-                                Cancel
-                            </button>
-    
-                            <button
-                                class="btn btn-primary"
-                                type="submit">
-                                Save Changes
-                            </button>
-    
-                        </div>
-    
-                    </form>
-    
-                </div>
-    
-            </div>
-    
-            <!-- ================================= -->
-            <!-- EVENT IMAGES MODAL -->
-            <!-- ================================= -->
-    
-            <div class="modal" id="images-modal" hidden>
-    
-                <div class="modal-content">
-    
-                    <div class="modal-head">
-    
-                        <h2>Manage Event Images</h2>
-    
-                        <button
-                            class="close-btn"
-                            data-close="images-modal"
-                            type="button">
-                            &times;
-                        </button>
-    
-                    </div>
-    
-                    <input
-                        type="hidden"
-                        id="images-event-id">
-    
-                    <label for="image-upload">
-                        Upload Images
-                    </label>
-    
-                    <input
-                        type="file"
-                        id="image-upload"
-                        accept="image/jpeg,image/png,image/webp"
-                        multiple>
-    
-                    <p class="hint">
-                        JPG, PNG, or WEBP. Maximum 5 MB per image.
-                    </p>
-    
-                    <button
-                        class="btn btn-primary"
-                        id="upload-images"
-                        type="button">
-                        Upload Selected Images
-                    </button>
-    
-                    <div
-                        id="image-gallery"
-                        class="image-gallery">
-                    </div>
-    
-                </div>
-    
-            </div>
-    
-        </main>
 
- 
+                        <button
+                            class="btn btn-primary"
+                            type="submit">
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- ================================= -->
+        <!-- EVENT IMAGES MODAL -->
+        <!-- ================================= -->
+
+        <div class="modal" id="images-modal" hidden>
+
+            <div class="modal-content">
+
+                <div class="modal-head">
+
+                    <h2>Manage Event Images</h2>
+
+                    <button
+                        class="close-btn"
+                        data-close="images-modal"
+                        type="button">
+                        &times;
+                    </button>
+
+                </div>
+
+                <input
+                    type="hidden"
+                    id="images-event-id">
+
+                <label for="image-upload">
+                    Upload Images
+                </label>
+
+                <input
+                    type="file"
+                    id="image-upload"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple>
+
+                <p class="hint">
+                    JPG, PNG, or WEBP. Maximum 5 MB per image.
+                </p>
+
+                <button
+                    class="btn btn-primary"
+                    id="upload-images"
+                    type="button">
+                    Upload Selected Images
+                </button>
+
+                <div
+                    id="image-gallery"
+                    class="image-gallery">
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
   <footer class="footer">
       <nav class="footer__nav" aria-label="Footer">
       <div class="footer__group">
@@ -523,7 +484,7 @@
               <li><a href="#">log in/sign up</a></li>
           </ul>
       </div>
-  
+
       <div class="footer__group">
           <h2>about</h2>
           <ul>
@@ -531,7 +492,7 @@
               <li><a href="#">Privacy Policy</a></li>
           </ul>
       </div>
-  
+
       <div class="footer__group">
           <h2>say hi!</h2>
           <ul>
@@ -540,7 +501,7 @@
           </ul>
       </div>
       </nav>
-  
+
       <div class="footer__wordmark">
       <img src="vectors/logoWarmWhite.svg" alt="HanapGanap">
       </div>
@@ -550,5 +511,6 @@
   <script src="script/main.js"></script>
   <script src="script/dashboard_organizer.js"></script>
   <script src="script/account.js"></script>
+  <script src="script/backButton.js" defer></script>
 </body>
 </html>

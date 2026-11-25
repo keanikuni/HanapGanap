@@ -32,6 +32,26 @@
     </div>
 </nav>
 
+<div id="backButtonDiv" style="
+        padding-left: 1%;
+        padding-top: 0%;
+        z-index: 1000;
+    ">
+        <button id="backButtonUniversal"
+            type="button"
+            aria-label="Go back"
+            data-fallback="dashboard_organizer.html"
+            style="
+                font-family: 'Stack Sans Headline';
+                font-size: 24px;
+                background-color: #829BD3;
+                border-radius: 100px;
+                border: none;
+                padding-inline: 10px;
+                cursor: pointer;
+            ">&#171; Back</button>
+    </div>
+
 <main id="app"><div class="state"><p>Loading event…</p></div></main>
 
 <footer class="footer">
@@ -84,6 +104,6 @@
 
 <script src="script/event.js"></script>
 <script src="script/account.js"></script>
-
+<script src="script/backButton.js" defer></script>
 </body>
 </html>
