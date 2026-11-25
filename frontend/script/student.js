@@ -71,9 +71,16 @@ const STATUS_LABEL = {
   upcoming: "Upcoming",
   ongoing: "Happening now",
   attended: "Attended",
-  missed: "Missed",
+  missed: "Not attended",
   cancelled: "Cancelled",
 };
+
+function attendanceLabel(status) {
+  if (status === "attended") return "Attendance: Attended";
+  if (status === "missed") return "Attendance: Not attended";
+  if (status === "cancelled") return "Attendance: Event cancelled";
+  return "Attendance: Not recorded yet";
+}
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -101,6 +108,7 @@ function eventCard(reg) {
 
   li.appendChild(el("p", "card__meta", formatDate(ev.startDatetime)));
   li.appendChild(el("p", "card__meta", [ev.venue, ev.university?.name].filter(Boolean).join(" · ")));
+  li.appendChild(el("p", `card__attendance card__attendance--${status}`, attendanceLabel(status)));
 
   if (reg.attendance?.isConfirm && reg.attendance.inTime) {
     li.appendChild(el("p", "card__meta", "Checked in " + formatDate(reg.attendance.inTime)));
@@ -267,7 +275,8 @@ async function init() {
     registrations = await apiGet("/registrations/mine");
 
     byId("statJoined").textContent = registrations.length;
-    byId("statAttended").textContent = registrations.filter((r) => r.attendance?.isConfirm).length;
+    byId("statAttended").textContent = registrations.filter((r) => statusOf(r) === "attended").length;
+    byId("statMissed").textContent = registrations.filter((r) => statusOf(r) === "missed").length;
 
     byId("content").hidden = false;
     renderEvents();

@@ -50,6 +50,7 @@
       <section class="stats" aria-label="Student activity summary">
         <div class="stat"><strong id="statJoined">0</strong><span>Events joined</span></div>
         <div class="stat"><strong id="statAttended">0</strong><span>Events attended</span></div>
+        <div class="stat"><strong id="statMissed">0</strong><span>Not attended</span></div>
         <div class="stat"><strong id="statCerts">0</strong><span>Certificates earned</span></div>
       </section>
 
@@ -66,7 +67,7 @@
           <button class="chip" type="button" data-filter="upcoming">Upcoming</button>
           <button class="chip" type="button" data-filter="ongoing">Happening now</button>
           <button class="chip" type="button" data-filter="attended">Attended</button>
-          <button class="chip" type="button" data-filter="missed">Missed</button>
+          <button class="chip" type="button" data-filter="missed">Not attended</button>
         </div>
         <ul class="cards" id="eventList" aria-live="polite"></ul>
         <p class="empty" id="eventsEmpty" hidden></p>
