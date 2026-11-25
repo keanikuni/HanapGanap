@@ -228,6 +228,5 @@ const options = {
 
 https.createServer(options, app).listen(PORT, () => {
     console.log(`Server has started on https://localhost:${PORT}`);
-    console.log(`PDF tool: https://localhost:${PORT}/pdf-tool.html${pdfTools ? '' : ' (disabled until npm install)'}`);
     startEventStatusJob();
 });
