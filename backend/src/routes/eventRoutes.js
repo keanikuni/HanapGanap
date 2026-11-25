@@ -300,18 +300,37 @@ router.delete('/:id', requireAuth, requireRole('organizer', 'admin'), async (req
             if (!event) return;
         }
 
+        const images = await prisma.image.findMany({ where: { eventId: event.id } });
+
+        if (req.user.role === 'admin') {
+            const deleted = await prisma.$transaction(async (tx) => {
+                // Match registration's event-row lock so new signups cannot race this deletion.
+                const locked = await tx.$queryRaw`
+                    SELECT event_id FROM events WHERE event_id = ${event.id} FOR UPDATE
+                `;
+                if (locked.length === 0) return null;
+
+                const registered = await tx.registration.count({ where: { eventId: event.id } });
+                await tx.registration.deleteMany({ where: { eventId: event.id } });
+                await tx.event.delete({ where: { id: event.id } });
+                return registered;
+            });
+
+            if (deleted === null) return res.status(404).json({ message: "Event not found" });
+            await Promise.all(images.map((image) => removeStoredImage(image.fileName)));
+            return res.json({
+                message: `Event permanently deleted with ${deleted} registration(s), attendance records, notifications, and images`,
+            });
+        }
+
         const registered = await prisma.registration.count({ where: { eventId: event.id } });
 
-        // Registration uses onDelete: Restrict, so an event with registrants
-        // can't be hard-deleted. Cancel it instead.
+        // Organizers retain registrations by cancelling instead of hard-deleting.
         if (registered > 0) {
             await prisma.event.update({ where: { id: event.id }, data: { status: 'cancelled' } });
             return res.json({ message: "Event has registrants, so it was marked as cancelled" });
         }
 
-        // Image rows cascade-delete with the event, but the files stay on disk,
-        // so grab the names first and remove the files afterwards.
-        const images = await prisma.image.findMany({ where: { eventId: event.id } });
         await prisma.event.delete({ where: { id: event.id } });
         await Promise.all(images.map((i) => removeStoredImage(i.fileName)));
 

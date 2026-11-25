@@ -237,9 +237,9 @@ async function cancelEvent(event) {
 async function deleteEvent(event) {
   const registrations = event._count?.registrations ?? 0;
   const effect = registrations
-    ? `It has ${registrations} registration(s), so it will be marked cancelled instead of being removed.`
-    : "It has no registrations and will be permanently deleted.";
-  if (!confirm(`Delete "${event.title}"?\n\n${effect}`)) return;
+    ? `This permanently removes the event and its ${registrations} registration(s), attendance records, notifications, and uploaded images.`
+    : "This permanently removes the event, notifications, and uploaded images.";
+  if (!confirm(`Permanently delete "${event.title}"?\n\n${effect}\n\nThis action cannot be undone.`)) return;
 
   try {
     const result = await api(`/events/${event.id}`, { method: "DELETE" });
