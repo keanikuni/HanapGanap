@@ -116,13 +116,13 @@ npx prisma generate
 
 ### 8. Start the development server
 
-Run the development script:
+From the repository root, run:
 
 ```bash
 npm run dev
 ```
 
-The server uses Node.js watch mode and loads environment variables from `.env`. Check the terminal output for the server address and port.
+This forwards to the backend development script, which loads environment variables from `backend/.env`. Alternatively, run `npm run dev` from the `backend` directory. Check the terminal output for the server address and port. If port 8000 is already in use, stop the existing backend server before starting another instance.
 
 ### 9. Test the API
 
