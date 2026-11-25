@@ -1,0 +1,29 @@
+body{
+    background-color: #FFF8E7;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.h2FEATURE{
+    font-family: "Instrument Serif";
+    font-weight: 400;
+    color: #A53636;
+    font-size: 52px;
+}
+
+.pFEATURE{
+    font-family: "Stack Sans Headline";
+    font-weight: 400;
+    color: #000000;
+}
+
+.feature img{
+    height: 300px;
+    width: auto;
+    border: 2px solid #000000;
+}
+
+.feature{
+    text-align: center;
+    margin-block: 30px;
+}

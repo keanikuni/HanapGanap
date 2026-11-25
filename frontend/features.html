@@ -3,16 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HanapGanap | Features</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/features.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/footer.css">
+
+    <script> //nav
+        function toggleMenu(){
+        const menu = document.getElementById("NAVMenu");
+        const toggle = document.getElementById("NAVmenuToggle");
+
+        const isOpen = menu.classList.toggle("active");
+        toggle.setAttribute("aria-expanded", isOpen);
+    }
+    </script>
 </head>
 <body>
 
-    <nav></nav>
+    <nav id="navBar">
+        <div id="NAVcontainer">
+            <div id="NAVlogo"><a href="index.html"><img src="vectors/logoRedBlue.svg"></a></div>
+            <button id="NAVmenuToggle" type="button" aria-label="Toggle navigation" aria-controls="navMenu" aria-expanded="false" onclick="toggleMenu()">&#9776;</button>
+            <div id="NAVMenu">
+                <ul class="NAVmainNav" id="NAVmainNavID">
+                    <li id="NAVteam"><a href="team.html"><h2 class="NAVh2">the team</h2></a></li>
+                    <li id="NAVevents"><a href="events.html"><h2 class="NAVh2">events</h2></a></li>
+                    <li id="NAVfeatures"><a href="features.html"><h2 class="NAVh2">features</h2></a></li>
+                </ul>
+                <div id="NAVaccount">
+                    <a href="signup.html" id="accountLink">
+                        <h2 class="NAVh2">account</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <section> <!--head part-->
     </section>
 
-    <footer></footer>
+    <div class="feature">
+        <h2 class="h2FEATURE">Log in and Sign up</h2>
+        <img src="vectors/LogIn.png">
+        <p class="pFEATURE">You can use your educational account (in accordance with your chosen university) at the sign up page and, similarly, log in whenever you want.</p>
+    </div>
+
+    <div class="feature">
+        <h2 class="h2FEATURE">Register Events</h2>
+        <img src="vectors/RegisterEvents.png">
+        <p class="pFEATURE">Create events as an organizer! Bring your local university community together with a few clicks.</p>
+    </div>
+
+    <div class="feature">
+        <h2 class="h2FEATURE">View Events</h2>
+        <img src="vectors/ViewEvents.png">
+        <p class="pFEATURE">Find events that are near and dear to you. See how many people are registered to go to the same event and meet new friends</p>
+    </div>
+
+    <div class="feature">
+        <h2 class="h2FEATURE">Scan QR</h2>
+        <img src="vectors/QRScan.png">
+        <p class="pFEATURE">Tired of the traditional attendance system? Just scan your personal student QR code and HanapGanap will do the rest</p>
+    </div>
+
+    <div class="feature">
+        <h2 class="h2FEATURE">User Dashboard</h2>
+        <img src="vectors/Dashboard.png">
+        <p class="pFEATURE">Your main place. Find your info, QR code, and registered events, and events you made. Depending on your role, the dashboard will show you different sets of data
+</p>
+    </div>
+
+    <footer class="footer">
+    <nav class="footer__nav" aria-label="Footer">
+    <div class="footer__group">
+        <h2>explore</h2>
+        <ul>
+            <li><a href="events.html">events</a></li>
+            <li><a href="team.html">the team</a></li>
+            <li><a href="features.html">features</a></li>
+            <li><a href="login.html">log in/sign up</a></li>
+        </ul>
+    </div>
+
+    <div class="footer__group">
+        <h2>about</h2>
+        <ul>
+            <li><a href="termsofservice.html">Terms of Service</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+        </ul>
+    </div>
+
+    <div class="footer__group">
+        <h2>say hi!</h2>
+        <ul>
+        <li><a href="facebook.com">facebook</a></li>
+        <li><a href="instagram.com">instagram</a></li>
+        </ul>
+    </div>
+    </nav>
+
+    <div class="footer__wordmark">
+    <img src="vectors/logoWarmWhite.svg" alt="HanapGanap">
+    </div>
+</footer>
+<div class="footer__base"></div>
+
+    <script src="script/account.js"></script>
     
 </body>
 </html>
