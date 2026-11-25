@@ -320,6 +320,10 @@
                 data-action="images" data-id="${event.id}">
                 Images
             </button>
+            <button class="btn btn-secondary"
+                data-action="participants" data-id="${event.id}">
+                Participants (${registrations})
+            </button>
         `;
 
         if (status === "upcoming") {
@@ -455,6 +459,11 @@
 
                 case "images":
                     openImagesModal(selectedEvent);
+                    break;
+
+                case "participants":
+                    event.stopImmediatePropagation();
+                    await window.openOrganizerParticipants(selectedEvent);
                     break;
             }
 
@@ -1272,6 +1281,11 @@
                 data-id="${escapeHTML(event.id)}">
                 Images
             </button>
+            <button class="btn btn-secondary"
+                data-action="participants"
+                data-id="${escapeHTML(event.id)}">
+                Participants (${registrations})
+            </button>
         `;
 
         if (status === "upcoming") {
@@ -1421,6 +1435,10 @@
                     openImagesModal(selectedEvent);
                     break;
 
+                case "participants":
+                    await openParticipants(selectedEvent);
+                    break;
+
             }
 
         } catch (error) {
@@ -1434,6 +1452,91 @@
         }
 
     });
+
+    async function openParticipants(event) {
+        currentParticipants = [];
+        $("#participants-event-title").textContent = event.title;
+        $("#participants-search").value = "";
+        $("#participants-filter").value = "all";
+        $("#participants-total").textContent = "0";
+        $("#participants-attended").textContent = "0";
+        $("#participants-rows").innerHTML = "";
+        $("#participants-error").hidden = true;
+        $("#participants-empty").hidden = true;
+        $("#participants-loading").hidden = false;
+        openModal("participants-modal");
+
+        try {
+            const result = await apiFetch(`/events/${encodeURIComponent(event.id)}/participants`);
+            if (!Array.isArray(result.participants)) {
+                throw new Error("The participant list response was invalid.");
+            }
+
+            currentParticipants = result.participants;
+            $("#participants-total").textContent = String(result.total ?? currentParticipants.length);
+            $("#participants-attended").textContent = String(
+                currentParticipants.filter(participant => participant.attendance?.isConfirm).length
+            );
+            renderParticipants();
+        } catch (error) {
+            $("#participants-error").textContent = error.message;
+            $("#participants-error").hidden = false;
+        } finally {
+            $("#participants-loading").hidden = true;
+        }
+    }
+
+    window.openOrganizerParticipants = openParticipants;
+
+    function renderParticipants() {
+        const search = $("#participants-search").value.trim().toLowerCase();
+        const filter = $("#participants-filter").value;
+        const filtered = currentParticipants.filter(participant => {
+            const user = participant.user || {};
+            const attended = !!participant.attendance?.isConfirm;
+            const studentNumber = user.student?.studentNumber || "";
+            const matchesSearch = [user.fullName, user.email, studentNumber]
+                .some(value => String(value || "").toLowerCase().includes(search));
+            const matchesFilter = filter === "all" ||
+                (filter === "attended" ? attended : !attended);
+
+            return matchesSearch && matchesFilter;
+        });
+
+        $("#participants-rows").innerHTML = filtered.map(participant => {
+            const user = participant.user || {};
+            const student = user.student;
+            const guest = user.guest;
+            const details = student
+                ? [student.studentNumber, student.courseProgram, student.yearLevel && `Year ${student.yearLevel}`].filter(Boolean).join(" · ")
+                : guest?.schoolOrAffiliation || (user.role === "guest" ? "Guest" : user.role || "Participant");
+            const attended = !!participant.attendance?.isConfirm;
+
+            return `
+                <tr>
+                    <td>${escapeHTML(user.fullName || "Unnamed participant")}</td>
+                    <td>${escapeHTML(user.email || "Not provided")}</td>
+                    <td>${escapeHTML(details)}</td>
+                    <td>${escapeHTML(formatDate(participant.registeredAt))}</td>
+                    <td>
+                        <span class="attendance-badge ${attended ? "attendance-badge--attended" : ""}">
+                            ${attended ? "Attended" : "Not checked in"}
+                        </span>
+                        ${attended && participant.attendance?.inTime
+                            ? `<small>${escapeHTML(formatDate(participant.attendance.inTime))}</small>`
+                            : ""}
+                    </td>
+                </tr>
+            `;
+        }).join("");
+
+        $("#participants-empty").hidden = filtered.length !== 0;
+    }
+
+    let currentParticipants = [];
+
+    $("#participants-search").addEventListener("input", renderParticipants);
+    $("#participants-filter").addEventListener("change", renderParticipants);
 
 
     // ==========================================

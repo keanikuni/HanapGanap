@@ -281,6 +281,57 @@
     
             </section>
     
+            <div class="modal" id="participants-modal" role="dialog" aria-modal="true" aria-labelledby="participants-event-title" hidden>
+                <div class="modal-content participants-modal-content">
+                    <div class="modal-head">
+                        <div>
+                            <p class="eyebrow">EVENT ROSTER</p>
+                            <h2 id="participants-event-title">Participants</h2>
+                        </div>
+                        <button class="close-btn" data-close="participants-modal" type="button" aria-label="Close participants">&times;</button>
+                    </div>
+
+                    <div class="participant-stats" aria-live="polite">
+                        <div class="participant-stat">
+                            <span>Registered</span>
+                            <strong id="participants-total">0</strong>
+                        </div>
+                        <div class="participant-stat participant-stat--attended">
+                            <span>Attended</span>
+                            <strong id="participants-attended">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="participant-toolbar">
+                        <input id="participants-search" type="search" placeholder="Search name, email, or student number" aria-label="Search participants">
+                        <select id="participants-filter" aria-label="Filter participants by attendance">
+                            <option value="all">All registrations</option>
+                            <option value="attended">Attended</option>
+                            <option value="not-attended">Not checked in</option>
+                        </select>
+                    </div>
+
+                    <p id="participants-loading" class="empty" hidden>Loading participants...</p>
+                    <p id="participants-error" class="message" role="alert" hidden></p>
+                    <p id="participants-empty" class="empty" hidden>No participants match this filter.</p>
+
+                    <div class="participant-table-wrap">
+                        <table class="participant-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Participant details</th>
+                                    <th scope="col">Registered</th>
+                                    <th scope="col">Attendance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="participants-rows"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- ================================= -->
             <!-- EDIT EVENT MODAL -->
             <!-- ================================= -->
